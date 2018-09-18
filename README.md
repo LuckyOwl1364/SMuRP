@@ -5,3 +5,4 @@ Senior Project Fall 2018 of a group of Rowan Students; a social media platform t
 - Kristelle was also here
 - Caitlin was here as well
 - Alyssa was also here
+- Brooke was here (X) on 9.18.18
