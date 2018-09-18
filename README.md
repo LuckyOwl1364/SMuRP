@@ -6,3 +6,4 @@ Senior Project Fall 2018 of a group of Rowan Students; a social media platform t
 - Caitlin was here as well
 - Alyssa was also here
 - Brooke was here (X) on 9.18.18
+- Caroline is late to the party but also here
