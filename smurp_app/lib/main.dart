@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'rated.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,11 +8,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Startup Name Generator',
-      theme: new ThemeData(          // Add the 3 lines from here...
-        primaryColor: Colors.white,
-      ),                             // ... to here.
-      home: new RandomWords(),
+      title: 'Song History',
+      theme: new ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: new SpecificWords(),
     );
   }
 }
@@ -19,9 +20,10 @@ class MyApp extends StatelessWidget {
 
 
 
-class RandomWordsState extends State<RandomWords> {
+class RandomWordsState extends State<SpecificWords> {
   final _suggestions = <WordPair>[];
-  final Set<WordPair> _saved = new Set<WordPair>();
+  final List<WordPair> _likes = new List<WordPair>();
+  final List<WordPair> _dislikes = new List<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
 
@@ -29,9 +31,9 @@ class RandomWordsState extends State<RandomWords> {
   Widget build(BuildContext context) {
     return Scaffold (
       appBar: AppBar(
-        title: Text('Startup Name Generator'),
-        actions: <Widget>[      // Add 3 lines from here...
-          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
+        title: Text('Song History'),
+        actions: <Widget>[
+          new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _pushRated),
         ],
       ),
       body: _buildSuggestions(),
@@ -65,64 +67,61 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
   Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair);
+    final bool liked = _likes.contains(pair);
+    final bool disliked = _dislikes.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
         style: _biggerFont,
       ),
-      trailing: new Icon(   // Add the lines from here...
-        alreadySaved ? Icons.thumb_up : Icons.favorite_border,
-        color: alreadySaved ? Colors.orange : null,
-      ),
-      onTap: () {      // Add 9 lines from here...
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
-    );
-  }
-
-  void _pushSaved() {
-    Navigator.of(context).push(
-      new MaterialPageRoute<void>(   // Add 20 lines from here...
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map(
-                (WordPair pair) {
-              return new ListTile(
-                title: new Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final List<Widget> divided = ListTile
-              .divideTiles(
-            context: context,
-            tiles: tiles,
-          )
-              .toList();
-
-          return new Scaffold(         // Add 6 lines from here...
-            appBar: new AppBar(
-              title: const Text('Saved Suggestions'),
+      trailing: new Row(
+          children: <Widget>[
+            new IconButton(
+                icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
+                          color: liked ? Colors.orange : null,
+                        ),
+                onPressed: () { setState(() {
+                  if (disliked) {
+                    _dislikes.remove(pair); // if currently disliked, remove from dislikes
+                  }
+                  if (liked){
+                    _likes.remove(pair); // if already disliked, remove from dislikes
+                  }
+                  else{
+                    _likes.add(pair);
+                  }
+                }); }
             ),
-            body: new ListView(children: divided),
-          );
-        },
-      ),
+            new IconButton(
+                icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
+                  color: disliked ? Colors.orange : null,
+                ),
+                onPressed: () { setState(() {
+                  if (liked) {
+                    _likes.remove(pair); // if currently liked, remove from likes
+                  }
+                  if (disliked){
+                    _dislikes.remove(pair); // if already disliked, remove from dislikes
+                  }
+                  else{
+                    _dislikes.add(pair); // else add to dislikes
+                  }
+                }); }
+            ),
+          ],
+          mainAxisSize: MainAxisSize.min)
     );
   }
 
+  void _pushRated() {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => RatedPage(likes: _likes, dislikes: _dislikes),
+    ));
+  }
 } // end RandomWordsState
 
 
-class RandomWords extends StatefulWidget {
+class SpecificWords extends StatefulWidget {
   @override
   RandomWordsState createState() => new RandomWordsState();
 }
