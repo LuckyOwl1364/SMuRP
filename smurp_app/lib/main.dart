@@ -115,7 +115,7 @@ class RandomWordsState extends State<SpecificWords> {
 
   void _pushRated() {
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => RatedPage(likes: _likes, dislikes: _dislikes),
+        builder: (context) => RatedPage(likesRatedPage: _likes, dislikesRatedPage: _dislikes),
     ));
   }
 } // end RandomWordsState

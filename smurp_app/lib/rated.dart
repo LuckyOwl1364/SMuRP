@@ -6,10 +6,10 @@ import 'package:english_words/english_words.dart';
 // a full screen is likely to be a stateful widget.
 class RatedPage extends StatelessWidget {
 
-  final List<WordPair> likes;
-  final List<WordPair> dislikes;
+  final List<WordPair> likesRatedPage;
+  final List<WordPair> dislikesRatedPage;
 
-  RatedPage({@required this.likes, @required this.dislikes});
+  RatedPage({Key key, @required this.likesRatedPage, @required this.dislikesRatedPage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class RatedPage extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: new ShowWords(likes: this.likes, dislikes: this.dislikes),
+      home: new ShowWords(likesShowWords: this.likesRatedPage, dislikesShowWords: this.dislikesRatedPage),
     );
   }
 
@@ -63,17 +63,17 @@ class ShowWordsState extends State<ShowWords> {
           // minus the divider widgets.
           final index = i ~/ 2;
           if (onLikes){
-            _buildRow(widget.likes[index]);
+            _buildRow(widget.likesShowWords[index]);
           }
           else{
-            _buildRow(widget.dislikes[index]);
+            _buildRow(widget.dislikesShowWords[index]);
           }
         }
     );
   }
   Widget _buildRow(WordPair pair) {
-    final bool liked = widget.likes.contains(pair);
-    final bool disliked = widget.dislikes.contains(pair);
+    final bool liked = widget.likesShowWords.contains(pair);
+    final bool disliked = widget.dislikesShowWords.contains(pair);
     return ListTile(
         title: Text(
           pair.asPascalCase,
@@ -87,13 +87,13 @@ class ShowWordsState extends State<ShowWords> {
                   ),
                   onPressed: () { setState(() {
                     if (disliked) {
-                      widget.dislikes.remove(pair); // if currently disliked, remove from dislikes
+                      widget.dislikesShowWords.remove(pair); // if currently disliked, remove from dislikes
                     }
                     if (liked){
-                      widget.likes.remove(pair); // if already disliked, remove from dislikes
+                      widget.likesShowWords.remove(pair); // if already disliked, remove from dislikes
                     }
                     else{
-                      widget.likes.add(pair);
+                      widget.likesShowWords.add(pair);
                     }
                   }); }
               ),
@@ -103,13 +103,13 @@ class ShowWordsState extends State<ShowWords> {
                   ),
                   onPressed: () { setState(() {
                     if (liked) {
-                      widget.likes.remove(pair); // if currently liked, remove from likes
+                      widget.likesShowWords.remove(pair); // if currently liked, remove from likes
                     }
                     if (disliked){
-                      widget.dislikes.remove(pair); // if already disliked, remove from dislikes
+                      widget.dislikesShowWords.remove(pair); // if already disliked, remove from dislikes
                     }
                     else{
-                      widget.dislikes.add(pair); // else add to dislikes
+                      widget.dislikesShowWords.add(pair); // else add to dislikes
                     }
                   }); }
               ),
@@ -131,12 +131,12 @@ class ShowWordsState extends State<ShowWords> {
 
 class ShowWords extends StatefulWidget {
 
-  final List<WordPair> likes;
-  final List<WordPair> dislikes;
+  final List<WordPair> likesShowWords;
+  final List<WordPair> dislikesShowWords;
 
 //  bool onLikes = true;
 
-  ShowWords({@required this.likes, @required this.dislikes});
+  ShowWords({@required this.likesShowWords, @required this.dislikesShowWords});
 
   @override
   ShowWordsState createState() => new ShowWordsState();
