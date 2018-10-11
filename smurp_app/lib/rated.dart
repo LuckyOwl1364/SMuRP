@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:english_words/english_words.dart';
 
 // Note: for simplicity, this is a stateless widget but, in a real app,
@@ -8,12 +9,12 @@ class RatedPage extends StatelessWidget {
   final List<WordPair> likes;
   final List<WordPair> dislikes;
 
-  RatedPage({this.likes, this.dislikes});
+  RatedPage({@required this.likes, @required this.dislikes});
 
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Song History',
+      title: 'History',
       theme: new ThemeData(
         primaryColor: Colors.blue,
       ),
@@ -28,13 +29,14 @@ class RatedPage extends StatelessWidget {
 
 class ShowWordsState extends State<ShowWords> {
 
-  bool onLikes = false;
+  bool onLikes = true;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold (
       appBar: AppBar(
-        title: Text('Song History'),
+        title: onLikes ? Text('Liked Songs') : Text('Disiked Songs'),
         actions: <Widget>[
           new IconButton(icon: Icon(onLikes ? Icons.thumb_down : Icons.thumb_up), onPressed: _switchOnLikes() ),
         ],
@@ -60,7 +62,12 @@ class ShowWordsState extends State<ShowWords> {
           // This calculates the actual number of word pairings in the ListView,
           // minus the divider widgets.
           final index = i ~/ 2;
-          return onLikes ? _buildRow(widget.likes[index]) : _buildRow(widget.dislikes[index]);
+          if (onLikes){
+            _buildRow(widget.likes[index]);
+          }
+          else{
+            _buildRow(widget.dislikes[index]);
+          }
         }
     );
   }
@@ -111,11 +118,10 @@ class ShowWordsState extends State<ShowWords> {
     );
   }
   _switchOnLikes(){
-    onLikes = !onLikes;
-    _buildRates();
+//    onLikes = !widget.onLikes;
+
+    setState(() { onLikes = !onLikes; });
   }
-
-
 
 
 
@@ -123,14 +129,14 @@ class ShowWordsState extends State<ShowWords> {
 
 }
 
-
-
 class ShowWords extends StatefulWidget {
 
   final List<WordPair> likes;
   final List<WordPair> dislikes;
 
-  ShowWords({this.likes, this.dislikes});
+//  bool onLikes = true;
+
+  ShowWords({@required this.likes, @required this.dislikes});
 
   @override
   ShowWordsState createState() => new ShowWordsState();

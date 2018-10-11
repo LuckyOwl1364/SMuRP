@@ -6,7 +6,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2ae8c49-7d48-4c59-9ed0-1faa2e5083a7" name="Default" comment="" />
+    <list default="true" id="c2ae8c49-7d48-4c59-9ed0-1faa2e5083a7" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/lib/rated.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rated.dart" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -23,8 +25,8 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
+            <state relative-caret-position="270">
+              <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -35,10 +37,12 @@
       <file leaf-file-name="rated.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/rated.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="114" column="18" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
+            <state relative-caret-position="255">
+              <caret line="138" column="45" selection-start-line="138" selection-start-column="45" selection-end-line="138" selection-end-column="45" />
               <folding>
                 <element signature="e#1#40#0" expanded="true" />
+                <element signature="e#959#1029#0" />
+                <element signature="e#1521#1589#0" />
               </folding>
             </state>
           </provider>
@@ -207,7 +211,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24960753" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.19306931" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Messages" order="7" weight="0.32838285" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
@@ -215,7 +219,7 @@
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49921507" weight="0.31683168" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32838285" />
       <window_info id="Captures" order="2" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.50378215" />
       <window_info anchor="right" id="Theme Preview" order="3" />
@@ -298,8 +302,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
+        <state relative-caret-position="270">
+          <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -308,10 +312,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/rated.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="114" column="18" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
+        <state relative-caret-position="255">
+          <caret line="138" column="45" selection-start-line="138" selection-start-column="45" selection-end-line="138" selection-end-column="45" />
           <folding>
             <element signature="e#1#40#0" expanded="true" />
+            <element signature="e#959#1029#0" />
+            <element signature="e#1521#1589#0" />
           </folding>
         </state>
       </provider>
