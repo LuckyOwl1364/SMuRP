@@ -1,3 +1,3 @@
 To test your endpoint do the following command:
-FLASK_APP=endpoint_brooke.py flask run --host=0.0.0.0
-"endpoint_brooke.py" will be substituted with your file
+ nohup runinbackground &
+when you make edits, go into runinbackground and make sure api file is correct, rerun for new updates
