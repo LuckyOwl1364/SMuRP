@@ -1,6 +1,7 @@
 To test your endpoint do the following command:
- nohup runinbackground &
+FLASK_APP=endpoint_brooke.py flask run --host=0.0.0.0
 when you make edits, go into runinbackground and make sure api file is correct, rerun for new updates
 
 To continually run your endpoint even when you are not logged on do this command:
 nohup <file/command to be run> &
+ex: nohup runinbackground &
