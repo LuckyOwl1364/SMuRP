@@ -1,3 +1,6 @@
 To test your endpoint do the following command:
  nohup runinbackground &
 when you make edits, go into runinbackground and make sure api file is correct, rerun for new updates
+
+To continually run your endpoint even when you are not logged on do this command:
+nohup <file/command to be run> &
