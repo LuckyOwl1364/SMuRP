@@ -55,5 +55,5 @@ class User(db.Model):
         self.password = password
         self.email = email
         if username:
-        self.join_date = datetime.datetime.now()
+            self.join_date = datetime.datetime.now()
 
