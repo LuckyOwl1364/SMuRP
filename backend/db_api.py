@@ -1,7 +1,9 @@
-from backend.__init__ import db
+from backend.__init__ import create_app, db
 import sqlalchemy.exc
 import datetime
 import json
+
+app = create_app()
 
 album_featuring = db.Table('album_featuring',
                            db.Column('artist_id', db.Integer, db.ForeignKey('artist.artist_id')),
