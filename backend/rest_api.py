@@ -1,8 +1,7 @@
 import requests
 from db_api import get_user_by_id
 
-from flask import Flask
-app = Flask(__name__)
+from __init__ import app
 
 @app.route("/hello")
 def hello():
