@@ -5,3 +5,7 @@ when you make edits, go into runinbackground and make sure api file is correct, 
 To continually run your endpoint even when you are not logged on do this command:
 nohup <FILE PATH to file/command to be run> &
 ex: nohup ./runinbackground &
+
+to kill nohup command:
+Find the PID by running command: ps -ef
+>kill -9 <PID>
