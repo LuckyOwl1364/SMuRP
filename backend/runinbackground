@@ -1,1 +1,1 @@
-FLASK_APP=endpoint_brooke.py flask run --host=0.0.0.0
+FLASK_APP=rest_api.py flask run --host=0.0.0.0
