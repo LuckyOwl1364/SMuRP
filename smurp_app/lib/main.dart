@@ -25,7 +25,7 @@ class RandomWordsState extends State<SpecificWords> {
   final List<WordPair> _likes = new List<WordPair>();
   final List<WordPair> _dislikes = new List<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
-
+  bool isLikes = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +113,40 @@ class RandomWordsState extends State<SpecificWords> {
     );
   }
 
+//  void _pushRated() {
+//    Navigator.push(context, MaterialPageRoute(
+//        builder: (context) => RatedPage(likesRatedPage: _likes, dislikesRatedPage: _dislikes),
+//    ));
+//  }
   void _pushRated() {
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => RatedPage(likesRatedPage: _likes, dislikesRatedPage: _dislikes),
-    ));
+    isLikes = !isLikes;
+
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = isLikes ? _likes.map((WordPair pair) {
+                                                                   return _buildRow(pair);
+                                                                },
+                                                      ) : _dislikes.map((WordPair pair) {
+                                                                           return _buildRow(pair);
+                                                                        },
+                                                      ) ;
+          final List<Widget> divided = ListTile
+              .divideTiles(
+            context: context,
+            tiles: tiles,
+          )
+              .toList();
+
+          return new Scaffold(
+            appBar: new AppBar(
+              title: isLikes ? const Text('Liked Songs') : const Text('Disiked Songs'),
+            ),
+            body: new ListView(children: divided),
+          );
+        },
+      ),
+    );
   }
 } // end RandomWordsState
 
