@@ -1,14 +1,7 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from backend.__init__ import db
 import sqlalchemy.exc
 import datetime
 import json
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'mysql://admin:Talwkatgigasbas2h@ec2-52-91-42-119.compute-1.amazonaws.com:3306/smurp'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
 
 album_featuring = db.Table('album_featuring',
                            db.Column('artist_id', db.Integer, db.ForeignKey('artist.artist_id')),
@@ -55,7 +48,8 @@ class Song(db.Model):
     song_by = db.relationship('Artist', secondary=song_by, backref=db.backref('performs', lazy='dynamic'))
     song_on = db.relationship('Album', secondary=song_on, backref=db.backref('contains', lazy='dynamic'))
 
-    def __init__(self, song_title, spotify_id=None):
+    def __init__(self, song_title, song_id=None, spotify_id=None):
+        self.song_id = song_id
         self.song_title = song_title
         self.spotify_id = spotify_id
 
