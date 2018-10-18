@@ -7,6 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2ae8c49-7d48-4c59-9ed0-1faa2e5083a7" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/classes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -25,21 +27,22 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="144" column="100" lean-forward="true" selection-start-line="144" selection-start-column="82" selection-end-line="144" selection-end-column="100" />
+            <state relative-caret-position="188">
+              <caret line="123" column="67" selection-start-line="123" selection-start-column="67" selection-end-line="123" selection-end-column="67" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
-                <element signature="e#3961#3984#0" />
+                <element signature="e#1067#1118#0" />
+                <element signature="e#2465#4103#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rated.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/rated.dart">
+      <file leaf-file-name="classes.dart" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/classes.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="100" column="24" selection-start-line="100" selection-start-column="24" selection-end-line="100" selection-end-column="24" />
+            <state relative-caret-position="221">
+              <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -65,6 +68,8 @@
       <find>onT</find>
       <find>on</find>
       <find>Set</find>
+      <find>WOrd</find>
+      <find>WordPair</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -76,21 +81,44 @@
         <option value="$PROJECT_DIR$/lib/rates.dart" />
         <option value="$PROJECT_DIR$/pubspec.yaml" />
         <option value="$PROJECT_DIR$/lib/rated.dart" />
+        <option value="$PROJECT_DIR$/lib/objects.dart" />
+        <option value="$PROJECT_DIR$/lib/classes.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="676" />
+    <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="AndroidView" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="smurp_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="smurp_app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="smurp_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="smurp_app" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-excluded-files" value="false" />
+      </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="dart.analysis.tool.window.force.activate" value="false" />
@@ -191,7 +219,7 @@
       <window_info id="Captures" order="2" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.50378215" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.25718608" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
@@ -218,7 +246,8 @@
           <caret line="117" column="81" selection-start-line="117" selection-start-column="81" selection-end-line="117" selection-end-column="81" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#3961#3984#0" />
+            <element signature="e#1067#1118#0" />
+            <element signature="e#2465#4103#0" />
           </folding>
         </state>
       </provider>
@@ -243,7 +272,8 @@
           <caret line="96" column="20" selection-start-line="96" selection-start-column="20" selection-end-line="96" selection-end-column="20" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#3961#3984#0" />
+            <element signature="e#1067#1118#0" />
+            <element signature="e#2465#4103#0" />
           </folding>
         </state>
       </provider>
@@ -261,7 +291,8 @@
           <caret line="78" column="12" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="12" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#3961#3984#0" />
+            <element signature="e#1067#1118#0" />
+            <element signature="e#2465#4103#0" />
           </folding>
         </state>
       </provider>
@@ -279,7 +310,8 @@
           <caret column="39" selection-start-column="39" selection-end-column="39" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#3961#3984#0" />
+            <element signature="e#1067#1118#0" />
+            <element signature="e#2465#4103#0" />
           </folding>
         </state>
       </provider>
@@ -306,13 +338,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/classes.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="144" column="100" lean-forward="true" selection-start-line="144" selection-start-column="82" selection-end-line="144" selection-end-column="100" />
+        <state relative-caret-position="188">
+          <caret line="123" column="67" selection-start-line="123" selection-start-column="67" selection-end-line="123" selection-end-column="67" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#3961#3984#0" />
+            <element signature="e#1067#1118#0" />
+            <element signature="e#2465#4103#0" />
           </folding>
         </state>
       </provider>
