@@ -140,13 +140,20 @@ class RandomWordsState extends State<SpecificWords> {
 
           return new Scaffold(
             appBar: new AppBar(
-              title: isLikes ? const Text('Liked Songs') : const Text('Disiked Songs'),
+              title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
+              actions: <Widget>[
+                new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
+              ],
             ),
             body: new ListView(children: divided),
           );
         },
       ),
     );
+  } // end _pushRated
+  void _popAndPushRated(){
+    Navigator.pop(context);
+    _pushRated();
   }
 } // end RandomWordsState
 
