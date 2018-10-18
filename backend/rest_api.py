@@ -1,7 +1,8 @@
 import requests
 from db_api import get_user_by_id
 
-from __init__ import app
+#imports app instance from database api
+from db_api import app 
 
 @app.route("/hello")
 def hello():
