@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:smurp_app/classes.dart';
 
-
-class EndopintDemoPage extends StatefulWidget {
+class EndpointDemoPage extends StatefulWidget {
   @override
-  EndopintDemoState createState()=> new EndopintDemoState();
+  EndpointDemoState createState()=> new EndpointDemoState();
 
 }
 
-class EndopintDemoState extends State<EndopintDemoPage> {
+class EndpointDemoState extends State<EndpointDemoPage> {
 
   String endPtData = "Test Data ";
 
@@ -34,18 +34,26 @@ class EndopintDemoState extends State<EndopintDemoPage> {
   // and we don't want the app to crash in the time
   // it takes to gather the data
   Future<String> getTestEndpointData() async{
-    http.Response response = await http.get("http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/test",
+    http.Response response = await http.get("http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/database",
         headers: {
           "Accept" : "application/json"
         }
     );
 
     //print(response.body);
-    var data = json.decode(response.body);
-    print(data);
-
+    Map userMap = json.decode(response.body);
+    var user = new User.fromJson(userMap);
+    //print('User name: ${user.username}');
+    //print(userMap);
     setState((){
-      endPtData = data.toString();
+      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
+          'User name: ${user.username}\n'
+          'LastFM name: ${user.lastfm_name}\n'
+          'Join Date: ${user.join_date}\n'
+          'Password: ${user.password}\n'
+          'Email Address: ${user.email}\n';
+      //endPtData = user.toString();
+      //endPtData = userMap.toString();
     });
 
   }
