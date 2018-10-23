@@ -176,36 +176,48 @@ def add_lastfm_user(fm_username):
 
 
 def add_song(song_title, lastfm_url, spotify_id=None):
-    song = Song(song_title, lastfm_url, None, spotify_id)
-    db.session.add(song)
-    try:
-        db.session.commit()
-        return song.song_id
-    except sqlalchemy.exc.IntegrityError:
-        db.session.rollback()
-        return "ERROR: Could not add song: " + song_title
+    existing_song = db.session.query(Song).filter_by(lastfm_url=lastfm_url).first()
+    if existing_song:
+        return existing_song.song_id
+    else:
+        song = Song(song_title, lastfm_url, None, spotify_id)
+        db.session.add(song)
+        try:
+            db.session.commit()
+            return song.song_id
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not add song: " + song_title
 
 
 def add_artist(artist_name, lastfm_url):
-    artist = Artist(artist_name, lastfm_url)
-    db.session.add(artist)
-    try:
-        db.session.commit()
-        return artist.artist_id
-    except sqlalchemy.exc.IntegrityError:
-        db.session.rollback()
-        return "ERROR: Could not add artist: " + artist_name
+    existing_artist = db.session.query(Artist).filter_by(lastfm_url=lastfm_url).first()
+    if existing_artist:
+        return existing_artist.artist_id
+    else:
+        artist = Artist(artist_name, lastfm_url)
+        db.session.add(artist)
+        try:
+            db.session.commit()
+            return artist.artist_id
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not add artist: " + artist_name
 
 
 def add_album(album_name, lastfm_url, album_art=None):
-    album = Album(album_name, lastfm_url, album_art)
-    db.session.add(album)
-    try:
-        db.session.commit()
-        return album.album_id
-    except sqlalchemy.exc.IntegrityError:
-        db.session.rollback()
-        return "ERROR: Could not add album: " + album_name
+    existing_album = db.session.query(Album).filter_by(lastfm_url=lastfm_url).first()
+    if existing_album:
+        return existing_album.album_id
+    else:
+        album = Album(album_name, lastfm_url, album_art)
+        db.session.add(album)
+        try:
+            db.session.commit()
+            return album.album_id
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not add album: " + album_name
 
 
 def add_song_by(song_id, artist_id):
