@@ -30,11 +30,13 @@ class Album(db.Model):
     album_id = db.Column('album_id', db.Integer, primary_key=True)
     album_name = db.Column('album_name', db.Unicode)
     album_art = db.Column('album_art', db.Unicode)
+    lastfm_url = db.Column('lastfm_url', db.Unicode)
     featuring = db.relationship('Artist', secondary=album_featuring,
                                 backref=db.backref('featured_on', lazy='dynamic'))
 
-    def __init__(self, album_name, album_art=None):
+    def __init__(self, album_name, lastfm_url, album_art=None):
         self.album_name = album_name
+        self.lastfm_url = lastfm_url
         self.album_art = album_art
 
 
@@ -42,9 +44,11 @@ class Artist(db.Model):
     __tablename__ = 'artist'
     artist_id = db.Column('artist_id', db.Integer, primary_key=True)
     artist_name = db.Column('artist_name', db.Unicode)
+    lastfm_url = db.Column('lastfm_url', db.Unicode)
 
-    def __init__(self, artist_name):
+    def __init__(self, artist_name, lastfm_url):
         self.artist_name = artist_name
+        self.lastfm_url = lastfm_url
 
 
 class Song(db.Model):
@@ -52,11 +56,13 @@ class Song(db.Model):
     song_id = db.Column('song_id', db.Integer, primary_key=True)
     song_title = db.Column('song_title', db.Unicode)
     spotify_id = db.Column('spotify_id', db.Integer)
+    lastfm_url = db.Column('lastfm_url', db.Unicode)
     song_by = db.relationship('Artist', secondary=song_by, backref=db.backref('performs', lazy='dynamic'))
     song_on = db.relationship('Album', secondary=song_on, backref=db.backref('contains', lazy='dynamic'))
 
-    def __init__(self, song_title, song_id=None, spotify_id=None):
+    def __init__(self, song_title, lastfm_url, song_id=None, spotify_id=None):
         self.song_id = song_id
+        self.lastfm_url = lastfm_url
         self.song_title = song_title
         self.spotify_id = spotify_id
 
@@ -119,7 +125,8 @@ def get_album_by_id(album_id):
     album_dict = {
         "album_id": album.album_id,
         "album_name": album.album_name,
-        "album_art": album.album_art
+        "album_art": album.album_art,
+        "lastfm_url": album.lastfm_url
     }
     return json.dumps(album_dict)
 
@@ -128,7 +135,8 @@ def get_artist_by_id(artist_id):
     artist = db.session.query(Artist).get(artist_id)
     artist_dict = {
         "artist_id": artist.artist_id,
-        "artist_name": artist.artist_name
+        "artist_name": artist.artist_name,
+        "lastfm_url": artist.lastfm_url
     }
     return json.dumps(artist_dict)
 
@@ -138,7 +146,8 @@ def get_song_by_id(song_id):
     song_dict = {
         "song_id": song.song_id,
         "song_title": song.song_title,
-        "spotify_id": song.spotify_id
+        "spotify_id": song.spotify_id,
+        "lastfm_url": song.lastfm_url
     }
     return json.dumps(song_dict)
 
@@ -166,8 +175,8 @@ def add_lastfm_user(fm_username):
         return "ERROR: Could not add user: " + fm_username
 
 
-def add_song(song_title, spotify_id=None):
-    song = Song(song_title, None, spotify_id)
+def add_song(song_title, lastfm_url, spotify_id=None):
+    song = Song(song_title, lastfm_url, None, spotify_id)
     db.session.add(song)
     try:
         db.session.commit()
@@ -177,8 +186,8 @@ def add_song(song_title, spotify_id=None):
         return "ERROR: Could not add song: " + song_title
 
 
-def add_artist(artist_name):
-    artist = Artist(artist_name)
+def add_artist(artist_name, lastfm_url):
+    artist = Artist(artist_name, lastfm_url)
     db.session.add(artist)
     try:
         db.session.commit()
@@ -188,8 +197,8 @@ def add_artist(artist_name):
         return "ERROR: Could not add artist: " + artist_name
 
 
-def add_album(album_name, album_art):
-    album = Album(album_name, album_art)
+def add_album(album_name, lastfm_url, album_art=None):
+    album = Album(album_name, lastfm_url, album_art)
     db.session.add(album)
     try:
         db.session.commit()
@@ -214,7 +223,7 @@ def add_song_by(song_id, artist_id):
 def add_song_on(song_id, album_id):
     song = db.session.query(Song).get(song_id)
     album = db.session.query(Album).get(album_id)
-    album.song_on.append(song)
+    album.contains.append(song)
     try:
         db.session.commit()
         return "Success"
