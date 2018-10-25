@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smurp_app/routes.dart';
 
 void main() => runApp(new Login());
 
@@ -10,9 +11,9 @@ class Login extends StatelessWidget{
     return new MaterialApp(
       title: 'Login',
       theme: new ThemeData(
-        primaryColor: Colors.blue,
+        primarySwatch: Colors.blue,
       ),
-      home: new LoginScreen(),
+      routes: routes,
     );
   }
 
