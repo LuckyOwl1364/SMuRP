@@ -164,15 +164,19 @@ def get_user_by_id(user_id):
     return json.dumps(user_dict)
 
 
-def add_lastfm_user(fm_username):
-    user = User(fm_username)
-    db.session.add(user)
-    try:
-        db.session.commit()
-        return user.user_id
-    except sqlalchemy.exc.IntegrityError:
-        db.session.rollback()
-        return "ERROR: Could not add user: " + fm_username
+def add_lastfm_user(lastfm_name):
+    existing_lastfm_user = db.session.query(User).filter_by(lastfm_name=lastfm_name).first()
+    if existing_lastfm_user:
+        return existing_lastfm_user.user_id
+    else:
+        user = User(lastfm_name)
+        db.session.add(user)
+        try:
+            db.session.commit()
+            return user.user_id
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not add user: " + lastfm_name
 
 
 def add_song(song_title, lastfm_url, spotify_id=None):
@@ -253,6 +257,7 @@ def add_album_featuring(album_id, artist_id):
         return "Success"
     except sqlalchemy.exc.IntegrityError:
         db.session.rollback()
+
         return "ERROR: Could not create relationship."
 
 
