@@ -1,6 +1,7 @@
+import 'package:english_words/english_words.dart';
 
 class Song{
-  final String title;
+  final WordPair title;
   final Artist artist;
 
   Song(this.title, this.artist);

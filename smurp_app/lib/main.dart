@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
 
 
 class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPair for Song
-  final _history = <WordPair>[];
-  final List<WordPair> _likes = new List<WordPair>();
-  final List<WordPair> _dislikes = new List<WordPair>();
+  final _history = <Song>[];
+  final List<Song> _likes = new List<Song>();
+  final List<Song> _dislikes = new List<Song>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
   bool isLikes = false;
 
@@ -62,18 +62,27 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
           // If you've reached the end of the available word pairings...
           if (index >= _history.length) {
             // ...then generate 10 more and add them to the suggestions list.
-            _history.addAll(generateWordPairs().take(10));  // TODO: Pull 10 songs (earlier top) instead of generating WordPairs~~~~~~~~~~~~~~~~~~~~~~~~~
+            collectSongs();
           }
           return _buildRow(_history[index]);
         }
     );
   }
-  Widget _buildRow(WordPair song) {
+  void collectSongs(){
+    List<WordPair> pairs = new List<WordPair>();
+    pairs.addAll(generateWordPairs().take(10));  // TODO: Pull 10 songs (earlier top) instead of generating WordPairs ~~~~~~~~~~~~~~~~~~~~~~~~~
+    for (int i = 0; i < pairs.length - 1; i += 2){
+      var art = new Artist(pairs[i].toString(),"Country");
+      _history.add(new Song(pairs[i+1], art));
+    }
+  }
+
+  Widget _buildRow(Song song) {
     final bool liked = _likes.contains(song);
     final bool disliked = _dislikes.contains(song);
     return ListTile(
       title: Text(
-        song.asPascalCase,
+        (song.artist.name + " - " + song.title.toString()),//song.title.asPascalCase,ddd
         style: _biggerFont,
       ),
       trailing: new Row(
@@ -121,8 +130,8 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     Navigator.of(context).push(
       new MaterialPageRoute<void>(
         builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = isLikes ?    _likes.map((WordPair pair) { return _buildRow(pair); }, )
-                                                   : _dislikes.map((WordPair song) { return _buildRow(song); }, ) ;
+          final Iterable<ListTile> tiles = isLikes ?    _likes.map((Song song) { return _buildRow(song); }, )
+                                                   : _dislikes.map((Song song) { return _buildRow(song); }, ) ;
           final List<Widget> divided = ListTile
               .divideTiles(
             context: context,
