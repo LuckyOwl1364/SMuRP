@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'classes.dart';
+import 'package:smurp_app/models/artist.dart';
+import 'package:smurp_app/models/song.dart';
 
 void main() => runApp(MyApp());
 
@@ -73,7 +74,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     pairs.addAll(generateWordPairs().take(10));  // TODO: Pull 10 songs (earlier top) instead of generating WordPairs ~~~~~~~~~~~~~~~~~~~~~~~~~
     for (int i = 0; i < pairs.length - 1; i += 2){
       var art = new Artist(pairs[i].toString(),"Country");
-      _history.add(new Song(pairs[i+1], art));
+      _history.add(new Song(pairs[i+1].toString(), art));
     }
   }
 
