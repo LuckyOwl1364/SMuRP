@@ -30,39 +30,25 @@ class LoginScreen extends StatefulWidget{
 
 
 class _LoginScreenState extends State<LoginScreen>{
+//  _formKey and _autoValidate
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+
   String _email = "works";
   String _password = "";
   final _emailInputController = TextEditingController();
   final _passwordInputController = TextEditingController();
 
 
-  _onLogin() {
-    // update the state (email & password)
-    setState((){
-        _email = Text(_emailInputController.text).toString();
-        _password = Text(_passwordInputController.text).toString();
-      }
-    );
-
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Text(_email)
-        );
-      }
-    );
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold (
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.lightBlueAccent,
       body: new Container(
         padding: const EdgeInsets.all(30.0),
         child: new Form(
-          autovalidate: true,
+          key: _formKey,
+          autovalidate: _autoValidate,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -74,7 +60,10 @@ class _LoginScreenState extends State<LoginScreen>{
                   labelText: "Enter Email"
                 ),
                 keyboardType: TextInputType.emailAddress,
-                controller: _emailInputController,
+                validator: validateEmail,
+                onSaved: (String val) {
+                  _email = val;
+                },
               ),
               new TextFormField(
                 decoration: new InputDecoration(
@@ -82,13 +71,16 @@ class _LoginScreenState extends State<LoginScreen>{
                 ),
                 obscureText: true,
                 keyboardType: TextInputType.text,
-                controller: _passwordInputController,
+                validator: validatePassword,
+                onSaved: (String val) {
+                  _password = val;
+                },
               ),
               new Padding(
                   padding: const EdgeInsets.all(20.0)
               ),
               new RaisedButton(
-                onPressed: _onLogin,
+                onPressed: _validateInputs,
                 child: new Text("Log in")
               ),
             ]
@@ -97,6 +89,47 @@ class _LoginScreenState extends State<LoginScreen>{
       ),
     );
   }
+
+
+
+  String validatePassword(String value) {
+    if (value.length < 3)
+      return 'Password must be more than 2 charater';
+    else
+      return null;
+  }
+
+  String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
+
+  _validateInputs() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Text(_email + " , " + _password)
+          );
+        }
+      );
+    } else {
+//    If all data are not valid then start auto validation.
+      setState(() {
+        _autoValidate = true;
+      });
+      return null;
+    }
+  }
+
+
 
 }
 
