@@ -8,7 +8,7 @@ import 'package:smurp_app/models/song.dart';
 
 class RestDatasource {
   NetworkUtil _netUtil = new NetworkUtil();
-  static final BASE_URL = "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000";
+  static final BASE_URL = "https://ec2-52-91-42-119.compute-1.amazonaws.com:5000";
   static final LOGIN_URL = BASE_URL + "/login";
   static final ONESONG_URL = BASE_URL + "/get_song";
 
