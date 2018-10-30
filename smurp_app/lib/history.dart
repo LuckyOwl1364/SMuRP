@@ -3,6 +3,8 @@ import 'package:english_words/english_words.dart';
 import 'package:smurp_app/models/artist.dart';
 import 'package:smurp_app/models/song.dart';
 
+import 'package:smurp_app/data/rest_ds.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,6 +27,8 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
   final List<Song> _dislikes = new List<Song>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
   bool isLikes = false;
+
+  final RestDatasource rest = new RestDatasource();
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +73,23 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
         }
     );
   }
+
   void collectSongs(){
     List<WordPair> pairs = new List<WordPair>();
     pairs.addAll(generateWordPairs().take(10));  // TODO: Pull 10 songs (earlier top) instead of generating WordPairs ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//    Song nextSong;    TODO: This is the attempt to pull songs
+//    for (int i = 0; i < 1; i++){
+//      rest.getOneSong().then((result){
+//        setState(() { nextSong = result; } );
+//      });
+//
+//      _history.add(nextSong);
+//    }
+
+
     for (int i = 0; i < pairs.length - 1; i += 2){
-      var art = new Artist(pairs[i].toString(),"Country");
+      var art = new Artist(pairs[i].toString());
       _history.add(new Song(pairs[i+1].toString(), art));
     }
   }
