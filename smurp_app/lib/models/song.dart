@@ -1,8 +1,15 @@
 import 'package:smurp_app/models/artist.dart';
 
 class Song{
-  final String title;
-  final Artist artist;
+  String title;
+  Artist artist;
 
   Song(this.title, this.artist);
+
+  Song.map(dynamic obj) {
+    this.title = obj["song_title"];
+    this.artist = new Artist("fakeArtist");
+  }
+
+
 }
