@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
+//import 'package:password_hash';  TODO: Get this to work ~~~~~~~~~~~~~~~~~
+import 'package:http/http.dart';
+import 'package:smurp_app/data/rest_ds.dart';
 
 void main() => runApp(new Login());
 
@@ -36,8 +39,6 @@ class _LoginScreenState extends State<LoginScreen>{
 
   String _email = "works";
   String _password = "";
-  final _emailInputController = TextEditingController();
-  final _passwordInputController = TextEditingController();
 
 
   @override
