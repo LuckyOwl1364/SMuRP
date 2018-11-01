@@ -1,0 +1,14 @@
+The surprise package has algorithms that either use baseline estimates or a similarity measure.
+
+Baseline estimates can be computed using Stochastic Gradient Descent (SGD) or Alternating Least Squares (ALS)
+
+As for similarity measure configuration, you input the sim_options into the argument when you create the algorithm:
+sim_options has following keys:
+    name         name of similarity to use, default is MSD
+    user_based   whether similarities will be computed between users or between items - has LARGE impact on performance of algorithm, default is true
+    min_support  min number of common items when user_based=true, otherwise min number of common users
+    shrinkage    default is 100
+
+SVD - Single Value Decomposition
+https://medium.com/@james_aka_yale/the-4-recommendation-engines-that-can-predict-your-movie-tastes-bbec857b8223
+"SVD is an algorithm that decomposes a matrix A into the best lower rank approximation of the original matrix A. 
