@@ -8,7 +8,7 @@ class Song{
 
   Song.map(dynamic obj) {
     this.title = obj["song_title"];
-    this.artist = new Artist("fakeArtist");
+    this.artist = new Artist("fakeArtist", "fakeGenre");
   }
 
 

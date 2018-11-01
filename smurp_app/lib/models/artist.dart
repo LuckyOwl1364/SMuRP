@@ -1,5 +1,5 @@
 class Artist{
-  String name;
-
-  Artist(this.name);
+  final String name;
+  final String genre;
+  Artist(this.name, this.genre);
 }
