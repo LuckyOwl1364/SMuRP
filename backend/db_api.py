@@ -80,6 +80,7 @@ class User(db.Model):
     password = db.Column('password', db.Unicode)
     email = db.Column('email', db.Unicode)
 
+
     def __init__(self, lastfm_name, username=None, password=None, email=None):
         self.lastfm_name = lastfm_name
         self.username = username
@@ -153,6 +154,30 @@ def get_song_by_id(song_id):
         "song_title": song.song_title,
         "spotify_id": song.spotify_id,
         "lastfm_url": song.lastfm_url
+    }
+    return json.dumps(song_dict)
+
+
+def get_song_by_id_full(song_id):
+    song = db.session.query(Song).get(song_id)
+    artists = []
+    album = song.song_on[0]
+    for artist in song.song_by:
+        artist_dict = {
+            "artist_id": artist.artist_id,
+            "artist_name": artist.artist_name,
+            "lastfm_url": artist.lastfm_url
+        }
+        artists.append(artist_dict)
+
+    song_dict = {
+        "song_id": song.song_id,
+        "song_title": song.song_title,
+        "spotify_id": song.spotify_id,
+        "lastfm_url": song.lastfm_url,
+        "artists": artists,
+        "album_id": album.album_id,
+        "album_name": album.album_name
     }
     return json.dumps(song_dict)
 
