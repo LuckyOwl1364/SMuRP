@@ -79,6 +79,7 @@ class User(db.Model):
     join_date = db.Column('join_date', db.DateTime)
     password = db.Column('password', db.Unicode)
     email = db.Column('email', db.Unicode)
+    follows = db.relationship('User', secondary=follows, backref=db.backref('followed', lazy='dynamic'))
 
     def __init__(self, lastfm_name, username=None, password=None, email=None):
         self.lastfm_name = lastfm_name
