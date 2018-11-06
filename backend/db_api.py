@@ -24,6 +24,10 @@ song_on = db.Table('song_on',
                    db.Column('album_id', db.Integer, db.ForeignKey('album.album_id')),
                    db.Column('song_id', db.Integer, db.ForeignKey('song.song_id')))
 
+follows = db.Table('follows,',
+                   db.Column('follower_id', db.Integer, db.ForeignKey('user.user_id')),
+                   db.Column('followed_id', db.Integer, db.ForeignKey('user.user_id')))
+
 
 class Album(db.Model):
     __tablename__ = 'album'
@@ -117,6 +121,7 @@ class Rated(db.Model):
         self.rated = rated
 
 
+
 # TODO: Recommendation Table.
 # If possible, fix lack of foreign key implementation through sqlalchemy
 
@@ -162,6 +167,21 @@ def get_user_by_id(user_id):
         "email": user.email
     }
     return json.dumps(user_dict)
+
+
+def get_listened_songs(user_id):
+    user = db.session.query(User).get(user_id)
+    songs = []
+    for listened in user.listened:
+        song = db.session.query(Song).get(listened.song_id)
+        song_dict = {
+            "song_id": song.song_id,
+            "song_title": song.song_title,
+            "spotify_id": song.spotify_id,
+            "lastfm_url": song.lastfm_url
+        }
+        songs.append(song_dict)
+    return json.dumps(songs)
 
 
 def add_lastfm_user(lastfm_name):
