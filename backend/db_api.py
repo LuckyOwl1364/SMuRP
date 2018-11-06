@@ -122,9 +122,21 @@ class Rated(db.Model):
         self.rated = rated
 
 
+class Recommendation(db.Model):
+    __tablename__ = 'recommendation'
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    rec_id = db.Column('rec_id', db.Integer)
+    rec_type = db.Column('rec_type', db.Unicode)
+    rec_date = db.Column('rec_date', db.DateTime)
 
-# TODO: Recommendation Table.
-# If possible, fix lack of foreign key implementation through sqlalchemy
+    user = db.relationship('User', backref=db.backref('recommended', lazy='dynamic'))
+
+    def __init__(self, user_id, rec_id, rec_type):
+        self.user_id = user_id
+        self.rec_id = rec_id
+        self.rec_type = rec_type
+        self.rec_date = datetime.datetime.now()
+
 
 def get_album_by_id(album_id):
     album = db.session.query(Album).get(album_id)
