@@ -18,3 +18,4 @@ def last_fm():
 @app.route("/database")
 def user_info():
     return get_user_by_id(1)
+

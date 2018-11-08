@@ -319,3 +319,38 @@ def add_listened_to(user_id, song_id):
             db.session.rollback()
             return "ERROR: Could not add listen"
 
+# add_follows method creates relationship between two users where user_id1 follows user_id2.
+def add_follows(user_id1, user_id2):
+    existing_user1 = db.session.query(User).filter_by(user_id=user_id1).first()
+    existing_user2 = db.session.query(User).filter_by(user_id=user_id2).first()
+
+    # checks if the users exist
+    if existing_user1 is not None and existing_user2 is not None:
+        # query if the relationship already exists        
+        user = db.session.query(User).get(user_id)
+        followedlist = []
+        for followed in user.followed:
+            user_temp = db.session.query(User).get(followed.followed_id)
+            user_dict = {
+               "user_id": user_temp.user_id
+            }
+
+            followedlist.append(user_dict)
+
+        
+        if followedlist is None:  
+            # followedlist is empty and therefore no follow relationship exists
+            user1 = db.session.query(User).get(user_id1)
+            user2 = db.session.query(User).get(user_id2)
+            user1.follows.append(user2)
+            try:
+                db.session.commit()
+                return "Success"
+            except sqlalchemy.exc.IntegrityError:
+                db.session.rollback()
+                return "ERROR: Could not create relationship."
+        else:
+            # followedlist is not empty and therefore the relationship exists
+            return "ERROR: Relationship already exists."
+    else:
+        return "ERROR: Users do not exist."

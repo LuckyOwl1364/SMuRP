@@ -69,4 +69,4 @@ already_rated, predictions = recommend_movies(preds, 1310, movies, ratings, 20)
 already_rated.head(20)
 
 # Top 20 movies that User 1310 hopefully will enjoy
-predictions
+print (predictions)
