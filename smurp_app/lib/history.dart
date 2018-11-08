@@ -89,7 +89,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
 
 
     for (int i = 0; i < pairs.length - 1; i += 2){
-      var art = new Artist(pairs[i].toString());
+      var art = new Artist(pairs[i].toString(),'genre');
       _history.add(new Song(pairs[i+1].toString(), art));
     }
   }

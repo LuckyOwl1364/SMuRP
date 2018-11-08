@@ -19,7 +19,7 @@ class RestDatasource {
     }).then((dynamic res) {
       print(res.toString());
       if(res["error"]) throw new Exception(res["error_msg"]);
-      return new User.map(res["user"]);
+      return new User.fromJson(res["user"]);
     });
   }
 
