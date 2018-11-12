@@ -92,7 +92,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     final bool disliked = _dislikes.contains(song);
     return ListTile(
       title: Text(
-        (song.artist.name + " - " + song.title.toString()),//song.title.asPascalCase,ddd
+        (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
         style: _biggerFont,
       ),
       trailing: new Row(

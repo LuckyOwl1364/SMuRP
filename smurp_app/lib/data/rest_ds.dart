@@ -16,10 +16,7 @@ class RestDatasource {
   static final LISTENEDSONGS_URL = BASE_URL + "getListened";
 
   Future<User> login(String username, String password) {
-    return _netUtil.post(LOGIN_URL, body: {
-      "username": username,
-      "password": password
-    }).then((dynamic res) {
+    return _netUtil.post(LOGIN_URL + "?username=$username&password=$password",).then((dynamic res) {
       print(res.toString());
       if(res["error"]) throw new Exception(res["error_msg"]);
       return new User.fromJson(res["user"]);
