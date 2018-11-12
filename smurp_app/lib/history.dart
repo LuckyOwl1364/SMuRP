@@ -4,6 +4,7 @@ import 'package:smurp_app/models/artist.dart';
 import 'package:smurp_app/models/song.dart';
 
 import 'package:smurp_app/data/rest_ds.dart';
+import 'dart:async';
 
 void main() => runApp(MyApp());
 
@@ -74,24 +75,16 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     );
   }
 
-  void collectSongs(){
-    List<WordPair> pairs = new List<WordPair>();
-    pairs.addAll(generateWordPairs().take(10));  // TODO: Pull 10 songs (earlier top) instead of generating WordPairs ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-//    Song nextSong;    TODO: This is the attempt to pull songs
-//    for (int i = 0; i < 1; i++){
-//      rest.getOneSong().then((result){
-//        setState(() { nextSong = result; } );
-//      });
-//
-//      _history.add(nextSong);
-//    }
+  @override
+  void initState() {
+    super.initState();
+    this.collectSongs();
+  }
 
-
-    for (int i = 0; i < pairs.length - 1; i += 2){
-      var art = new Artist(pairs[i].toString(), "Country");
-      _history.add(new Song(pairs[i+1].toString(), art));
-    }
+  void collectSongs() async{
+    List<Song> nextSongs = await rest.getListenedSongs(23);
+    _history.addAll(nextSongs);
   }
 
   Widget _buildRow(Song song) {
