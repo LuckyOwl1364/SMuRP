@@ -41,4 +41,5 @@ def addListenedTo():
 
 @app.route("/get_following")
 def get_following(user_id):
+    user_id = request.args.get('user_id')
     return get_following(user_id)
