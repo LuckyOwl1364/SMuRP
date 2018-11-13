@@ -425,30 +425,29 @@ def add_follows(user_id1, user_id2):
     else:
         return "ERROR: Users do not exist."
  
-#gets followers of a user		
+#gets followers of a user               
 def get_followers(user_id):
-	user = db.session.query(User).get(user_id)
-	followers = []
-	for followers in user.followed_by:
-		follower = db.session.query(User).get(user_id)
-		follower_dict = {
-			"user_id": user.user_id,
-			"username": user.username
-		}
-        followers.append(follower_dict)
-	return json.dumps(followers)
+    user = db.session.query(User).get(user_id)
+    followersList = []
+    for followers in user.followed_by:
+        follower = db.session.query(User).get(followers.follower_id)
+        follower_dict = {
+        "user_id": follower.user_id,
+        "username": follower.username
+        }
+        followersList.append(follower_dict)
+    return json.dumps(followersList)
 
-#gets the user's list of users they are following
+
+#gets the following list from a user
 def get_following(user_id):
     user = db.session.query(User).get(user_id)
     followingList = []
     for following in user.follows:
-        follow = db.session.query(User).get(user_id)
+        follow = db.session.query(User).get(following.followed_id)
         following_dict = {
-            "User ID": user.user_id,
-            "User name": user.username
+            "User ID": follow.user_id,
+            "User name": follow.username
         }
-        followingList.append(followin_dict)
+        followingList.append(following_dict)
     return json.dumps(followingList)
-
-
