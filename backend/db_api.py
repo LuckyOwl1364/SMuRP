@@ -396,23 +396,24 @@ def add_follows(user_id1, user_id2):
 
     # checks if the users exist
     if existing_user1 is not None and existing_user2 is not None:
-        # query if the relationship already exists        
-        user = db.session.query(User).get(user_id)
+        # both users exist
+        # query if the relationship already exists -- still working on        
+        # idk if this is needed --- user = db.session.query(User).get(user_id)
         followedlist = []
-        for followed in user.followed:
-            user_temp = db.session.query(User).get(followed.followed_id)
-            user_dict = {
-               "user_id": user_temp.user_id
-            }
-
-            followedlist.append(user_dict)
+        #for follow in existing_user1.follows:
+        #    user_temp = db.session.query(User).get(follow.followed_id)
+        #    user_dict = {
+        #        "user_id": user_temp.user_id
+        #    }
+        #    print(user_dict.user_id)
+        #    followedlist.append(user_dict)
 
         
         if followedlist is None:  
             # followedlist is empty and therefore no follow relationship exists
-            user1 = db.session.query(User).get(user_id1)
-            user2 = db.session.query(User).get(user_id2)
-            user1.follows.append(user2)
+            follow_var = Follows(user_id1, user_id2)
+            db.session.add(follow_var)
+            db.session.commit()
             try:
                 db.session.commit()
                 return "Success"
@@ -423,8 +424,8 @@ def add_follows(user_id1, user_id2):
             # followedlist is not empty and therefore the relationship exists
             return "ERROR: Relationship already exists."
     else:
-        return "ERROR: Users do not exist."
- 
+        # one or both users do not exist
+        return "ERROR: Users do not exist." 
 #gets followers of a user               
 def get_followers(user_id):
     user = db.session.query(User).get(user_id)
