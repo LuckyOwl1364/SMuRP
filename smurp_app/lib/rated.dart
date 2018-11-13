@@ -1,3 +1,6 @@
+// Based on: https://flutter.io/docs/catalog/samples/tabbed-app-bar
+
+
 import 'package:flutter/material.dart';
 
 class TabbedAppBarSample extends StatelessWidget {

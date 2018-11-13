@@ -7,10 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2ae8c49-7d48-4c59-9ed0-1faa2e5083a7" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/rated.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/history_dart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/history_dart.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/history.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/history.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/rated.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rated.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -49,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rated.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="rated.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/rated.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="77" column="1" selection-start-line="77" selection-start-column="1" selection-end-line="77" selection-end-column="1" />
+            <state>
+              <caret column="67" selection-start-column="67" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -70,7 +67,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="song.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="song.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/models/song.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
@@ -139,8 +136,8 @@
         <option value="$PROJECT_DIR$/lib/data/rest_ds.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
         <option value="$PROJECT_DIR$/lib/history.dart" />
-        <option value="$PROJECT_DIR$/lib/rated.dart" />
         <option value="$PROJECT_DIR$/lib/models/song.dart" />
+        <option value="$PROJECT_DIR$/lib/rated.dart" />
       </list>
     </option>
   </component>
@@ -663,17 +660,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/rated.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="77" column="1" selection-start-line="77" selection-start-column="1" selection-end-line="77" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/models/song.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="30" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/rated.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="67" selection-start-column="67" selection-end-column="67" />
         </state>
       </provider>
     </entry>
