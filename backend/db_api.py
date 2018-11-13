@@ -24,10 +24,6 @@ song_on = db.Table('song_on',
                    db.Column('album_id', db.Integer, db.ForeignKey('album.album_id')),
                    db.Column('song_id', db.Integer, db.ForeignKey('song.song_id')))
 
-follows = db.Table('follows,',
-                   db.Column('follower_id', db.Integer, db.ForeignKey('user.user_id')),
-                   db.Column('followed_id', db.Integer, db.ForeignKey('user.user_id')))
-
 
 class Album(db.Model):
     __tablename__ = 'album'
@@ -42,17 +38,6 @@ class Album(db.Model):
         self.album_name = album_name
         self.lastfm_url = lastfm_url
         self.album_art = album_art
-
-
-class Artist(db.Model):
-    __tablename__ = 'artist'
-    artist_id = db.Column('artist_id', db.Integer, primary_key=True)
-    artist_name = db.Column('artist_name', db.Unicode)
-    lastfm_url = db.Column('lastfm_url', db.Unicode)
-
-    def __init__(self, artist_name, lastfm_url):
-        self.artist_name = artist_name
-        self.lastfm_url = lastfm_url
 
 
 class Song(db.Model):
@@ -79,7 +64,7 @@ class User(db.Model):
     join_date = db.Column('join_date', db.DateTime)
     password = db.Column('password', db.Unicode)
     email = db.Column('email', db.Unicode)
-    follows = db.relationship('User', secondary=follows, backref=db.backref('followed', lazy='dynamic'))
+    # follows = db.relationship('User', secondary=follows, backref=db.backref('followed', lazy='dynamic'))
 
     def __init__(self, lastfm_name, username=None, password=None, email=None):
         self.lastfm_name = lastfm_name
@@ -88,6 +73,17 @@ class User(db.Model):
         self.email = email
         if username:
             self.join_date = datetime.datetime.now()
+
+
+class Artist(db.Model):
+    __tablename__ = 'artist'
+    artist_id = db.Column('artist_id', db.Integer, primary_key=True)
+    artist_name = db.Column('artist_name', db.Unicode)
+    lastfm_url = db.Column('lastfm_url', db.Unicode)
+
+    def __init__(self, artist_name, lastfm_url):
+        self.artist_name = artist_name
+        self.lastfm_url = lastfm_url
 
 
 class ListenedTo(db.Model):
@@ -105,6 +101,15 @@ class ListenedTo(db.Model):
         self.song_id = song_id
         self.num_listens = 1
         self.last_listen = datetime.datetime.now()
+
+
+class Follows(db.Model):
+    __tablename__ = 'follows'
+    follower_id = db.Column('follower_id', db.Integer, db.ForeignKey(User.user_id), primary_key=True)
+    followed_id = db.Column('followed_id', db.Integer, db.ForeignKey(User.user_id), primary_key=True)
+
+    follower = db.relationship('User', foreign_keys=[follower_id], backref=db.backref('follows', lazy='dynamic'))
+    followed = db.relationship('User', foreign_keys=[followed_id], backref=db.backref('followed_by', lazy='dynamic'))
 
 
 class Rated(db.Model):
@@ -166,6 +171,32 @@ def get_song_by_id(song_id):
         "song_title": song.song_title,
         "spotify_id": song.spotify_id,
         "lastfm_url": song.lastfm_url
+    }
+    return json.dumps(song_dict)
+
+
+
+
+def get_song_by_id_full(song_id):
+    song = db.session.query(Song).get(song_id)
+    artists = []
+    album = song.song_on[0]
+    for artist in song.song_by:
+        artist_dict = {
+            "artist_id": artist.artist_id,
+            "artist_name": artist.artist_name,
+            "lastfm_url": artist.lastfm_url
+        }
+        artists.append(artist_dict)
+
+    song_dict = {
+        "song_id": song.song_id,
+        "song_title": song.song_title,
+        "spotify_id": song.spotify_id,
+        "lastfm_url": song.lastfm_url,
+        "artists": artists,
+        "album_id": album.album_id,
+        "album_name": album.album_name
     }
     return json.dumps(song_dict)
 
