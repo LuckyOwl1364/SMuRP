@@ -39,7 +39,12 @@ def addListenedTo():
     song_id = request.args.get('song_id')
     return add_listened_to(user_id, song_id)
 
-@app.route("/get_following")
-def get_following(user_id):
+@app.route("/getfollowers")
+def getFollowers():
+    user_id = request.args.get('user_id')
+    return get_followers(user_id)
+
+@app.route("/getfollowing")
+def getfollowing():
     user_id = request.args.get('user_id')
     return get_following(user_id)
