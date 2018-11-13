@@ -382,3 +382,16 @@ def add_follows(user_id1, user_id2):
             return "ERROR: Relationship already exists."
     else:
         return "ERROR: Users do not exist."
+ 
+#gets followers of a user		
+def get_followers(user_id):
+	user = db.session.query(User).get(user_id)
+	followers = []
+	for followers in user.followed_by:
+		follower = db.session.query(User).get(user_id)
+		follower_dict = {
+			"user_id": user.user_id,
+			"username": user.username
+		}
+        followers.append(follower_dict)
+	return json.dumps(followers)
