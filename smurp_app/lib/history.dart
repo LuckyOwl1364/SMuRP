@@ -150,18 +150,19 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
               .toList();
 
           return new Scaffold(
-            appBar: new AppBar(
-              title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
-              actions: <Widget>[
-                new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
-              ],
-            ),
-            body: new ListView(children: divided),
+              appBar: new AppBar(
+                title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
+                actions: <Widget>[
+                  new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
+                ],
+              ),
+              body: new ListView(children: divided),
           );
         },
       ),
     );
   } // end _pushRated
+
   void _popAndPushRated(){
     Navigator.pop(context);
     _pushRated();
