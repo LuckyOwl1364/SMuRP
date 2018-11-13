@@ -399,7 +399,7 @@ def add_follows(user_id1, user_id2):
         # both users exist
         # query if the relationship already exists -- still working on        
         # idk if this is needed --- user = db.session.query(User).get(user_id)
-        followedlist = []
+        #followedlist = []
         #for follow in existing_user1.follows:
         #    user_temp = db.session.query(User).get(follow.followed_id)
         #    user_dict = {
@@ -409,7 +409,7 @@ def add_follows(user_id1, user_id2):
         #    followedlist.append(user_dict)
 
         
-        if followedlist is None:  
+        if True #followedlist is None:  
             # followedlist is empty and therefore no follow relationship exists
             follow_var = Follows(user_id1, user_id2)
             db.session.add(follow_var)
