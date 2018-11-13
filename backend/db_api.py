@@ -111,6 +111,10 @@ class Follows(db.Model):
     follower = db.relationship('User', foreign_keys=[follower_id], backref=db.backref('follows', lazy='dynamic'))
     followed = db.relationship('User', foreign_keys=[followed_id], backref=db.backref('followed_by', lazy='dynamic'))
 
+    def __init__(self, follower_id, followed_id):
+        self.follower_id = follower_id
+        self.followed_id = followed_id
+
 
 class Rated(db.Model):
     __tablename__ = 'rated'
@@ -175,8 +179,6 @@ def get_song_by_id(song_id):
     return json.dumps(song_dict)
 
 
-
-
 def get_song_by_id_full(song_id):
     song = db.session.query(Song).get(song_id)
     artists = []
@@ -218,11 +220,22 @@ def get_listened_songs(user_id):
     songs = []
     for listened in user.listened:
         song = db.session.query(Song).get(listened.song_id)
+        artists = []
+
+        for artist in song.song_by:
+            artist_dict = {
+                "artist_id": artist.artist_id,
+                "artist_name": artist.artist_name,
+                "lastfm_url": artist.lastfm_url
+            }
+            artists.append(artist_dict)
+
         song_dict = {
             "song_id": song.song_id,
             "song_title": song.song_title,
             "spotify_id": song.spotify_id,
-            "lastfm_url": song.lastfm_url
+            "lastfm_url": song.lastfm_url,
+            "artists": artists
         }
         songs.append(song_dict)
     return json.dumps(songs)
@@ -241,6 +254,33 @@ def add_lastfm_user(lastfm_name):
         except sqlalchemy.exc.IntegrityError:
             db.session.rollback()
             return "ERROR: Could not add user: " + lastfm_name
+
+
+def add_user(username, lastfm_name, password, email):
+    existing_user = db.session.query(User).filter_by(username=username).first()
+    existing_email = db.session.qeuery(User).filter_by(email=email).first()
+    if existing_user or existing_email:
+        error = "Error: "
+        if existing_user:
+            error += "User Exists. "
+        if existing_email:
+            error += "Email Exists."
+        return error
+    existing_lastfm_user = db.session.query(User).filter_by(lastfm_name=lastfm_name).first()
+    if existing_lastfm_user:
+        if(existing_lastfm_user.username):
+            return "Error: User Exists. "
+        else:
+            existing_lastfm_user.username = username
+            # TODO: Secure Password
+            existing_lastfm_user.password = "SECURE THE PASSWORD"
+            existing_lastfm_user.email = email
+    #         TODO: COMMIT
+    else:
+        print()
+        #TODO: MAKE NEW USER
+
+
 
 
 def add_song(song_title, lastfm_url, spotify_id=None):
