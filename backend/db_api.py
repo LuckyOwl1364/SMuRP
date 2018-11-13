@@ -395,3 +395,18 @@ def get_followers(user_id):
 		}
         followers.append(follower_dict)
 	return json.dumps(followers)
+
+#gets the user's list of users they are following
+def get_following(user_id):
+    user = db.session.query(User).get(user_id)
+    followingList = []
+    for following in user.follows:
+        follow = db.session.query(User).get(user_id)
+        following_dict = {
+            "User ID": user.user_id,
+            "User name": user.username
+        }
+        followingList.append(followin_dict)
+    return json.dumps(followingList)
+
+
