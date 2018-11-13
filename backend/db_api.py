@@ -64,7 +64,6 @@ class User(db.Model):
     join_date = db.Column('join_date', db.DateTime)
     password = db.Column('password', db.Unicode)
     email = db.Column('email', db.Unicode)
-    # follows = db.relationship('User', secondary=follows, backref=db.backref('followed', lazy='dynamic'))
 
     def __init__(self, lastfm_name, username=None, password=None, email=None):
         self.lastfm_name = lastfm_name
@@ -425,3 +424,31 @@ def add_follows(user_id1, user_id2):
             return "ERROR: Relationship already exists."
     else:
         return "ERROR: Users do not exist."
+ 
+#gets followers of a user		
+def get_followers(user_id):
+	user = db.session.query(User).get(user_id)
+	followers = []
+	for followers in user.followed_by:
+		follower = db.session.query(User).get(user_id)
+		follower_dict = {
+			"user_id": user.user_id,
+			"username": user.username
+		}
+        followers.append(follower_dict)
+	return json.dumps(followers)
+
+#gets the user's list of users they are following
+def get_following(user_id):
+    user = db.session.query(User).get(user_id)
+    followingList = []
+    for following in user.follows:
+        follow = db.session.query(User).get(user_id)
+        following_dict = {
+            "User ID": user.user_id,
+            "User name": user.username
+        }
+        followingList.append(followin_dict)
+    return json.dumps(followingList)
+
+
