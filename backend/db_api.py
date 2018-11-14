@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import sha256_crypt
 import sqlalchemy.exc
 import datetime
 import json
@@ -257,7 +258,7 @@ def add_lastfm_user(lastfm_name):
 
 def add_user(username, lastfm_name, password, email):
     existing_user = db.session.query(User).filter_by(username=username).first()
-    existing_email = db.session.qeuery(User).filter_by(email=email).first()
+    existing_email = db.session.query(User).filter_by(email=email).first()
     if existing_user or existing_email:
         error = "Error: "
         if existing_user:
@@ -271,15 +272,30 @@ def add_user(username, lastfm_name, password, email):
             return "Error: User Exists. "
         else:
             existing_lastfm_user.username = username
-            # TODO: Secure Password
-            existing_lastfm_user.password = "SECURE THE PASSWORD"
+            existing_lastfm_user.password = sha256_crypt.encrypt(password)
+            existing_lastfm_user.password = sha256_crypt.encrypt(password)
+            existing_lastfm_user.join_date = datetime.datetime.now()
             existing_lastfm_user.email = email
-    #         TODO: COMMIT
+            db.session.commit()
     else:
-        print()
-        #TODO: MAKE NEW USER
+        new_user = User(lastfm_name, username, sha256_crypt.encrypt(password), email)
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+            return new_user.user_id
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not create user."
 
 
+def login(username, password):
+    user = db.session.query(User).filter_by(username=username).first()
+    if not user:
+        return [False, "User does not exist"]
+    if not sha256_crypt.verify(password, user.password):
+        return [False, "Incorrect password"]
+    else:
+        return [True, "Success"]
 
 
 def add_song(song_title, lastfm_url, spotify_id=None):
@@ -409,7 +425,7 @@ def add_follows(user_id1, user_id2):
         #    followedlist.append(user_dict)
 
         
-        if True #followedlist is None:  
+        if True: #followedlist is None:
             # followedlist is empty and therefore no follow relationship exists
             follow_var = Follows(user_id1, user_id2)
             db.session.add(follow_var)
