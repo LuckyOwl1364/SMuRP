@@ -48,3 +48,23 @@ def getFollowers():
 def getfollowing():
     user_id = request.args.get('user_id')
     return get_following(user_id)
+
+# follows calls the method add_follows from the db_api file
+# follows takes in two parameters: user_id1 and user_id2
+# and then creates a relationship in the database where
+# user_id1 follows user_id2
+@app.route("/follows")
+def follows():
+    user_id1 = request.args.get('user_id1')
+    user_id2 = request.args.get('user_id2')
+    return add_follows(user_id1, user_id2)
+
+# login method logs in a user by checking the database if the user exists
+# and if the password is correct
+# takes in the parameters username and password
+# utilizes the requests library
+@app.route("/login")
+def login():
+    username = request.args.get('username')
+    password = request.args.get('password')
+    return login(username, password)
