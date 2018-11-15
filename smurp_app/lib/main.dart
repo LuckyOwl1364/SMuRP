@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen>{
   //async call to get data from endpoint
   void getData() async{
     RestDatasource restDS = new RestDatasource();
-    var user = await restDS.login(_email,null);
+    var user = await restDS.login(_email,_password);
 
     setState((){
       endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen>{
               new FlutterLogo(size: 60.0),
               new TextFormField(
                 decoration: new InputDecoration(
-                  labelText: "Enter Email"
+                  labelText: "Enter Username"
                 ),
                 keyboardType: TextInputType.emailAddress,
                 //validator: validateEmail,
