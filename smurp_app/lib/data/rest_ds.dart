@@ -14,6 +14,8 @@ class RestDatasource {
   static final LOGIN_URL = BASE_URL + "login";
   static final ONESONG_URL = BASE_URL + "get_song";
   static final LISTENEDSONGS_URL = BASE_URL + "getListened";
+  static final LIKED_URL = BASE_URL + "get_liked";
+  static final DISLIKED_URL = BASE_URL + "get_disiked";
 
   Future<User> login(String username, String password) {
     return _netUtil.post(LOGIN_URL + "?username=$username&password=$password",).then((dynamic res) {
@@ -33,6 +35,7 @@ class RestDatasource {
   }
 
   Future<List<Song>> getListenedSongs(int user_id) {
+    print("~~~~ in getListenedSongs with user_id = $user_id");
     return _netUtil.get(LISTENEDSONGS_URL + "?user_id=$user_id")
         .then((dynamic res) {
       print(res.toString());
@@ -44,6 +47,33 @@ class RestDatasource {
       return songList;
     });
   }
+
+  Future<List<Song>> getLiked(int user_id) {
+    return _netUtil.get(LIKED_URL + "?user_id=$user_id")  // TODO: that endpoint doesn't exist yet
+        .then((dynamic res) {
+      print(res.toString());
+//          if(res["error"]) throw new Exception(res["error_msg"]);
+      List<Song> songList = new List<Song>();
+      for (var item in res){
+        songList.add(Song.map(item));
+      }
+      return songList;
+    });
+  }
+
+  Future<List<Song>> getDisliked(int user_id) {
+    return _netUtil.get(DISLIKED_URL + "?user_id=$user_id")  // TODO: that endpoint doesn't exist yet
+        .then((dynamic res) {
+      print(res.toString());
+//          if(res["error"]) throw new Exception(res["error_msg"]);
+      List<Song> songList = new List<Song>();
+      for (var item in res){
+        songList.add(Song.map(item));
+      }
+      return songList;
+    });
+  }
+
 
 
   //async call to get data from endpoint
