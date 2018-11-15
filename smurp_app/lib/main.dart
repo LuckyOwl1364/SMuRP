@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
-import 'package:smurp_app/models/user.dart';
+//import 'package:password_hash';  TODO: Get this to work ~~~~~~~~~~~~~~~~~
+import 'package:http/http.dart';
 import 'package:smurp_app/data/rest_ds.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 void main() => runApp(new Login());
 
@@ -34,9 +32,6 @@ class LoginScreen extends StatefulWidget{
 }
 
 
-
-
-
 class _LoginScreenState extends State<LoginScreen>{
 //  _formKey and _autoValidate
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -46,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen>{
   String _password = "";
 
 
+<<<<<<< HEAD
   String endPtData = "Test Data ";
   List data;
 
@@ -63,6 +59,8 @@ class _LoginScreenState extends State<LoginScreen>{
   } // end getData()
 
 
+=======
+>>>>>>> parent of 4b4dca8... main.py is ready (hopefully) for when the endpoint is made
   @override
   Widget build(BuildContext context) {
     return Scaffold (
@@ -83,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen>{
                   labelText: "Enter Username"
                 ),
                 keyboardType: TextInputType.emailAddress,
-                //validator: validateEmail,
+                validator: validateEmail,
                 onSaved: (String val) {
                   _email = val;
                 },
@@ -94,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 ),
                 obscureText: true,
                 keyboardType: TextInputType.text,
-                //validator: validatePassword,
+                validator: validatePassword,
                 onSaved: (String val) {
                   _password = val;
                 },
@@ -133,14 +131,13 @@ class _LoginScreenState extends State<LoginScreen>{
   }
 
   _validateInputs() {
-    this.getData();
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-              content: Text(endPtData)
+              content: Text(_email + " , " + _password)
           );
         }
       );
@@ -153,11 +150,6 @@ class _LoginScreenState extends State<LoginScreen>{
     }
   }
 
-//  @override
-//  void initState() {
-//    super.initState();
-//    this.getData();
-//  }
 
 
 }

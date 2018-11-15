@@ -91,46 +91,46 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     final bool liked = _likes.contains(song);
     final bool disliked = _dislikes.contains(song);
     return ListTile(
-      title: Text(
-        (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
-        style: _biggerFont,
-      ),
-      trailing: new Row(
-          children: <Widget>[
-            new IconButton(
-                icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
-                          color: liked ? Colors.orange : null,
-                        ),
-                onPressed: () { setState(() {
-                  if (disliked) {
-                    _dislikes.remove(song); // if currently disliked, remove from dislikes
-                  }
-                  if (liked){
-                    _likes.remove(song); // if already disliked, remove from dislikes
-                  }
-                  else{
-                    _likes.add(song);
-                  }
-                }); }
-            ),
-            new IconButton(
-                icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
-                  color: disliked ? Colors.orange : null,
-                ),
-                onPressed: () { setState(() {
-                  if (liked) {
-                    _likes.remove(song); // if currently liked, remove from likes
-                  }
-                  if (disliked){
-                    _dislikes.remove(song); // if already disliked, remove from dislikes
-                  }
-                  else{
-                    _dislikes.add(song); // else add to dislikes
-                  }
-                }); }
-            ),
-          ],
-          mainAxisSize: MainAxisSize.min)
+        title: Text(
+          (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
+          style: _biggerFont,
+        ),
+        trailing: new Row(
+            children: <Widget>[
+              new IconButton(
+                  icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
+                    color: liked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (disliked) {
+                      _dislikes.remove(song); // if currently disliked, remove from dislikes
+                    }
+                    if (liked){
+                      _likes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _likes.add(song);
+                    }
+                  }); }
+              ),
+              new IconButton(
+                  icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
+                    color: disliked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (liked) {
+                      _likes.remove(song); // if currently liked, remove from likes
+                    }
+                    if (disliked){
+                      _dislikes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _dislikes.add(song); // else add to dislikes
+                    }
+                  }); }
+              ),
+            ],
+            mainAxisSize: MainAxisSize.min)
     );
   }
 
@@ -141,7 +141,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
       new MaterialPageRoute<void>(
         builder: (BuildContext context) {
           final Iterable<ListTile> tiles = isLikes ?    _likes.map((Song song) { return _buildRow(song); }, )
-                                                   : _dislikes.map((Song song) { return _buildRow(song); }, ) ;
+              : _dislikes.map((Song song) { return _buildRow(song); }, ) ;
           final List<Widget> divided = ListTile
               .divideTiles(
             context: context,
@@ -150,13 +150,13 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
               .toList();
 
           return new Scaffold(
-              appBar: new AppBar(
-                title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
-                actions: <Widget>[
-                  new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
-                ],
-              ),
-              body: new ListView(children: divided),
+            appBar: new AppBar(
+              title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
+              actions: <Widget>[
+                new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
+              ],
+            ),
+            body: new ListView(children: divided),
           );
         },
       ),
@@ -174,7 +174,6 @@ class SpecificWords extends StatefulWidget {
   @override
   RandomWordsState createState() => new RandomWordsState();
 }
-
 
 
 
