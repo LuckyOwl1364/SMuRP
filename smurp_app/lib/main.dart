@@ -40,8 +40,6 @@ class _LoginScreenState extends State<LoginScreen>{
   String _email = "works";
   String _password = "";
 
-
-<<<<<<< HEAD
   String endPtData = "Test Data ";
   List data;
 
@@ -59,9 +57,6 @@ class _LoginScreenState extends State<LoginScreen>{
   } // end getData()
 
 
-=======
->>>>>>> parent of 4b4dca8... main.py is ready (hopefully) for when the endpoint is made
-  @override
   Widget build(BuildContext context) {
     return Scaffold (
       backgroundColor: Colors.lightBlueAccent,
