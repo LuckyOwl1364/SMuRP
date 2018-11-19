@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
-//import 'package:password_hash';  TODO: Get this to work ~~~~~~~~~~~~~~~~~
-import 'package:http/http.dart';
 import 'package:smurp_app/data/rest_ds.dart';
 
 void main() => runApp(new Login());
@@ -47,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen>{
   //async call to get data from endpoint
   void getData() async{
     RestDatasource restDS = new RestDatasource();
-    var user = await restDS.login(_email,null);
+    var user = await restDS.login(_email,_password);
 
     setState((){
       endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
@@ -76,10 +74,10 @@ class _LoginScreenState extends State<LoginScreen>{
               new FlutterLogo(size: 60.0),
               new TextFormField(
                 decoration: new InputDecoration(
-                  labelText: "Enter Email"
+                  labelText: "Enter Username"
                 ),
-                keyboardType: TextInputType.emailAddress,
-                validator: validateEmail,
+                keyboardType: TextInputType.text,
+                validator: validateUsername,
                 onSaved: (String val) {
                   _email = val;
                 },
@@ -109,33 +107,15 @@ class _LoginScreenState extends State<LoginScreen>{
     );
   }
 
-
-
-  String validatePassword(String value) {
-    if (value.length < 3)
-      return 'Password must be more than 2 charater';
-    else
-      return null;
-  }
-
-  String validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
-  }
-
   _validateInputs() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      this.getData();
       return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-              content: Text(_email + " , " + _password)
+              content: Text(endPtData)
           );
         }
       );
@@ -146,6 +126,25 @@ class _LoginScreenState extends State<LoginScreen>{
       });
       return null;
     }
+  }
+
+
+
+
+
+
+  String validatePassword(String value) {
+    if (value.length < 3)
+      return 'Password must be more than 2 charater';
+    else
+      return null;
+  }
+
+  String validateUsername(String value) {
+    if (value.length < 2)
+      return 'Enter Valid Username';
+    else
+      return null;
   }
 
 
