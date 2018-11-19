@@ -279,7 +279,7 @@ def get_feed(user_id, user_only):
         except IndexError:
             print("could not add listen")
     sorted_feed = sorted(listens_and_rates, key=lambda k: k["datetime"])
-    return sorted_feed[0:30]
+    return json.dumps(sorted_feed[0:30])
 
 
 def add_lastfm_user(lastfm_name):
