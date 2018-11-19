@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Song History',
+      title: 'Listen History',
       theme: new ThemeData(
         primaryColor: Colors.blue,
       ),
