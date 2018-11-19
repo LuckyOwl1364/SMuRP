@@ -4,20 +4,20 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smurp_app/models/user.dart';
 
-class EndpointDemoPage extends StatefulWidget {
+class RecommendedPage extends StatefulWidget {
   @override
-  EndpointDemoState createState()=> new EndpointDemoState();
+  RecommendedState createState()=> new RecommendedState();
 
 }
 
-class EndpointDemoState extends State<EndpointDemoPage> {
+class RecommendedState extends State<RecommendedPage> {
 
   String endPtData = "Test Data ";
 
   @override
   Widget build(BuildContext context){
     return new Scaffold(
-        appBar: new AppBar(title: Text('Endpoint Demo Page')),
+        appBar: new AppBar(title: Text('Recommended Page')),
         body: new Center(
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
