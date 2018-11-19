@@ -220,15 +220,13 @@ def get_listened_songs(user_id):
     songs = []
     for listened in user.listened:
         song = db.session.query(Song).get(listened.song_id)
-        artists = []
+        artists = ""
 
         for artist in song.song_by:
-            artist_dict = {
-                "artist_id": artist.artist_id,
-                "artist_name": artist.artist_name,
-                "lastfm_url": artist.lastfm_url
-            }
-            artists.append(artist_dict)
+            if artists is "":
+                artists = artists + artist.artist_name
+            else:
+                artists = artists + "," + artist.artist_name
 
         song_dict = {
             "song_id": song.song_id,
