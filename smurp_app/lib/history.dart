@@ -33,6 +33,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
 
   @override
   Widget build(BuildContext context) {
+//    collectSongs();
     return Scaffold (
       appBar: AppBar(
         title: Text('Song History'),
@@ -70,6 +71,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
             // ...then generate 10 more and add them to the suggestions list.
             collectSongs();
           }
+
           return _buildRow(_history[index]);
         }
     );
