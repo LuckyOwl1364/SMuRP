@@ -211,7 +211,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Flutter.testPlaying.dart">
+  <component name="RunManager" selected="Flutter.following.dart">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -231,8 +231,8 @@
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="testPlaying.dart" type="FlutterRunConfigurationType" factoryName="Flutter" nameIsGenerated="true">
-      <option name="filePath" value="$PROJECT_DIR$/lib/testPlaying.dart" />
+    <configuration name="following.dart" type="FlutterRunConfigurationType" factoryName="Flutter" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/lib/following.dart" />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -263,7 +263,7 @@
     <list>
       <item itemvalue="Flutter.history.dart" />
       <item itemvalue="Flutter.main.dart" />
-      <item itemvalue="Flutter.testPlaying.dart" />
+      <item itemvalue="Flutter.following.dart" />
     </list>
   </component>
   <component name="SvnConfiguration">
