@@ -96,11 +96,11 @@ class ListenedTo(db.Model):
     user = db.relationship('User', backref=db.backref('listened', lazy='dynamic'))
     song = db.relationship('Song', backref=db.backref('listened', lazy='dynamic'))
 
-    def __init__(self, user_id, song_id):
+    def __init__(self, user_id, song_id, last_listen=datetime.datetime.now()):
         self.user_id = user_id
         self.song_id = song_id
         self.num_listens = 1
-        self.last_listen = datetime.datetime.now()
+        self.last_listen = last_listen
 
 
 class Follows(db.Model):
@@ -121,6 +121,7 @@ class Rated(db.Model):
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     song_id = db.Column('song_id', db.Integer, db.ForeignKey('song.song_id'), primary_key=True)
     rated = db.Column('rated', db.Integer)
+    rating_time = db.Column('rating_time', db.DateTime)
 
     user = db.relationship('User', backref=db.backref('rated', lazy='dynamic'))
     song = db.relationship('Song', backref=db.backref('rated', lazy='dynamic'))
@@ -129,6 +130,7 @@ class Rated(db.Model):
         self.user_id = user_id
         self.song_id = song_id
         self.rated = rated
+        self.rating_time = datetime.datetime.now()
 
 
 class Recommendation(db.Model):
@@ -239,6 +241,15 @@ def get_listened_songs(user_id):
     return json.dumps(songs)
 
 
+# def get_feed(user_id):
+#     user = db.session.query(User).get(user_id)
+#     feed_users = [user_id]
+#     for friend in user.follows:
+#         feed_users.append(friend.followed.user_id)
+#     listens = db.session.query(ListenedTo).filter(ListenedTo.user_id.in_(feed_users)).order_by(ListenedTo.last_listen.desc()).limit(20).all()
+#     return listens
+
+
 def add_lastfm_user(lastfm_name):
     existing_lastfm_user = db.session.query(User).filter_by(lastfm_name=lastfm_name).first()
     if existing_lastfm_user:
@@ -289,11 +300,19 @@ def add_user(username, lastfm_name, password, email):
 def login(username, password):
     user = db.session.query(User).filter_by(username=username).first()
     if not user:
-        return [False, "User does not exist"]
+        return [False, "User does not exist", None]
     if not sha256_crypt.verify(password, user.password):
-        return [False, "Incorrect password"]
+        return [False, "Incorrect password", None]
     else:
-        return [True, "Success"]
+        user_json = json.dumps(
+            {
+                "user_id": user.user_id,
+                "username": user.username,
+                "lastfm_name": user.lastfm_name,
+                "join_date": user.join_date
+            }
+        )
+        return [True, "Success", user_json]
 
 
 def add_song(song_title, lastfm_url, spotify_id=None):
@@ -378,7 +397,7 @@ def add_album_featuring(album_id, artist_id):
         return "ERROR: Could not create relationship."
 
 
-def add_listened_to(user_id, song_id):
+def add_listened_to(user_id, song_id, last_listen=datetime.datetime.now()):
     listen = db.session.query(ListenedTo).filter_by(
         user_id = user_id,
         song_id = song_id
@@ -386,7 +405,7 @@ def add_listened_to(user_id, song_id):
 
     if listen:
         listen.num_listens += 1
-        listen.last_listen = datetime.datetime.now()
+        listen.last_listen = last_listen
         try:
             db.session.commit()
             return "Successfully updated"
