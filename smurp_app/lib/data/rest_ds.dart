@@ -16,7 +16,7 @@ class RestDatasource {
   static final LISTENEDSONGS_URL = BASE_URL + "getListened";
 
   Future<User> login(String username, String password) {
-    return _netUtil.post(LOGIN_URL + "?username=$username&password=$password",).then((dynamic res) {
+    return _netUtil.get(LOGIN_URL + "?username=$username&password=$password",).then((dynamic res) {
       print(res.toString());
       if(res["error"]) throw new Exception(res["error_msg"]);
       return new User.fromJson(res["user"]);
@@ -49,7 +49,7 @@ class RestDatasource {
   //async call to get data from endpoint
   Future<String> getData() async {
     http.Response response = await http.get(
-        BASE_URL + "database",//"loginuser?username=theactualdevil&password=good_password",
+        BASE_URL + "loginuser?username=theactualdevil&password=good_password",
         headers: {
           "Accept": "application/json"
         }
