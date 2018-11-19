@@ -31,30 +31,30 @@ class FriendsPageState extends State<FriendsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: "Friends page",
-      home: new DefaultTabController(
-        length:2,
-        child:  new Scaffold(
-            appBar: new AppBar(
-                title: new Text("Friends"),
-                //creating tabs
-                bottom: new TabBar(
+      return new MaterialApp(
+          title: "Friends page",
+          home: new DefaultTabController(
+            length:2,
+            child:  new Scaffold(
+                appBar: new AppBar(
+                  title: new Text("Friends"),
+                  //creating tabs
+                  bottom: new TabBar(
                     tabs: <Widget>[
                       new Tab(text: "Users you Follow"),
                       new Tab(text: "Users who Follow You"),
                     ]//end of widget
-                )//end of tab bar
-            ),
-            body: new TabBarView(
-                children: <Widget>[
-                  new FirstWidget(),
-                  new SecondWidget(),
-                ]
-            )
-        ),
-      ),
-    );
+                  )//end of tab bar
+                ),
+                body: new TabBarView(
+                  children: <Widget>[
+                    new FirstWidget(),
+                    new SecondWidget(),
+                  ]
+                )
+              ),
+          ),
+      );
   } //build
 
   void unfollow() {
