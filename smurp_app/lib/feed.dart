@@ -6,7 +6,7 @@ import 'package:smurp_app/models/user.dart';
 import 'package:smurp_app/history.dart';
 import 'package:smurp_app/models/user.dart';
 import 'package:smurp_app/utils/endpointDemo.dart';
-import 'package:smurp_app/following.dart';
+import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
 
@@ -113,12 +113,12 @@ class FeedState extends State<FeedPage> {
                 contentPadding: EdgeInsets.symmetric(
                     vertical: halfPadding, horizontal: doublePadding),
                 leading: const Icon(Icons.account_circle),
-                title: Text('Following'),
+                title: Text('Friends'),
                 onTap: () {
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
-                          builder: (context) => new FollowingPage()));
+                          builder: (context) => new FriendsPage()));
                 }, //code to navigate to appropriate screen
               ),
             ],
