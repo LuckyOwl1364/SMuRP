@@ -241,13 +241,45 @@ def get_listened_songs(user_id):
     return json.dumps(songs)
 
 
-# def get_feed(user_id):
-#     user = db.session.query(User).get(user_id)
-#     feed_users = [user_id]
-#     for friend in user.follows:
-#         feed_users.append(friend.followed.user_id)
-#     listens = db.session.query(ListenedTo).filter(ListenedTo.user_id.in_(feed_users)).order_by(ListenedTo.last_listen.desc()).limit(20).all()
-#     return listens
+def get_feed(user_id, user_only):
+    user = db.session.query(User).get(user_id)
+    feed_users = [user_id]
+    if not user_only:
+        for friend in user.follows:
+            feed_users.append(friend.followed.user_id)
+    listens = db.session.query(ListenedTo).filter(ListenedTo.user_id.in_(feed_users)).order_by(ListenedTo.last_listen.desc()).limit(30).all()
+    rates = db.session.query(Rated).filter(Rated.user_id.in_(feed_users)).order_by(Rated.rating_time.desc()).limit(30).all()
+    listens_and_rates = []
+    for listen in listens:
+        try:
+            user = db.session.query(User).get(listen.user_id)
+            song = db.session.query(Song).get(listen.song_id)
+            listens_and_rates.append({
+                "username": user.username,
+                "song_title": song.song_title,
+                "artist": song.song_by[0].artist_name,
+                "datetime": listen.last_listen,
+                "is_rating": False,
+                "rating": 0
+            })
+        except IndexError:
+            print("could not add listen")
+    for rate in rates:
+        try:
+            username = db.session.query(User).get(rate.user_id)
+            song = db.session.query(Song).get(rate.song_id)
+            listens_and_rates.append({
+                "username": user.username,
+                "song_title": song.song_title,
+                "artist": song.song_by[0].artist_name,
+                "datetime": listen.last_listen,
+                "is_rating": True,
+                "rating": rate.rated
+            })
+        except IndexError:
+            print("could not add listen")
+    sorted_feed = sorted(listens_and_rates, key=lambda k: k["datetime"])
+    return sorted_feed[0:30]
 
 
 def add_lastfm_user(lastfm_name):
