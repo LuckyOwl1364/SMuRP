@@ -9,7 +9,7 @@ class Song{
   Song.map(dynamic obj) {
     this.song_id = obj["song_id"];
     this.title = obj["song_title"];
-    this.artist = "fakeArtist";
+    this.artist = obj["artist_name"];
   }
 
 

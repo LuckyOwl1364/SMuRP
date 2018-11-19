@@ -49,6 +49,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     _pushRated();
   } // Resets page so opening Likes/Dislikes from History always opens at Likes
   Widget _buildSuggestions() {
+    this.collectSongs();
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
         // The itemBuilder callback is called once per suggested word pairing,
@@ -69,7 +70,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
           // If you've reached the end of the available word pairings...
           if (index >= _history.length) {
             // ...then generate 10 more and add them to the suggestions list.
-            collectSongs();
+//            this.collectSongs();
           }
 
           return _buildRow(_history[index]);
@@ -81,7 +82,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
   @override
   void initState() {
     super.initState();
-    this.collectSongs();
+//    this.collectSongs();
   }
 
   void collectSongs() async{
