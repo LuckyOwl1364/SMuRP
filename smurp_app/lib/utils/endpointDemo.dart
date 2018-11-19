@@ -17,11 +17,15 @@ class EndpointDemoState extends State<EndpointDemoPage> {
   @override
   Widget build(BuildContext context){
     return new Scaffold(
+        appBar: new AppBar(title: Text('Endpoint Demo Page')),
         body: new Center(
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new RaisedButton( child: new Text("Get endpoint data"), onPressed: getTestEndpointData),
+                  new RaisedButton(
+                      child: new Text("Get endpoint data"),
+                      onPressed: getTestEndpointData
+                  ),
                   new Text(endPtData)]
             )
         )
