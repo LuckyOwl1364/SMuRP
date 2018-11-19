@@ -164,7 +164,6 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
       ),
     );
   } // end _pushRated
-
   void _popAndPushRated(){
     Navigator.pop(context);
     _pushRated();
