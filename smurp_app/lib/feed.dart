@@ -113,7 +113,7 @@ class FeedState extends State<FeedPage> {
                 contentPadding: EdgeInsets.symmetric(
                     vertical: halfPadding, horizontal: doublePadding),
                 leading: const Icon(Icons.account_circle),
-                title: Text('Log Out'),
+                title: Text('Following'),
                 onTap: () {
                   Navigator.push(
                       context,
