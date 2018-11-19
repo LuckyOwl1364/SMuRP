@@ -3,74 +3,85 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smurp_app/history.dart';
 import 'package:smurp_app/models/user.dart';
+import 'package:smurp_app/utils/endpointDemo.dart';
+import 'package:smurp_app/feed.dart';
+import 'package:smurp_app/profile.dart';
+import 'package:smurp_app/recommended.dart';
 
-import 'package:smurp_app/data/rest_ds.dart';
 
-void main() {
-  runApp(new MaterialApp(
-    home: new FollowingPage(),
-  ));
-}
+//void main() {
+//  runApp(new MaterialApp(
+//    home: new FriendsPage(),
+//  ));
+//}
 
-class FollowingPage extends StatefulWidget {
+class FriendsPage extends StatefulWidget {
   @override
-  FollowingPageState createState() => new FollowingPageState();
+  FriendsPageState createState() => new FriendsPageState();
 }
 
-class FollowingPageState extends State<FollowingPage> {
-
+class FriendsPageState extends State<FriendsPage> {
   String endPtData = "Test Data ";
   List data;
-
-  final RestDatasource restDS = new RestDatasource();
-
-  //async call to get data from endpoint
-  Future<String> getData() async{
-    var user = await restDS.getData();//login("theactualdevil","good_password");
-
-
-    setState((){
-//      Map userMap = json.decode(responseBody);
-//      var user = new User.fromJson(userMap);
-
-      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
-//          'User name: ${user.username}\n'
-//          'LastFM name: ${user.lastfm_name}\n'
-//          'User ID: ${user.user_id}';
-          '$user';
-
-      //data.add('User name is ${user.username} \n LastFM name is ${user.lastfm_name}');
-      print(endPtData);
-      //data.add(user);
-    });
-
-    //data.add('Some Generic user name is abcUser321 \n generic LastFM name is abcU321');
-    //data.add('Another Generic username is 432wxy \n another generic LastFM name is wxy432');
-
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    this.getData();
-  }
+  double regularPadding = 8.0;
+  double halfPadding = 4.0;
+  double doublePadding = 16.0;
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Listviews"),
-      ),
-      body: new ListView.builder(
-        itemCount: 1,
-        itemBuilder: (BuildContext context, int index) {
-          return new Card(
-            child: new Text(endPtData),
-          );
-        },
+    return new MaterialApp(
+      title: "Friends page",
+      home: new DefaultTabController(
+        length:2,
+        child:  new Scaffold(
+            appBar: new AppBar(
+                title: new Text("Friends"),
+                //creating tabs
+                bottom: new TabBar(
+                    tabs: <Widget>[
+                      new Tab(text: "Users you Follow"),
+                      new Tab(text: "Users who Follow You"),
+                    ]//end of widget
+                )//end of tab bar
+            ),
+            body: new TabBarView(
+                children: <Widget>[
+                  new FirstWidget(),
+                  new SecondWidget(),
+                ]
+            )
+        ),
       ),
     );
+  } //build
+
+  void unfollow() {
+    setState(() {
+      //hit the endpoint
+      endPtData += " Unfollowed";
+    });
   }
 
+} //end of FriendsPageState
+
+//this widget is what should be under the first tab
+class FirstWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctxt) {
+    return new Center(
+      child: new Text("Hey look! nobody's here :P"),
+    );
+  }
+}
+
+//this widget is what should be under the second tab
+class SecondWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctxt) {
+    return new Center(
+      child: new Text("Oof. There's still nobody here :P"),
+    );
+  }
 }
