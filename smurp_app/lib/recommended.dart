@@ -50,12 +50,11 @@ class RecommendedState extends State<RecommendedPage> {
     //print('User name: ${user.username}');
     //print(userMap);
     setState((){
-      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
-          'User name: ${user.username}\n'
-          'LastFM name: ${user.lastfm_name}\n'
-          'Join Date: ${user.join_date}\n'
-          'Password: ${user.password}\n'
-          'Email Address: ${user.email}\n';
+      endPtData = 'DATA RECIEVED FROM ENDPOINT\n';
+//          'User name: ${user.username}\n'
+//          'LastFM name: ${user.lastfm_name}\n'
+//          'Join Date: ${user.join_date}\n'
+//          'Email Address: ${user.email}\n';
       //endPtData = user.toString();
       //endPtData = userMap.toString();
     });
