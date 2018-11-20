@@ -517,3 +517,51 @@ def get_following(user_id):
         }
         followingList.append(following_dict)
     return json.dumps(followingList)
+
+#function that creates a like rating for a specific user and specific song
+def like(user_id, song_id):
+    user = db.session.query(User).get(user_id)
+    song = db.session.query(Song).get(song_id)
+    relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=so
+ng_id).first()
+    if user is not None and song is not None and relationship is None:
+        rate = Rated(user_id, song_id, 1)
+        db.session.add(rate)
+        try:
+            db.session.commit()
+            return "Success"
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not create relationship."
+    else:
+            return "Error: could not create relationship because conditions were not met."
+
+#function that creates a dislike rating for a specific user and specific song
+def dislike(user_id, song_id):
+    user = db.session.query(User).get(user_id)
+    song = db.session.query(Song).get(song_id)
+    relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=so
+ng_id).first()
+    if user is not None and song is not None and relationship is None:
+        rate = Rated(user_id, song_id, 0)
+        db.session.add(rate)
+        try:
+            db.session.commit()
+            return "Success"
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not create relationship."
+    else:
+            return "Error: could not create relationship because conditions were not met."
+        
+#basic script to create base of ratings for users and songs. Loops through all songs a user has listened to and randomly assigns a rating
+def create_ratings():
+    listened_to_table = db.session.query(ListenedTo).all()
+    for row in listened_to_table:
+        user_id = row.user_id
+        song_id = row.song_id
+        rating = random.randint(0,1)
+        if(rating == 0):
+            dislike(user_id,song_id)
+        else:
+            like(user_id,song_id)
