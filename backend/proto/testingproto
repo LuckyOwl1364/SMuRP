@@ -1,0 +1,17 @@
+# import libraries
+import numpy as np
+import pandas as pd
+
+# Reading ratings file
+ratings = pd.read_csv('./ratings.csv', encoding='latin-1', usecols=['user_id','song_id','rated','rating_time'])
+
+# Reading users file
+users = pd.read_csv('./user.csv', encoding='latin-1', usecols=['user_id'])
+
+# Reading songs file
+songs = pd.read_csv('./song.csv', encoding='latin-1', usecols=['song_id', 'song_title'])
+
+n_users = ratings.user_id.unique().shape[0]
+n_songs = ratings.song_id.unique().shape[0]
+
+print ('Number of users = ', str(n_users), ' | Number of songs = ', str(n_songs))
