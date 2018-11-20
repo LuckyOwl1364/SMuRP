@@ -3,13 +3,13 @@ import numpy as np
 import pandas as pd
 
 # Reading ratings file
-ratings = pd.read_csv('ratings.csv', sep='\t', encoding='latin-1', usecols=['user_id', 'movie_id', 'rating', 'timestamp'])
+ratings = pd.read_csv('ratings.csv', sep='\t', encoding='latin-1', usecols=['user_id', 'song_id', 'rated', 'rating_time'])
 
 # Reading users file
-users = pd.read_csv('users.csv', sep='\t', encoding='latin-1', usecols=['user_id', 'gender', 'zipcode', 'age_desc', 'occ_desc'])
+users = pd.read_csv('user.csv', sep='\t', encoding='latin-1', usecols=['user_id'])
 
-# Reading movies file
-movies = pd.read_csv('movies.csv', sep='\t', encoding='latin-1', usecols=['movie_id', 'title', 'genres'])
+# Reading songs file
+songs = pd.read_csv('song.csv', sep='\t', encoding='latin-1', usecols=['song_id', 'song_title'])
 
 
 n_users = ratings.user_id.unique().shape[0]
