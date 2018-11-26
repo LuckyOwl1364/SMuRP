@@ -159,9 +159,7 @@ class FeedState extends State<FeedPage> {
       endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
           'User name: ${user.username}\n'
           'LastFM name: ${user.lastfm_name}\n'
-          'Join Date: ${user.join_date}\n'
-          'Password: ${user.password}\n'
-          'Email Address: ${user.email}\n';
+          'Join Date: ${user.join_date}\n';
       //endPtData = user.toString();
       //endPtData = userMap.toString();
     });
