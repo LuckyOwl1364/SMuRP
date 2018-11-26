@@ -157,9 +157,10 @@ class FeedState extends State<FeedPage> {
     //print(userMap);
     setState((){
       endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
-          'User name: ${user.username}\n'
-          'LastFM name: ${user.lastfm_name}\n'
-          'Join Date: ${user.join_date}\n';
+          'User name: ${user.username}\n';
+//          'LastFM name: ${user.lastfm_name}\n'
+//          'Join Date: ${user.join_date}\n'
+//          'Email Address: ${user.email}\n';
       //endPtData = user.toString();
       //endPtData = userMap.toString();
     });
@@ -167,4 +168,3 @@ class FeedState extends State<FeedPage> {
   }
 
 }
-

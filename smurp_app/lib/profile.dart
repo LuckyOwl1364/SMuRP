@@ -50,10 +50,11 @@ class ProfileState extends State<ProfilePage> {
     //print('User name: ${user.username}');
     //print(userMap);
     setState((){
-      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
-          'User name: ${user.username}\n'
-          'LastFM name: ${user.lastfm_name}\n'
-          'Join Date: ${user.join_date}\n';
+      endPtData = 'DATA RECIEVED FROM ENDPOINT\n';
+//          'User name: ${user.username}\n'
+//          'LastFM name: ${user.lastfm_name}\n'
+//          'Join Date: ${user.join_date}\n'
+//          'Email Address: ${user.email}\n';
       //endPtData = user.toString();
       //endPtData = userMap.toString();
     });
@@ -61,4 +62,3 @@ class ProfileState extends State<ProfilePage> {
   }
 
 }
-
