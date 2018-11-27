@@ -105,7 +105,7 @@ class FeedState extends State<FeedPage> {
                 title: Text('History'),
                 onTap: () {
                   Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => new MyApp()));
+                      new MaterialPageRoute(builder: (context) => new HistoryPage()));
                 }, //code to navigate to appropriate screen
               ),
               ListTile(
@@ -120,6 +120,15 @@ class FeedState extends State<FeedPage> {
                           builder: (context) => new FriendsPage()));
                 }, //code to navigate to appropriate screen
               ),
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: halfPadding, horizontal: doublePadding),
+                leading: const Icon(Icons.exit_to_app),
+                title: Text('Log Out'),
+                onTap: () {
+                  Navigator.pop(context); // TODO: Make it actually exit the app & session  ~~~~~~~~~~~~~
+                }, //code to navigate to appropriate screen
+              )
             ],
           ),
         ),

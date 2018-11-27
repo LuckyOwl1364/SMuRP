@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
-import 'package:smurp_app/models/artist.dart';
 import 'package:smurp_app/models/song.dart';
 
 import 'package:smurp_app/data/rest_ds.dart';
-import 'dart:async';
 
-void main() => runApp(MyApp());
+void main() => runApp(HistoryPage());
 
-class MyApp extends StatelessWidget {
+class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -16,13 +13,13 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: new SpecificWords(),
+      home: new HistoryWidget(),
     );
   }
 }
 
 
-class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPair for Song
+class HistoryPageState extends State<HistoryWidget> {
   final _history = <Song>[];
   final List<Song> _likes = new List<Song>();
   final List<Song> _dislikes = new List<Song>();
@@ -33,23 +30,16 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
 
   @override
   Widget build(BuildContext context) {
-//    collectSongs();
+//    this.collectSongs();
     return Scaffold (
       appBar: AppBar(
-        title: Text('Song History'),
-        actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _resetAndPushRated),
-        ],
+        title: Text('Listening History'),
       ),
       body: _buildSuggestions(),
     );
   }
-  void _resetAndPushRated(){
-    isLikes = false;
-    _pushRated();
-  } // Resets page so opening Likes/Dislikes from History always opens at Likes
   Widget _buildSuggestions() {
-    this.collectSongs();
+//    this.collectSongs();
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
         // The itemBuilder callback is called once per suggested word pairing,
@@ -68,26 +58,26 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
           // minus the divider widgets.
           final index = i ~/ 2;
           // If you've reached the end of the available word pairings...
+          print("before check: history.length = " + _history.length.toString());
           if (index >= _history.length) {
             // ...then generate 10 more and add them to the suggestions list.
-//            this.collectSongs();
+            this.collectSongs();
           }
 
           return _buildRow(_history[index]);
+
         }
     );
   }
 
 
-  @override
-  void initState() {
-    super.initState();
-//    this.collectSongs();
-  }
-
   void collectSongs() async{
+    print("before call : history.length = " + _history.length.toString());
     List<Song> nextSongs = await rest.getListenedSongs(23);
     _history.addAll(nextSongs);
+
+    print("after calls : history.length = " + _history.length.toString());
+//    setState((){});
   }
 
   Widget _buildRow(Song song) {
@@ -134,7 +124,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                     }
                     else{
                       _dislikes.add(song); // else add to dislikes
-                      // TODO: Tell Database to remove song
+                      // TODO: Tell Database to add song
                     }
                   }); }
               ),
@@ -142,45 +132,12 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
             mainAxisSize: MainAxisSize.min)
     );
   }
-
-  void _pushRated() {
-    isLikes = !isLikes;
-
-    Navigator.of(context).push(
-      new MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = isLikes ?    _likes.map((Song song) { return _buildRow(song); }, )
-              : _dislikes.map((Song song) { return _buildRow(song); }, ) ;
-          final List<Widget> divided = ListTile
-              .divideTiles(
-            context: context,
-            tiles: tiles,
-          )
-              .toList();
-
-          return new Scaffold(
-            appBar: new AppBar(
-              title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
-              actions: <Widget>[
-                new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
-              ],
-            ),
-            body: new ListView(children: divided),
-          );
-        },
-      ),
-    );
-  } // end _pushRated
-  void _popAndPushRated(){
-    Navigator.pop(context);
-    _pushRated();
-  }
 } // end RandomWordsState
 
 
-class SpecificWords extends StatefulWidget {
+class HistoryWidget extends StatefulWidget {
   @override
-  RandomWordsState createState() => new RandomWordsState();
+  HistoryPageState createState() => new HistoryPageState();
 }
 
 

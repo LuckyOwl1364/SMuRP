@@ -9,6 +9,6 @@ import 'main.dart';
 
 final routes = {
   '/login':         (BuildContext context) => new LoginScreen(),
-  '/history':         (BuildContext context) => new SpecificWords(),
+  '/history':         (BuildContext context) => new HistoryWidget(),
   '/' :          (BuildContext context) => new LoginScreen(),
 };
