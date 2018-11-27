@@ -1,7 +1,6 @@
 // This file inspired by: https://medium.com/@kashifmin/flutter-login-app-using-rest-api-and-sqflite-b4815aed2149
 
 import 'dart:async';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:smurp_app/utils/network_util.dart';
@@ -14,6 +13,9 @@ class RestDatasource {
   static final LOGIN_URL = BASE_URL + "loginuser";  // username = theactualdevil, password = good_password
   static final ONESONG_URL = BASE_URL + "get_song";
   static final LISTENEDSONGS_URL = BASE_URL + "getListened";
+  static final LIKEDSONGS_URL = BASE_URL + "get_liked";
+  static final DISLIKEDSONGS_URL = BASE_URL + "get_disliked";
+  static final RECOMMEND_URL = BASE_URL + "recommend";
 
   Future<User> login(String username, String password) {
     return _netUtil.get(LOGIN_URL + "?username=$username&password=$password",).then((dynamic res) {
@@ -33,6 +35,47 @@ class RestDatasource {
   }
 
   Future<List<Song>> getListenedSongs(int user_id) {
+    return _netUtil.get(LISTENEDSONGS_URL + "?user_id=$user_id")
+        .then((dynamic res) {
+      print(res.toString());
+//          if(res["error"]) throw new Exception(res["error_msg"]);
+      List<Song> songList = new List<Song>();
+      for (var item in res){
+        songList.add(Song.map(item));
+      }
+      return songList;
+    });
+  }
+
+  Future<List<Song>> getLikedSongs(int user_id) {
+    print("~~~~ About to get_liked");
+    return _netUtil.get(LISTENEDSONGS_URL + "?user_id=$user_id")
+        .then((dynamic res) {
+      print(res.toString());
+//          if(res["error"]) throw new Exception(res["error_msg"]);
+      List<Song> songList = new List<Song>();
+      for (var item in res){
+        songList.add(Song.map(item));
+      }
+      return songList;
+    });
+  }
+
+  Future<List<Song>> getDislikedSongs(int user_id) {
+    print("~~~~ About to get_disliked");
+    return _netUtil.get(RECOMMEND_URL + "?user_id=$user_id")
+        .then((dynamic res) {
+      print(res.toString());
+//          if(res["error"]) throw new Exception(res["error_msg"]);
+      List<Song> songList = new List<Song>();
+      for (var item in res){
+        songList.add(Song.map(item));
+      }
+      return songList;
+    });
+  }
+
+  Future<List<Song>> getRecommendations(int user_id) {
     return _netUtil.get(LISTENEDSONGS_URL + "?user_id=$user_id")
         .then((dynamic res) {
       print(res.toString());
