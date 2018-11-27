@@ -145,7 +145,7 @@ class RatedPageState extends State<RatedPage> {
                     }
                     else{
                       _dislikes.add(song); // else add to dislikes
-                      // TODO: Tell Database to remove song
+                      // TODO: Tell Database to add song
                     }
                   }); }
               ),

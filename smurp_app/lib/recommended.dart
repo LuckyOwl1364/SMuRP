@@ -130,7 +130,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                     }
                     else{
                       _disliked.add(song); // else add to dislikes
-                      // TODO: Tell Database to remove song
+                      // TODO: Tell Database to add song
                     }
                   }); }
               ),
