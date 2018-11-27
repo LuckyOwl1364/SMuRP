@@ -4,6 +4,7 @@ from passlib.hash import sha256_crypt
 import sqlalchemy.exc
 import datetime
 import json
+import random
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = \
@@ -490,7 +491,9 @@ def add_follows(user_id1, user_id2):
             return "ERROR: Relationship already exists."
     else:
         # one or both users do not exist
-        return "ERROR: Users do not exist." 
+        return "ERROR: Users do not exist."
+
+
 #gets followers of a user               
 def get_followers(user_id):
     user = db.session.query(User).get(user_id)
@@ -522,11 +525,13 @@ def get_following(user_id):
 def like(user_id, song_id):
     user = db.session.query(User).get(user_id)
     song = db.session.query(Song).get(song_id)
-    relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=so
-ng_id).first()
-    if user is not None and song is not None and relationship is None:
-        rate = Rated(user_id, song_id, 1)
-        db.session.add(rate)
+    relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=song_id).first()
+    if user is not None and song is not None:
+        if relationship is None or relationship.rated == 0:
+            rate = Rated(user_id, song_id, 1)
+            db.session.add(rate)
+        elif relationship.rated == 1:
+            db.session.delete(relationship)
         try:
             db.session.commit()
             return "Success"
@@ -540,20 +545,22 @@ ng_id).first()
 def dislike(user_id, song_id):
     user = db.session.query(User).get(user_id)
     song = db.session.query(Song).get(song_id)
-    relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=so
-ng_id).first()
-    if user is not None and song is not None and relationship is None:
-        rate = Rated(user_id, song_id, 0)
-        db.session.add(rate)
+    relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=song_id).first()
+    if user is not None and song is not None:
+        if relationship is None or relationship.rated == 1:
+            rate = Rated(user_id, song_id, 0)
+            db.session.add(rate)
+        elif relationship.rated == 0:
+            db.session.delete(relationship)
         try:
             db.session.commit()
             return "Success"
         except sqlalchemy.exc.IntegrityError:
             db.session.rollback()
-            return "ERROR: Could not create relationship."
+            return "ERROR: Could not create/delete relationship."
     else:
             return "Error: could not create relationship because conditions were not met."
-        
+
 #basic script to create base of ratings for users and songs. Loops through all songs a user has listened to and randomly assigns a rating
 def create_ratings():
     listened_to_table = db.session.query(ListenedTo).all()
