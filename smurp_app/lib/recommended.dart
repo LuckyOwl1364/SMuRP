@@ -1,64 +1,185 @@
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
+import 'package:smurp_app/models/artist.dart';
+import 'package:smurp_app/models/song.dart';
+
+import 'package:smurp_app/data/rest_ds.dart';
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:smurp_app/models/user.dart';
 
-class RecommendedPage extends StatefulWidget {
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
   @override
-  RecommendedState createState()=> new RecommendedState();
-
-}
-
-class RecommendedState extends State<RecommendedPage> {
-
-  String endPtData = "Test Data ";
-
-  @override
-  Widget build(BuildContext context){
-    return new Scaffold(
-        appBar: new AppBar(title: Text('Recommended Page')),
-        body: new Center(
-            child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new RaisedButton(
-                      child: new Text("Get endpoint data"),
-                      onPressed: getTestEndpointData
-                  ),
-                  new Text(endPtData)]
-            )
-        )
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'Recommended Songs',
+      theme: new ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: new SpecificWords(),
     );
   }
+}
 
 
-  //asynchronous call to hit the test endpoint
-  // it's asynchronous because it might take a while
-  // and we don't want the app to crash in the time
-  // it takes to gather the data
-  Future<String> getTestEndpointData() async{
-    http.Response response = await http.get("http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/database",
-        headers: {
-          "Accept" : "application/json"
+class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPair for Song
+  final _recs = <Song>[];
+  final List<Song> _liked = new List<Song>();
+  final List<Song> _disliked = new List<Song>();
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+  bool isLikes = false;
+
+  final RestDatasource rest = new RestDatasource();
+
+  @override
+  Widget build(BuildContext context) {
+//    collectSongs();
+    return Scaffold (
+      appBar: AppBar(
+        title: Text('Song Recommendations'),
+        actions: <Widget>[
+          new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _resetAndPushRated),
+        ],
+      ),
+      body: _buildSuggestions(),
+    );
+  }
+  void _resetAndPushRated(){
+    isLikes = false;
+    _pushRated();
+  } // Resets page so opening Likes/Dislikes from History always opens at Likes
+  Widget _buildSuggestions() {
+    this.collectSongs();
+    return ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        // The itemBuilder callback is called once per suggested word pairing,
+        // and places each suggestion into a ListTile row.
+        // For even rows, the function adds a ListTile row for the word pairing.
+        // For odd rows, the function adds a Divider widget to visually
+        // separate the entries. Note that the divider may be difficult
+        // to see on smaller devices.
+        itemBuilder: (context, i) {
+          // Add a one-pixel-high divider widget before each row in theListView.
+          if (i.isOdd) return Divider();
+
+          // The syntax "i ~/ 2" divides i by 2 and returns an integer result.
+          // For example: 1, 2, 3, 4, 5 becomes 0, 1, 1, 2, 2.
+          // This calculates the actual number of word pairings in the ListView,
+          // minus the divider widgets.
+          final index = i ~/ 2;
+          // If you've reached the end of the available word pairings...
+          if (index >= _recs.length) {
+            // ...then generate 10 more and add them to the suggestions list.
+//            this.collectSongs();
+          }
+
+          return _buildRow(_recs[index]);
         }
     );
-
-    //print(response.body);
-    Map userMap = json.decode(response.body);
-    var user = new User.fromJson(userMap);
-    //print('User name: ${user.username}');
-    //print(userMap);
-    setState((){
-      endPtData = 'DATA RECIEVED FROM ENDPOINT\n';
-//          'User name: ${user.username}\n'
-//          'LastFM name: ${user.lastfm_name}\n'
-//          'Join Date: ${user.join_date}\n'
-//          'Email Address: ${user.email}\n';
-      //endPtData = user.toString();
-      //endPtData = userMap.toString();
-    });
-
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+//    this.collectSongs();
+  }
+
+  void collectSongs() async{
+    List<Song> nextSongs = await rest.getRecommendations(23);
+    _recs.addAll(nextSongs);
+  }
+
+  Widget _buildRow(Song song) {
+    final bool liked = _liked.contains(song);
+    final bool disliked = _disliked.contains(song);
+    return ListTile(
+        title: Text(
+          (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
+          style: _biggerFont,
+        ),
+        trailing: new Row(
+            children: <Widget>[
+              new IconButton(
+                  icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
+                    color: liked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (disliked) {
+                      _disliked.remove(song); // if currently disliked, remove from dislikes
+                    }
+
+                    if (liked){
+                      _liked.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _liked.add(song);
+                    }
+                  }); }
+              ),
+              new IconButton(
+                  icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
+                    color: disliked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (liked) {
+                      _liked.remove(song); // if currently liked, remove from likes
+                    }
+
+                    if (disliked){
+                      _disliked.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _disliked.add(song); // else add to dislikes
+                    }
+                  }); }
+              ),
+            ],
+            mainAxisSize: MainAxisSize.min)
+    );
+  }
+
+  void _pushRated() {
+    isLikes = !isLikes;
+
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = isLikes ?    _liked.map((Song song) { return _buildRow(song); }, )
+              : _disliked.map((Song song) { return _buildRow(song); }, ) ;
+          final List<Widget> divided = ListTile
+              .divideTiles(
+            context: context,
+            tiles: tiles,
+          )
+              .toList();
+
+          return new Scaffold(
+            appBar: new AppBar(
+              title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
+              actions: <Widget>[
+                new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
+              ],
+            ),
+            body: new ListView(children: divided),
+          );
+        },
+      ),
+    );
+  } // end _pushRated
+  void _popAndPushRated(){
+    Navigator.pop(context);
+    _pushRated();
+  }
+} // end RandomWordsState
+
+
+class SpecificWords extends StatefulWidget {
+  @override
+  RandomWordsState createState() => new RandomWordsState();
 }
+
+
+
+
+
