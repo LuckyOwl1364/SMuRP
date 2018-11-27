@@ -62,9 +62,18 @@ def follows():
 # login method logs in a user by checking the database if the user exists
 # and if the password is correct
 # takes in the parameters username and password
-# utilizes the requests library
-@app.route("/login")
-def login():
+@app.route("/loginuser")
+def loginuser():
     username = request.args.get('username')
     password = request.args.get('password')
-    return login(username, password)
+    output = login(username, password)
+    if output[0] is "True":
+        #create session so user is logged in
+        session['logged_in'] = True
+    else:
+        flash('wrong password!')
+
+# logs a user out by ending the session for CURRENT user
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
