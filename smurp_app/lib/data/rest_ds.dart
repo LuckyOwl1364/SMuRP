@@ -63,7 +63,7 @@ class RestDatasource {
 
   Future<List<Song>> getDislikedSongs(int user_id) {
     print("~~~~ About to get_disliked");
-    return _netUtil.get(RECOMMEND_URL + "?user_id=$user_id")
+    return _netUtil.get(LISTENEDSONGS_URL + "?user_id=$user_id")
         .then((dynamic res) {
       print(res.toString());
 //          if(res["error"]) throw new Exception(res["error_msg"]);

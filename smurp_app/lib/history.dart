@@ -107,12 +107,15 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                   onPressed: () { setState(() {
                     if (disliked) {
                       _dislikes.remove(song); // if currently disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
                     if (liked){
                       _likes.remove(song); // if already disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
                     else{
                       _likes.add(song);
+                      // TODO: Tell Database to add song
                     }
                   }); }
               ),
@@ -123,12 +126,15 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                   onPressed: () { setState(() {
                     if (liked) {
                       _likes.remove(song); // if currently liked, remove from likes
+                      // TODO: Tell Database to remove song
                     }
                     if (disliked){
                       _dislikes.remove(song); // if already disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
                     else{
                       _dislikes.add(song); // else add to dislikes
+                      // TODO: Tell Database to remove song
                     }
                   }); }
               ),

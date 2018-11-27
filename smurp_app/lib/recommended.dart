@@ -6,9 +6,9 @@ import 'package:smurp_app/models/song.dart';
 import 'package:smurp_app/data/rest_ds.dart';
 import 'dart:async';
 
-void main() => runApp(MyApp());
+void main() => runApp(RecommendedPage());
 
-class MyApp extends StatelessWidget {
+class RecommendedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -37,17 +37,11 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     return Scaffold (
       appBar: AppBar(
         title: Text('Song Recommendations'),
-        actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _resetAndPushRated),
-        ],
       ),
       body: _buildSuggestions(),
     );
   }
-  void _resetAndPushRated(){
-    isLikes = false;
-    _pushRated();
-  } // Resets page so opening Likes/Dislikes from History always opens at Likes
+
   Widget _buildSuggestions() {
     this.collectSongs();
     return ListView.builder(
@@ -107,13 +101,16 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                   onPressed: () { setState(() {
                     if (disliked) {
                       _disliked.remove(song); // if currently disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
 
                     if (liked){
                       _liked.remove(song); // if already disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
                     else{
                       _liked.add(song);
+                      // TODO: Tell Database to add song
                     }
                   }); }
               ),
@@ -124,13 +121,16 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                   onPressed: () { setState(() {
                     if (liked) {
                       _liked.remove(song); // if currently liked, remove from likes
+                      // TODO: Tell Database to remove song
                     }
 
                     if (disliked){
                       _disliked.remove(song); // if already disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
                     else{
                       _disliked.add(song); // else add to dislikes
+                      // TODO: Tell Database to remove song
                     }
                   }); }
               ),
@@ -139,38 +139,6 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
     );
   }
 
-  void _pushRated() {
-    isLikes = !isLikes;
-
-    Navigator.of(context).push(
-      new MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = isLikes ?    _liked.map((Song song) { return _buildRow(song); }, )
-              : _disliked.map((Song song) { return _buildRow(song); }, ) ;
-          final List<Widget> divided = ListTile
-              .divideTiles(
-            context: context,
-            tiles: tiles,
-          )
-              .toList();
-
-          return new Scaffold(
-            appBar: new AppBar(
-              title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
-              actions: <Widget>[
-                new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
-              ],
-            ),
-            body: new ListView(children: divided),
-          );
-        },
-      ),
-    );
-  } // end _pushRated
-  void _popAndPushRated(){
-    Navigator.pop(context);
-    _pushRated();
-  }
 } // end RandomWordsState
 
 

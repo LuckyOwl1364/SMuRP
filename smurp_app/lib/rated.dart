@@ -13,11 +13,7 @@ import 'package:smurp_app/models/song.dart';
 import 'package:smurp_app/data/rest_ds.dart';
 
 
-void main() {
-  runApp(new MaterialApp(
-    home: new RatedPage(),
-  ));
-}
+void main() => runApp(RatedPage());
 
 class RatedPage extends StatefulWidget {
   @override
@@ -108,7 +104,7 @@ class RatedPageState extends State<RatedPage> {
     final bool disliked = _dislikes.contains(song);
     return ListTile(
         title: Text(
-          (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
+          (song.artist + " - " + song.title),
           style: _biggerFont,
         ),
         trailing: new Row(
@@ -120,13 +116,16 @@ class RatedPageState extends State<RatedPage> {
                   onPressed: () { setState(() {
                     if (disliked) {
                       _dislikes.remove(song); // if currently disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
 
                     if (liked){
                       _likes.remove(song); // if already disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
                     else{
                       _likes.add(song);
+                      // TODO: Tell Database to add song
                     }
                   }); }
               ),
@@ -137,171 +136,21 @@ class RatedPageState extends State<RatedPage> {
                   onPressed: () { setState(() {
                     if (liked) {
                       _likes.remove(song); // if currently liked, remove from likes
+                      // TODO: Tell Database to remove song
                     }
 
                     if (disliked){
                       _dislikes.remove(song); // if already disliked, remove from dislikes
+                      // TODO: Tell Database to remove song
                     }
                     else{
                       _dislikes.add(song); // else add to dislikes
+                      // TODO: Tell Database to remove song
                     }
                   }); }
               ),
             ],
             mainAxisSize: MainAxisSize.min)
     );
-  }
-} //end of FriendsPageState
-
-//this widget is what should be under the first tab
-class FirstWidget extends StatefulWidget {
-  @override
-  FollowingPageState createState() => new FollowingPageState();
-}
-//this is the state that fills the first widget
-class FollowingPageState extends State<FirstWidget> {
-  String followingData = "Testing Following. . . Did it work? ";
-  List followingList;
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
-
-  @override
-  void initState() {
-    super.initState();
-    this.getData();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new ListView.builder(
-        itemCount: followingList == null ? 0 : followingList.length,
-        itemBuilder: (BuildContext context, int index){
-          return new Card(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                    child: Padding(
-                      padding: new EdgeInsets.all(regularPadding),
-                      child: new Text(
-                          followingList[index]['User name'] == null ? 'null value' : followingList[index]['User name'],
-                          textAlign: TextAlign.start),
-                    )),
-                Padding(
-                  padding: new EdgeInsets.symmetric(
-                      horizontal: regularPadding, vertical: halfPadding),
-                  child: RaisedButton(
-                    onPressed: unfollow,
-                    child: const Text('Unfollow'),
-                    color: Colors.lightBlue,
-                    textColor: Colors.white,
-                  ),
-                )
-              ],//end widget
-            ),//end row
-          );//end card
-        },//end itembuilder
-      ),//end listview builder
-    );
-  }
-
-  //async call to get data from endpoint
-  Future<String> getData() async {
-    http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id=3",
-        headers: {"Accept": "application/json"});
-
-    setState(() {
-      followingList = json.decode(response.body);
-      followingData = 'Successfully grabbed some data!';
-
-      print(followingData);
-    });
-  }
-
-  void unfollow() {
-    setState(() {
-      //hit the endpoint
-      followingData += " Unfollowed";
-    });
-  }
-}//end of first widget (following) state
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//this widget is what should be under the second tab
-class SecondWidget extends StatefulWidget {
-  @override
-  FollowersPageState createState() => new FollowersPageState();
-}
-//this is the state for the second widget tab (followers)
-class FollowersPageState extends State<SecondWidget> {
-  String followerData = "Testing Followers. . . Did it work? ";
-  List followerList;
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
-
-  @override
-  void initState() {
-    super.initState();
-    this.getData();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new ListView.builder(
-        itemCount: followerList == null ? 0 : followerList.length,
-        itemBuilder: (BuildContext context, int index){
-          return new Card(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                    child: Padding(
-                      padding: new EdgeInsets.all(regularPadding),
-                      child: new Text(
-                          followerList[index]['User name'] == null ? 'null value' : followerList[index]['User name'],
-                          textAlign: TextAlign.start),
-                    )),
-                Padding(
-                  padding: new EdgeInsets.symmetric(
-                      horizontal: regularPadding, vertical: halfPadding),
-                  child: RaisedButton(
-                    onPressed: follow,
-                    child: const Text('Follow'),
-                    color: Colors.lightBlue,
-                    textColor: Colors.white,
-                  ),
-                )
-              ],//end widget
-            ),//end row
-          );//end card
-        },//end itembuilder
-      ),//end listview builder
-    );
-  }
-
-  //async call to get data from endpoint
-  Future<String> getData() async {
-    http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id=3",
-        headers: {"Accept": "application/json"});
-
-    setState(() {
-      followerList = json.decode(response.body);
-      followerData = 'Successfully grabbed some data!';
-
-      print(followerData);
-    });
-  }
-
-  void follow() {
-    setState(() {
-      //hit the endpoint
-      followerData += " followed";
-    });
   }
 }
