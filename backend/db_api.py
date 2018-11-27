@@ -492,8 +492,16 @@ def add_follows(user_id1, user_id2):
     else:
         # one or both users do not exist
         return "ERROR: Users do not exist."
-
-
+    
+#User 1 trying to unfollow User 2
+def delete_follows(user_id1, user_id2):
+    existing_relationship = db.session.query(Follows).filter_by(follower_id=user_id1).filter_by(followed_id=user_id2).first()
+	if existing_relationship:
+	    db.session.delete(existing_relationship)
+	    return "unfollow successful"
+	else:
+	    return "Error: This relationship does not exist"
+    
 #gets followers of a user               
 def get_followers(user_id):
     user = db.session.query(User).get(user_id)
