@@ -282,6 +282,41 @@ def get_feed(user_id, user_only):
     sorted_feed = sorted(listens_and_rates, key=lambda k: k["datetime"])
     return json.dumps(sorted_feed[0:30])
 
+def get_dislikes(user_id):
+    user = db.session.query(User).get(user_id)
+    rates = db.session.query(Rated).filter_by(user_id=user_id).filter_by(rated=0).order_by(Rated.rating_time.desc())
+    dislikes = []
+    for rate in rates:
+        username = db.session.query(User).get(rate.user_id)
+        song = db.session.query(Song).get(rate.song_id)
+        dislikes_dict = {
+            "username": username.username,
+            "song_id": song.song_id,
+            "song_title": song.song_title,
+            "artist": song.song_by[0].artist_name,
+            "rating": rate.rated
+        }
+        dislikes.append(dislikes_dict)
+    return json.dumps(dislikes)
+
+
+def get_likes(user_id):
+    user = db.session.query(User).get(user_id)
+    rates = db.session.query(Rated).filter_by(user_id=user_id).filter_by(rated=1).order_by(Rated.rating_time.desc())
+    likes = []
+    for rate in rates:
+        username = db.session.query(User).get(rate.user_id)
+        song = db.session.query(Song).get(rate.song_id)
+        likes_dict = {
+            "username": username.username,
+            "song_id": song.song_id,
+            "song_title": song.song_title,
+            "artist": song.song_by[0].artist_name,
+            "rating": rate.rated
+        }
+        likes.append(likes_dict)
+    return json.dumps(likes)
+
 
 def add_lastfm_user(lastfm_name):
     existing_lastfm_user = db.session.query(User).filter_by(lastfm_name=lastfm_name).first()
