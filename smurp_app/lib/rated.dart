@@ -1,47 +1,72 @@
-// Based on: https://flutter.io/docs/catalog/samples/tabbed-app-bar
-
+import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:smurp_app/history.dart';
+import 'package:smurp_app/models/user.dart';
+import 'package:smurp_app/utils/endpointDemo.dart';
+import 'package:smurp_app/feed.dart';
+import 'package:smurp_app/profile.dart';
+import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/models/song.dart';
+import 'package:smurp_app/data/rest_ds.dart';
 
 
-class TabbedAppBarSample extends StatelessWidget {
-  final List<Song> _likes = new List<Song>();
-  final List<Song> _dislikes = new List<Song>();
+void main() {
+  runApp(new MaterialApp(
+    home: new RatedPage(),
+  ));
+}
+
+class RatedPage extends StatefulWidget {
+  @override
+  RatedPageState createState() => new RatedPageState();
+}
+
+class RatedPageState extends State<RatedPage> {
+  double regularPadding = 8.0;
+  double halfPadding = 4.0;
+  double doublePadding = 16.0;
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  final _likes = <Song>[];
+  final _dislikes = <Song>[];
+
+  final RestDatasource rest = new RestDatasource();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: choices.length,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Rated Songs'),
-            bottom: TabBar(
-              isScrollable: true,
-              tabs: choices.map((Choice choice) {
-                return Tab(
-                  text: choice.title,
-                );
-              }).toList(),
+    return new MaterialApp(
+      title: "Rated page",
+      home: new DefaultTabController(
+        length:2,
+        child:  new Scaffold(
+            appBar: new AppBar(
+                title: new Text("Rated Songs"),
+                //creating tabs
+                bottom: new TabBar(
+                    tabs: <Widget>[
+                      new Tab(text: "Liked Songs"),
+                      new Tab(text: "Disliked Songs"),
+                    ]//end of widget
+                )//end of tab bar
             ),
-          ),
-          body: TabBarView(
-            children: choices.map((Choice choice) {
-              return Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: _buildRated(choice),
-              );
-            }).toList(),
-          ),
+            body: new TabBarView(
+                children: <Widget>[
+                  _buildSuggestions(true),  // with grabLikes == true
+                  _buildSuggestions(false), // with grabLikes == false
+                ]
+            )
         ),
       ),
     );
-  }
+  } //build
 
-  Widget _buildRated(Choice choice) {
+
+  Widget _buildSuggestions(bool grabLikes) {
+    this.collectSongs(grabLikes);
     return ListView.builder(
-        List<Song> rated = choice._rated;
         padding: const EdgeInsets.all(16.0),
         // The itemBuilder callback is called once per suggested word pairing,
         // and places each suggestion into a ListTile row.
@@ -59,54 +84,224 @@ class TabbedAppBarSample extends StatelessWidget {
           // minus the divider widgets.
           final index = i ~/ 2;
           // If you've reached the end of the available word pairings...
-          if (index >= _rated.length) {
-            // ...then generate 10 more and add them to the suggestions list.
-            collectRated();
-          }
-          return _buildRow(_rated[index]);
+
+          return _buildRow( ((grabLikes) ? _likes[index] : _dislikes[index]), grabLikes);
         }
     );
   }
 
-}
 
-class Choice {
-  Choice({this.title,this.rated});
 
-  final String title;
-  List<Song> rated;
-}
-
-const List<Choice> choices = const <Choice>[
-  Choice(title: 'Likes', rated: ),
-  Choice(title: 'Dislikes', rated: ),
-];
-
-class ChoiceCard extends StatelessWidget {
-  Widget build(BuildContext context) {
-        final Iterable<ListTile> tiles = isLikes ?    _likes.map((Song song) { return _buildRow(song); }, )
-            : _dislikes.map((Song song) { return _buildRow(song); }, ) ;
-        final List<Widget> divided = ListTile
-            .divideTiles(
-          context: context,
-          tiles: tiles,
-        )
-            .toList();
-
-        return new Scaffold(
-          appBar: new AppBar(
-            title: isLikes ? const Text('Liked Songs') : const Text('Disliked Songs'),
-            actions: <Widget>[
-              new IconButton(icon: const Icon(Icons.thumbs_up_down), onPressed: _popAndPushRated),
-            ],
-          ),
-          body: new ListView(children: divided),
-        );
-      },
-    )
+  void collectSongs(bool grabLikes) async{
+    if (grabLikes){
+      List<Song> nextSongs = await rest.getLikedSongs(23);
+      _likes.addAll(nextSongs);
+    }
+    else{
+      List<Song> nextSongs = await rest.getDislikedSongs(23);
+      _dislikes.addAll(nextSongs);
+    }
   }
-}
 
-void main() {
-  runApp(TabbedAppBarSample());
+  Widget _buildRow(Song song, bool grabLikes) {
+    final bool liked = _likes.contains(song);
+    final bool disliked = _dislikes.contains(song);
+    return ListTile(
+        title: Text(
+          (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
+          style: _biggerFont,
+        ),
+        trailing: new Row(
+            children: <Widget>[
+              new IconButton(
+                  icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
+                    color: liked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (disliked) {
+                      _dislikes.remove(song); // if currently disliked, remove from dislikes
+                    }
+
+                    if (liked){
+                      _likes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _likes.add(song);
+                    }
+                  }); }
+              ),
+              new IconButton(
+                  icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
+                    color: disliked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (liked) {
+                      _likes.remove(song); // if currently liked, remove from likes
+                    }
+
+                    if (disliked){
+                      _dislikes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _dislikes.add(song); // else add to dislikes
+                    }
+                  }); }
+              ),
+            ],
+            mainAxisSize: MainAxisSize.min)
+    );
+  }
+} //end of FriendsPageState
+
+//this widget is what should be under the first tab
+class FirstWidget extends StatefulWidget {
+  @override
+  FollowingPageState createState() => new FollowingPageState();
+}
+//this is the state that fills the first widget
+class FollowingPageState extends State<FirstWidget> {
+  String followingData = "Testing Following. . . Did it work? ";
+  List followingList;
+  double regularPadding = 8.0;
+  double halfPadding = 4.0;
+  double doublePadding = 16.0;
+
+  @override
+  void initState() {
+    super.initState();
+    this.getData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new ListView.builder(
+        itemCount: followingList == null ? 0 : followingList.length,
+        itemBuilder: (BuildContext context, int index){
+          return new Card(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                    child: Padding(
+                      padding: new EdgeInsets.all(regularPadding),
+                      child: new Text(
+                          followingList[index]['User name'] == null ? 'null value' : followingList[index]['User name'],
+                          textAlign: TextAlign.start),
+                    )),
+                Padding(
+                  padding: new EdgeInsets.symmetric(
+                      horizontal: regularPadding, vertical: halfPadding),
+                  child: RaisedButton(
+                    onPressed: unfollow,
+                    child: const Text('Unfollow'),
+                    color: Colors.lightBlue,
+                    textColor: Colors.white,
+                  ),
+                )
+              ],//end widget
+            ),//end row
+          );//end card
+        },//end itembuilder
+      ),//end listview builder
+    );
+  }
+
+  //async call to get data from endpoint
+  Future<String> getData() async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id=3",
+        headers: {"Accept": "application/json"});
+
+    setState(() {
+      followingList = json.decode(response.body);
+      followingData = 'Successfully grabbed some data!';
+
+      print(followingData);
+    });
+  }
+
+  void unfollow() {
+    setState(() {
+      //hit the endpoint
+      followingData += " Unfollowed";
+    });
+  }
+}//end of first widget (following) state
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//this widget is what should be under the second tab
+class SecondWidget extends StatefulWidget {
+  @override
+  FollowersPageState createState() => new FollowersPageState();
+}
+//this is the state for the second widget tab (followers)
+class FollowersPageState extends State<SecondWidget> {
+  String followerData = "Testing Followers. . . Did it work? ";
+  List followerList;
+  double regularPadding = 8.0;
+  double halfPadding = 4.0;
+  double doublePadding = 16.0;
+
+  @override
+  void initState() {
+    super.initState();
+    this.getData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new ListView.builder(
+        itemCount: followerList == null ? 0 : followerList.length,
+        itemBuilder: (BuildContext context, int index){
+          return new Card(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                    child: Padding(
+                      padding: new EdgeInsets.all(regularPadding),
+                      child: new Text(
+                          followerList[index]['User name'] == null ? 'null value' : followerList[index]['User name'],
+                          textAlign: TextAlign.start),
+                    )),
+                Padding(
+                  padding: new EdgeInsets.symmetric(
+                      horizontal: regularPadding, vertical: halfPadding),
+                  child: RaisedButton(
+                    onPressed: follow,
+                    child: const Text('Follow'),
+                    color: Colors.lightBlue,
+                    textColor: Colors.white,
+                  ),
+                )
+              ],//end widget
+            ),//end row
+          );//end card
+        },//end itembuilder
+      ),//end listview builder
+    );
+  }
+
+  //async call to get data from endpoint
+  Future<String> getData() async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id=3",
+        headers: {"Accept": "application/json"});
+
+    setState(() {
+      followerList = json.decode(response.body);
+      followerData = 'Successfully grabbed some data!';
+
+      print(followerData);
+    });
+  }
+
+  void follow() {
+    setState(() {
+      //hit the endpoint
+      followerData += " followed";
+    });
+  }
 }
