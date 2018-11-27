@@ -4,8 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smurp_app/models/user.dart';
 import 'package:smurp_app/history.dart';
-import 'package:smurp_app/models/user.dart';
-import 'package:smurp_app/utils/endpointDemo.dart';
+import 'package:smurp_app/rated.dart';
 import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
@@ -96,7 +95,7 @@ class FeedState extends State<FeedPage> {
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
-                          builder: (context) => new MyApp()));
+                          builder: (context) => new RatedPage()));
                 }, //code to navigate to appropriate screen
               ),
               ListTile(
