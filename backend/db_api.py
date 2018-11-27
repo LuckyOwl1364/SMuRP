@@ -342,7 +342,7 @@ def login(username, password):
                 "user_id": user.user_id,
                 "username": user.username,
                 "lastfm_name": user.lastfm_name,
-                "join_date": user.join_date
+                "join_date": user.join_date.strftime("%B %d, %Y")
             }
         )
         return [True, "Success", user_json]
