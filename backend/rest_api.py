@@ -89,7 +89,17 @@ def getLikedSongs():
 def getDislikedSongs():
     user_id = request.args.get('user_id')
     return get_dislikes(user_id)
-        
-    
 
-    
+# Likes or unlikes a song, returning either Success or an error message.
+@app.route("/like")
+def like():
+    user_id = request.args.get('user_id')
+    song_id = request.args.get('song_id')
+    return like(user_id, song_id)
+
+# Dislikes or undislikes a song, returning either Success or an error message.
+@app.route("/dislike")
+def dislike():
+    user_id = request.args.get('user_id')
+    song_id = request.args.get('song_id')
+    return like(user_id, song_id)
