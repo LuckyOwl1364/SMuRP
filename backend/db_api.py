@@ -615,3 +615,23 @@ def create_ratings():
             dislike(user_id,song_id)
         else:
             like(user_id,song_id)
+
+def get_rec_info():
+    ratings = []
+    users = []
+    songs = []
+
+    ratings_query = db.session.query(Rated).all()
+    users_query = db.session.query(User).all()
+    song_query = db.session(Song).all()
+
+    for r in ratings_query:
+        ratings.append([r.user_id, r.song_id, r.rated, r.rating_time])
+
+    for u in users_query:
+        users.append([u.user_id])
+
+    for s in song_query:
+        songs.append([s.song_id, s.song_title])
+
+    return [ratings, users, songs]
