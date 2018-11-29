@@ -125,15 +125,43 @@ class FeedState extends State<FeedPage> {
             return new Card(
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
+                children : <Widget>[
                   Expanded(
-                      child: Padding(
-                        padding: new EdgeInsets.all(doublePadding),
-                        child: new Text(
-                            feedList[index]['username'] == null ? 'null value ' + index.toString() + ' recently listened to '+feedList[index]['song_title'] + ' by ' + feedList[index]['artist']
-                                : feedList[index]['username'] + ' recently listened to '+feedList[index]['song_title'] + ' by ' + feedList[index]['artist'],
-                            textAlign: TextAlign.start),
-                      )),
+                    child: Padding(
+                      padding: new EdgeInsets.all(doublePadding),
+                        child : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children : [
+                            Text(
+                                feedList[index]['username'] == null ? 'null value ' + index.toString() + (feedList[index]['rating'] == 1 ? ' liked ' : ' recently listened to ')
+                                          : feedList[index]['username'] + (feedList[index]['rating'] == 1 ? ' liked ' : ' recently listened to '),
+                                textAlign: TextAlign.start,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                                feedList[index]['song_title'] + ' by ' + feedList[index]['artist'],
+                                textAlign: TextAlign.start),
+
+                          ]//end of column children
+                        )//end of column
+                    ),//end of padding
+                  ), //end of expanded
+                   Padding(
+                      padding: new EdgeInsets.symmetric(
+                          horizontal: halfPadding, vertical: halfPadding),
+                      child: IconButton(
+                        icon: const Icon(Icons.thumb_up),
+                        onPressed: null,
+                      ),
+                  ),
+                  Padding(
+                    padding: new EdgeInsets.symmetric(
+                        horizontal: halfPadding, vertical: halfPadding),
+                    child: IconButton(
+                      icon: const Icon(Icons.thumb_down),
+                      onPressed: null,
+                    ),
+                  )
                 ],//end widget
               ),//end row
             );//end card

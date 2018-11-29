@@ -39,10 +39,21 @@ class ProfileState extends State<ProfilePage> {
                     Expanded(
                         child: Padding(
                           padding: new EdgeInsets.all(doublePadding),
-                          child: new Text(
-                              profileList[index]['username'] == null ? 'null value ' + index.toString() + ' recently listened to '+profileList[index]['song_title'] + ' by ' + profileList[index]['artist']
-                                  : profileList[index]['username'] + ' recently listened to '+profileList[index]['song_title'] + ' by ' + profileList[index]['artist'],
-                              textAlign: TextAlign.start),
+                            child : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children : [
+                                  Text(
+                                    profileList[index]['username'] == null ? 'null value ' + index.toString() + (profileList[index]['rating'] == 1 ? ' liked ' : ' recently listened to ')
+                                        : profileList[index]['username'] + (profileList[index]['rating'] == 1 ? ' liked ' : ' recently listened to '),
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                      profileList[index]['song_title'] + ' by ' + profileList[index]['artist'],
+                                      textAlign: TextAlign.start),
+
+                                ]//end of column children
+                            )//end of column
                         )),
                   ],//end widget
                 ),//end row
@@ -57,7 +68,7 @@ class ProfileState extends State<ProfilePage> {
   // it takes to gather the data
   Future<String> getProfileData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id=1",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id=1&user_only=true",
         headers: {"Accept": "application/json"});
 
     setState(() {
