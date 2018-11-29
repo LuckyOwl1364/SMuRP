@@ -59,6 +59,15 @@ def follows():
     user_id2 = request.args.get('user_id2')
     return add_follows(user_id1, user_id2)
 
+#unfollows calls the method delete_follows from db_api
+#deletes a relationship in the database where
+#user_id1 unfollows user_id2
+@app.route("/unfollows")
+def unfollows():
+    user_id1 = request.args.get('user_id1')
+	user_id2 = requests.args.get('user_id2')
+	return delete_follows(user_id1, user_id2)
+
 # login method logs in a user by checking the database if the user exists
 # and if the password is correct
 # takes in the parameters username and password
