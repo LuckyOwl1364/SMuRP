@@ -22,31 +22,38 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedState extends State<FeedPage> {
-  String endPtData = "Test Data ";
-  List data;
+  String endPtData = "Endpoint Data Username";
+  String feedData = "Testing Feed. . . Did it work? ";
+  List feedList;
   double regularPadding = 8.0;
   double halfPadding = 4.0;
   double doublePadding = 16.0;
 
-  //async call to get data from endpoint
-  Future<String> getData() async {
-    http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/database",
-        headers: {"Accept": "application/json"});
-
-    setState(() {
-      Map userMap = json.decode(response.body);
-      var user = new User.fromJson(userMap);
-
-//      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
-//          'User name: ${user.username}\n'
-//          'LastFM name: ${user.lastfm_name}\n';
-
-      endPtData = '${user.username}';
-
-      print(endPtData);
-    });
+  @override
+  void initState() {
+    super.initState();
+    this.getFeedData();
   }
+
+//  //async call to get data from endpoint
+//  Future<String> getData() async {
+//    http.Response response = await http.get(
+//        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/database",
+//        headers: {"Accept": "application/json"});
+//
+//    setState(() {
+//      Map userMap = json.decode(response.body);
+//      var user = new User.fromJson(userMap);
+//
+////      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
+////          'User name: ${user.username}\n'
+////          'LastFM name: ${user.lastfm_name}\n';
+//
+//      endPtData = '${user.username}';
+//
+//      print(endPtData);
+//    });
+//  }
 
   @override
   Widget build(BuildContext context){
@@ -132,17 +139,25 @@ class FeedState extends State<FeedPage> {
             ],
           ),
         ),
-        body: new Center(
-            child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        body: new ListView.builder(
+          itemCount: feedList == null ? 0 : feedList.length,
+          itemBuilder: (BuildContext context, int index){
+            return new Card(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  new RaisedButton(
-                      child: new Text("Get endpoint data"),
-                      onPressed: getTestEndpointData
-                  ),
-                  new Text(endPtData)]
-            )
-        )
+                  Expanded(
+                      child: Padding(
+                        padding: new EdgeInsets.all(doublePadding),
+                        child: new Text(
+                            feedList[index]['username'] == null ? 'null value' : feedList[index]['username'] + ' recently ',
+                            textAlign: TextAlign.start),
+                      )),
+                ],//end widget
+              ),//end row
+            );//end card
+          },//end itembuilder
+        ),//end listview builder
     );
   }
 
@@ -173,6 +188,20 @@ class FeedState extends State<FeedPage> {
       //endPtData = userMap.toString();
     });
 
+  }
+
+  //async call to get feed data from endpoint
+  Future<String> getFeedData() async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id=2",
+        headers: {"Accept": "application/json"});
+
+    setState(() {
+      feedList = json.decode(response.body);
+      feedData = 'Successfully grabbed some data!';
+
+      print(feedData);
+    });
   }
 
 }
