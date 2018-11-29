@@ -150,7 +150,8 @@ class FeedState extends State<FeedPage> {
                       child: Padding(
                         padding: new EdgeInsets.all(doublePadding),
                         child: new Text(
-                            feedList[index]['username'] == null ? 'null value' : feedList[index]['username'] + ' recently ',
+                            feedList[index]['username'] == null ? 'null value ' + index.toString() + ' recently listened to '+feedList[index]['song_title'] + ' by ' + feedList[index]['artist']
+                                : feedList[index]['username'] + ' recently listened to '+feedList[index]['song_title'] + ' by ' + feedList[index]['artist'],
                             textAlign: TextAlign.start),
                       )),
                 ],//end widget
@@ -193,7 +194,7 @@ class FeedState extends State<FeedPage> {
   //async call to get feed data from endpoint
   Future<String> getFeedData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id=2",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id=1",
         headers: {"Accept": "application/json"});
 
     setState(() {
