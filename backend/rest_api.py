@@ -77,7 +77,13 @@ def loginuser():
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
-    
+
+# returns a list of liked songs for the specified user
+@app.route("/likedsongs")
+def getLikedSongs():
+    user_id = request.args.get('user_id')
+    return get_likes(user_id)
+
 # returns a list of disliked songs for the specified user    
 @app.route("/dislikedsongs") 
 def getDislikedSongs():
