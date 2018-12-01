@@ -115,13 +115,13 @@ class ProfileState extends State<ProfilePage> {
   // and we don't want the app to crash in the time
   // it takes to gather the data
   Future<String> getUserData() async {
-    http.Response EPresponse = await http.get(
+    http.Response response = await http.get(
         "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/get_user?user_id=3",
         headers: {"Accept": "application/json"});
 
     setState(() {
-      userList = json.decode(EPresponse.body);
-      userData = userList['username'];
+      userList = json.decode(response.body);
+      userData = userList['username'] == null ? 'null username' : userList['username'];
 
       print(userData);
     });
