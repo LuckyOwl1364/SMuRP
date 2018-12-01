@@ -110,7 +110,7 @@ class FollowingPageState extends State<FirstWidget> {
                           horizontal: regularPadding, vertical: halfPadding),
                       child: RaisedButton(
                         onPressed: (){
-                          unfollow();
+                          unfollow(user_id, followingList[index]['user_id']);
                         },
                         child: new Text('Unfollow'),
                         color: Colors.grey,
@@ -139,10 +139,25 @@ class FollowingPageState extends State<FirstWidget> {
     });
   }
 
-  void unfollow() {
+  void unfollow(int userID_1, int userID_2) {
+      if(userID_1 == null || userID_2 == null){
+        print("ERROR, one of the user id's provided was invalid.");
+      } else {
+        hitUnfollowsEndpoint(userID_1, userID_2);
+      }
+  }
+
+  //async call to hit unfollows endpoint
+  Future<String> hitUnfollowsEndpoint(int userID_1, int userID_2) async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/unfollows?user_id1=" +
+            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+        headers: {"Accept": "application/json"});
+
     setState(() {
-      //hit the endpoint
-      followingData += " Unfollowed";
+      var unfollowResponse = json.decode(response.body);
+      print(unfollowResponse.toString());
+      followingData += " unfollowed";
     });
   }
 }//end of first widget (following) state
@@ -193,7 +208,10 @@ class FollowersPageState extends State<SecondWidget> {
                   padding: new EdgeInsets.symmetric(
                       horizontal: regularPadding, vertical: halfPadding),
                   child: RaisedButton(
-                    onPressed: (){follow(user_id,followerList[index]['user_id']);},
+                    onPressed: (){
+                      checkFollowing(followerList[index]['user_id']) ? unfollow(user_id,followerList[index]['user_id'])
+                      :follow(user_id,followerList[index]['user_id']);
+                    },
                     child: new Text(checkFollowing(followerList[index]['user_id']) ? 'Unfollow' : 'Follow'),
                     color: checkFollowing(followerList[index]['user_id']) ? Colors.grey : Colors.lightBlue,
                     textColor: Colors.white,
@@ -255,6 +273,28 @@ class FollowersPageState extends State<SecondWidget> {
       var followResponse = json.decode(response.body);
       print(followResponse.toString());
       followerData += " followed";
+    });
+  }
+
+  void unfollow(int userID_1, int userID_2) {
+    if(userID_1 == null || userID_2 == null){
+      print("ERROR, one of the user id's provided was invalid.");
+    } else {
+      hitUnfollowsEndpoint(userID_1, userID_2);
+    }
+  }
+
+  //async call to hit unfollows endpoint
+  Future<String> hitUnfollowsEndpoint(int userID_1, int userID_2) async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/unfollows?user_id1=" +
+            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+        headers: {"Accept": "application/json"});
+
+    setState(() {
+      var unfollowResponse = json.decode(response.body);
+      print(unfollowResponse.toString());
+      followingData += " unfollowed";
     });
   }
 
