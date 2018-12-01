@@ -65,8 +65,8 @@ def follows():
 @app.route("/unfollows")
 def unfollows():
     user_id1 = request.args.get('user_id1')
-	user_id2 = requests.args.get('user_id2')
-	return delete_follows(user_id1, user_id2)
+    user_id2 = request.args.get('user_id2')
+    return delete_follows(user_id1, user_id2)
 
 # login method logs in a user by checking the database if the user exists
 # and if the password is correct
