@@ -498,23 +498,14 @@ def add_follows(user_id1, user_id2):
     # checks if the users exist
     if existing_user1 is not None and existing_user2 is not None:
         # both users exist
-        # query if the relationship already exists -- still working on        
-        # idk if this is needed --- user = db.session.query(User).get(user_id)
-        #followedlist = []
-        #for follow in existing_user1.follows:
-        #    user_temp = db.session.query(User).get(follow.followed_id)
-        #    user_dict = {
-        #        "user_id": user_temp.user_id
-        #    }
-        #    print(user_dict.user_id)
-        #    followedlist.append(user_dict)
+        # query if the relationship already exists
+        relationship_between_u1_u2 = db.session.query(Follows).filter_by(follower_id=user_id1).filter_by(followed_id=user_id2).first()
 
-        
-        if True: #followedlist is None:
-            # followedlist is empty and therefore no follow relationship exists
+        if relationship_between_u1_u2 is None:
+            # query outputted null and therefore no follow relationship exists
             follow_var = Follows(user_id1, user_id2)
             db.session.add(follow_var)
-            db.session.commit()
+            #db.session.commit()
             try:
                 db.session.commit()
                 return "Success"
@@ -522,18 +513,25 @@ def add_follows(user_id1, user_id2):
                 db.session.rollback()
                 return "ERROR: Could not create relationship."
         else:
-            # followedlist is not empty and therefore the relationship exists
+            # query outputted not empty and therefore the relationship exists
             return "ERROR: Relationship already exists."
     else:
         # one or both users do not exist
-        return "ERROR: Users do not exist."
+       return "ERROR: Users do not exist."
     
+
 #User 1 trying to unfollow User 2
 def delete_follows(user_id1, user_id2):
     existing_relationship = db.session.query(Follows).filter_by(follower_id=user_id1).filter_by(followed_id=user_id2).first()
+
     if existing_relationship:
         db.session.delete(existing_relationship)
-        return "unfollow successful"
+        try:
+            db.session.commit()
+            return "unfollow successful"
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not create relationship."
     else:
         return "Error: This relationship does not exist"
     
