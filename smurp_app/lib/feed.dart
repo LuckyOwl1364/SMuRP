@@ -22,6 +22,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedState extends State<FeedPage> {
+  int user_id = 23;
   String endPtData = "Endpoint Data Username";
   String feedData = "Testing Feed. . . Did it work? ";
   List feedList;
@@ -195,7 +196,7 @@ class FeedState extends State<FeedPage> {
   // it takes to gather the data
   Future<String> getFeedData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id=1",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {
