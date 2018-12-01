@@ -556,8 +556,8 @@ def get_following(user_id):
     for following in user.follows:
         follow = db.session.query(User).get(following.followed_id)
         following_dict = {
-            "User ID": follow.user_id,
-            "User name": follow.username
+            "user_id": follow.user_id,
+            "username": follow.username
         }
         followingList.append(following_dict)
     return json.dumps(followingList)
