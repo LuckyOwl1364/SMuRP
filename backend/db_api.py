@@ -224,6 +224,11 @@ def get_listened_songs(user_id):
     for listened in user.listened:
         song = db.session.query(Song).get(listened.song_id)
         artists = ""
+        rating = -1
+        rated = db.session.query(Rated).filter_by(user_id=user.user_id).filter_by(song_id=song.song_id).first()
+
+        if rated is not None:
+            rating = rated.rated
 
         for artist in song.song_by:
             if artists is "":
@@ -233,6 +238,7 @@ def get_listened_songs(user_id):
 
         song_dict = {
             "song_id": song.song_id,
+            "rating": rating,
             "song_title": song.song_title,
             "spotify_id": song.spotify_id,
             "lastfm_url": song.lastfm_url,
@@ -257,6 +263,8 @@ def get_feed(user_id, user_only):
             song = db.session.query(Song).get(listen.song_id)
             listens_and_rates.append({
                 "username": user.username,
+                "lastfm_name": user.lastfm_name,
+                "song_id": song.song_id,
                 "song_title": song.song_title,
                 "artist": song.song_by[0].artist_name,
                 "datetime": listen.last_listen,
@@ -271,6 +279,7 @@ def get_feed(user_id, user_only):
             song = db.session.query(Song).get(rate.song_id)
             listens_and_rates.append({
                 "username": user.username,
+                "song_id": song.song_id,
                 "song_title": song.song_title,
                 "artist": song.song_by[0].artist_name,
                 "datetime": listen.last_listen,
@@ -568,11 +577,13 @@ def like(user_id, song_id):
     song = db.session.query(Song).get(song_id)
     relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=song_id).first()
     if user is not None and song is not None:
-        if relationship is None or relationship.rated == 0:
+        if relationship is not None and relationship.rated is 1:
+            db.session.delete(relationship)
+        else:
+            if relationship is not None:
+                db.session.delete(relationship)
             rate = Rated(user_id, song_id, 1)
             db.session.add(rate)
-        elif relationship.rated == 1:
-            db.session.delete(relationship)
         try:
             db.session.commit()
             return "Success"
@@ -588,11 +599,13 @@ def dislike(user_id, song_id):
     song = db.session.query(Song).get(song_id)
     relationship = db.session.query(Rated).filter_by(user_id=user_id).filter_by(song_id=song_id).first()
     if user is not None and song is not None:
-        if relationship is None or relationship.rated == 1:
+        if relationship is not None and relationship.rated is 0:
+            db.session.delete(relationship)
+        else:
+            if relationship is not None:
+                db.session.delete(relationship)
             rate = Rated(user_id, song_id, 0)
             db.session.add(rate)
-        elif relationship.rated == 0:
-            db.session.delete(relationship)
         try:
             db.session.commit()
             return "Success"
