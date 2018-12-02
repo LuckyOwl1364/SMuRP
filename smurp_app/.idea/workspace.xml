@@ -7,6 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2ae8c49-7d48-4c59-9ed0-1faa2e5083a7" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/data/rest_ds.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/rest_ds.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/history.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/history.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/rated.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rated.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/recommended.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recommended.dart" afterDir="false" />
     </list>
@@ -39,22 +42,10 @@
       <file leaf-file-name="history.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/history.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="865">
-              <caret line="79" column="21" selection-start-line="79" selection-start-column="21" selection-end-line="79" selection-end-column="21" />
+            <state relative-caret-position="89">
+              <caret line="133" column="16" selection-start-line="95" selection-start-column="14" selection-end-line="133" selection-end-column="16" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testPlaying.dart" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/testPlaying.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-252">
-              <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -63,8 +54,8 @@
       <file leaf-file-name="rated.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/rated.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1800">
-              <caret line="147" column="51" selection-start-line="147" selection-start-column="51" selection-end-line="147" selection-end-column="51" />
+            <state relative-caret-position="17">
+              <caret line="53" column="24" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="24" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -72,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="recommended.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="recommended.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/recommended.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="132" column="51" selection-start-line="132" selection-start-column="51" selection-end-line="132" selection-end-column="51" />
+            <state relative-caret-position="241">
+              <caret line="91" column="35" selection-start-line="91" selection-start-column="35" selection-end-line="91" selection-end-column="35" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -84,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rest_ds.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="rest_ds.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/data/rest_ds.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="80" column="12" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="12" />
+            <state relative-caret-position="120">
+              <caret line="16" column="60" selection-start-line="16" selection-start-column="60" selection-end-line="16" selection-end-column="60" />
               <folding>
                 <element signature="e#115#135#0" expanded="true" />
               </folding>
@@ -99,8 +90,8 @@
       <file leaf-file-name="feed.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/feed.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-442">
-              <caret line="95" column="30" selection-start-line="95" selection-start-column="30" selection-end-line="95" selection-end-column="30" />
+            <state relative-caret-position="2516">
+              <caret line="157" column="54" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -119,12 +110,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>WOrd</find>
-      <find>WordPair</find>
-      <find>toke</find>
-      <find>title</find>
-      <find>endPT</find>
-      <find>get</find>
       <find>await</find>
       <find>good</find>
       <find>good good</find>
@@ -144,11 +129,17 @@
       <find>run</find>
       <find>SpecificWords</find>
       <find>setState((){</find>
-      <find>collect</find>
       <find>hist</find>
       <find>over</find>
       <find>after</find>
+      <find>thum</find>
       <find>23</find>
+      <find>~~~~</find>
+      <find>collect</find>
+      <find>_build</find>
+      <find>create</find>
+      <find>destr</find>
+      <find>ERROR</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -178,12 +169,12 @@
         <option value="$PROJECT_DIR$/lib/friends.dart" />
         <option value="$PROJECT_DIR$/lib/testPlaying.dart" />
         <option value="$PROJECT_DIR$/lib/profile.dart" />
-        <option value="$PROJECT_DIR$/lib/rated.dart" />
         <option value="$PROJECT_DIR$/lib/generated/i18n.dart" />
-        <option value="$PROJECT_DIR$/lib/history.dart" />
         <option value="$PROJECT_DIR$/lib/feed.dart" />
-        <option value="$PROJECT_DIR$/lib/data/rest_ds.dart" />
+        <option value="$PROJECT_DIR$/lib/history.dart" />
+        <option value="$PROJECT_DIR$/lib/rated.dart" />
         <option value="$PROJECT_DIR$/lib/recommended.dart" />
+        <option value="$PROJECT_DIR$/lib/data/rest_ds.dart" />
       </list>
     </option>
   </component>
@@ -199,9 +190,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -219,6 +210,12 @@
               <item name="smurp_app" type="e9137016:NonAndroidModuleNode" />
               <item name="java" type="f7eae187:NonAndroidSourceTypeNode" />
               <item name="generated" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="smurp_app" type="1abcf292:AndroidViewProjectNode" />
+              <item name="smurp_app" type="e9137016:NonAndroidModuleNode" />
+              <item name="java" type="f7eae187:NonAndroidSourceTypeNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -340,14 +337,14 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="13" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.32838285" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32838285" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="7" />
       <window_info id="Build Variants" order="3" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5015129" side_tool="true" weight="0.32838285" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.30858085" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49848714" weight="0.28877887" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49848714" visible="true" weight="0.51650167" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32838285" />
       <window_info anchor="right" id="Flutter Outline" order="6" weight="0.32980332" />
@@ -356,7 +353,6 @@
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="2" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0892587" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32838285" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="5" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="7" />
@@ -370,6 +366,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24886535" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32838285" />
     </layout>
     <layout-to-restore>
       <window_info id="Designer" order="2" />
@@ -696,7 +693,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/testPlaying.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-252">
+        <state relative-caret-position="425">
           <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
@@ -718,26 +715,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/history.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="865">
-          <caret line="79" column="21" selection-start-line="79" selection-start-column="21" selection-end-line="79" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/rated.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1800">
-          <caret line="147" column="51" selection-start-line="147" selection-start-column="51" selection-end-line="147" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/routes.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -750,30 +727,50 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/feed.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-442">
-          <caret line="95" column="30" selection-start-line="95" selection-start-column="30" selection-end-line="95" selection-end-column="30" />
+        <state relative-caret-position="2516">
+          <caret line="157" column="54" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/data/rest_ds.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="80" column="12" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="12" />
-          <folding>
-            <element signature="e#115#135#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/recommended.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="132" column="51" selection-start-line="132" selection-start-column="51" selection-end-line="132" selection-end-column="51" />
+        <state relative-caret-position="241">
+          <caret line="91" column="35" selection-start-line="91" selection-start-column="35" selection-end-line="91" selection-end-column="35" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/history.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="133" column="16" selection-start-line="95" selection-start-column="14" selection-end-line="133" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/rated.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="53" column="24" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/data/rest_ds.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="16" column="60" selection-start-line="16" selection-start-column="60" selection-end-line="16" selection-end-column="60" />
+          <folding>
+            <element signature="e#115#135#0" expanded="true" />
           </folding>
         </state>
       </provider>
