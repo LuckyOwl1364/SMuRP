@@ -27,15 +27,6 @@ class RestDatasource {
     });
   }
 
-  Future<Song> getOneSong() {
-    return _netUtil.get(ONESONG_URL)
-        .then((dynamic res) {
-          print(res.toString());
-//          if(res["error"]) throw new Exception(res["error_msg"]);
-          return Song.map(res);
-        });
-  }
-
   Future<List<Song>> getListenedSongs(int user_id) {
     return _netUtil.get(LISTENEDSONGS_URL + "?user_id=$user_id")
         .then((dynamic res) {
@@ -93,25 +84,25 @@ class RestDatasource {
 
 
   void likeSong(int user_id, int song_id) {
-    _netUtil.get(LIKE_URL + "?user_id=$user_id&song_id=$song_id")
-        .then((dynamic res) {
-          print("~~~~ About to print what gets returned");
-          print(res.toString());
+    _netUtil.get(LIKE_URL + "?user_id=$user_id&song_id=$song_id");
+//        .then((dynamic res) {
+//          print("~~~~ About to print what gets returned");
+//          print(res.toString());
 //          if(res["error"]) throw new Exception(res["error_msg"]);
 //          List<Song> songList = new List<Song>();
 //          for (var item in res){
 //            songList.add(Song.map(item));
 //          }
 //          return songList;
-        });
+//        });
   }
 
 
 
   void dislikeSong(int user_id, int song_id) {
-    _netUtil.get(DISLIKE_URL + "?user_id=$user_id&song_id=$song_id")
-        .then((dynamic res) {
-      print("~~~~ About to print what gets returned");
+    _netUtil.get(DISLIKE_URL + "?user_id=$user_id&song_id=$song_id");
+//        .then((dynamic res) {
+//      print("~~~~ About to print what gets returned");
       //print(res);
 //          if(res["error"]) throw new Exception(res["error_msg"]);
 //          List<Song> songList = new List<Song>();
@@ -119,7 +110,7 @@ class RestDatasource {
 //            songList.add(Song.map(item));
 //          }
 //          return songList;
-    });
+//    });
   }
 
 

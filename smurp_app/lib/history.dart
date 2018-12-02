@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/models/song.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:smurp_app/data/rest_ds.dart';
+
+
+final user_id = 23;
 
 void main() => runApp(HistoryPage());
 
@@ -20,13 +26,26 @@ class HistoryPage extends StatelessWidget {
 
 
 class HistoryPageState extends State<HistoryWidget> {
-  final _history = <Song>[];
-  final List<Song> _likes = new List<Song>();
-  final List<Song> _dislikes = new List<Song>();
+  List history;
+  List _likes = new List<Song>();
+  List _dislikes = new List<Song>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
-  bool isLikes = false;
+
+  double regularPadding = 8.0;
+  double halfPadding = 4.0;
+  double doublePadding = 16.0;
+
 
   final RestDatasource rest = new RestDatasource();
+
+
+  @override
+  void initState() {
+    super.initState();
+    this.getHistoryData();
+    print("called getHistoryData()");
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,48 +54,65 @@ class HistoryPageState extends State<HistoryWidget> {
       appBar: AppBar(
         title: Text('Listening History'),
       ),
-      body: _buildSuggestions(),
-    );
-  }
-  Widget _buildSuggestions() {
-//    this.collectSongs();
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        // The itemBuilder callback is called once per suggested word pairing,
-        // and places each suggestion into a ListTile row.
-        // For even rows, the function adds a ListTile row for the word pairing.
-        // For odd rows, the function adds a Divider widget to visually
-        // separate the entries. Note that the divider may be difficult
-        // to see on smaller devices.
-        itemBuilder: (context, i) {
-          // Add a one-pixel-high divider widget before each row in theListView.
-          if (i.isOdd) return Divider();
+      body: new ListView.builder(
+        itemCount: history == null ? 0 : history.length,
+        itemBuilder: (BuildContext context, int index){
+          return new Card(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children : <Widget>[
+                Expanded(
+                  child: Padding(
+                      padding: new EdgeInsets.all(doublePadding),
+                      child : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children : [
+                            Text(
+                              //display the song's title and artist
+                                history[index]['song_title'] + ' by ' + history[index]['artist'],
+                                textAlign: TextAlign.start),
 
-          // The syntax "i ~/ 2" divides i by 2 and returns an integer result.
-          // For example: 1, 2, 3, 4, 5 becomes 0, 1, 1, 2, 2.
-          // This calculates the actual number of word pairings in the ListView,
-          // minus the divider widgets.
-          final index = i ~/ 2;
-          // If you've reached the end of the available word pairings...
-          print("before check: history.length = " + _history.length.toString());
-          if (index >= _history.length) {
-            // ...then generate 10 more and add them to the suggestions list.
-            this.collectSongs();
-          }
-
-          return _buildRow(_history[index]);
-
-        }
+                          ]//end of column children
+                      )//end of column
+                  ),//end of padding
+                ), //end of expanded
+                Padding(
+                  padding: new EdgeInsets.symmetric(
+                      horizontal: halfPadding, vertical: halfPadding),
+                  child: IconButton(//this icon is the thumbs up button
+                    icon: const Icon(Icons.thumb_up),
+                    color: history[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
+                    onPressed: (){
+                      like(index);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: new EdgeInsets.symmetric(
+                      horizontal: halfPadding, vertical: halfPadding),
+                  child: IconButton(//this icon is the thumbs down button
+                    icon: const Icon(Icons.thumb_down),
+                    color: history[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,
+                    onPressed: (){
+                      dislike(index);
+                    },
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
 
   void collectSongs() async{
-    print("before call : history.length = " + _history.length.toString());
+    print("before call : history.length = " + history.length.toString());
     List<Song> nextSongs = await rest.getListenedSongs(23);
-    _history.addAll(nextSongs);
+    history.addAll(nextSongs);
 
-    print("after calls : history.length = " + _history.length.toString());
+    print("after calls : history.length = " + history.length.toString());
 //    setState((){});
   }
 
@@ -97,16 +133,16 @@ class HistoryPageState extends State<HistoryWidget> {
                   onPressed: () { setState(() {
                     if (disliked) {
                       _dislikes.remove(song); // if currently disliked, remove from dislikes
-                      // TODO: Tell Database to remove song
+                      rest.dislikeSong(user_id, song.song_id); // tell Database to remove song
                     }
+
                     if (liked){
                       _likes.remove(song); // if already disliked, remove from dislikes
-                      // TODO: Tell Database to remove song
                     }
                     else{
                       _likes.add(song);
-                      // TODO: Tell Database to add song
                     }
+                    rest.likeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
                   }); }
               ),
               new IconButton(
@@ -116,22 +152,69 @@ class HistoryPageState extends State<HistoryWidget> {
                   onPressed: () { setState(() {
                     if (liked) {
                       _likes.remove(song); // if currently liked, remove from likes
-                      // TODO: Tell Database to remove song
+                      rest.likeSong(user_id, song.song_id); // tell Database to remove song
                     }
+
                     if (disliked){
                       _dislikes.remove(song); // if already disliked, remove from dislikes
-                      // TODO: Tell Database to remove song
                     }
                     else{
                       _dislikes.add(song); // else add to dislikes
-                      // TODO: Tell Database to add song
                     }
+                    rest.dislikeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+
                   }); }
               ),
             ],
             mainAxisSize: MainAxisSize.min)
     );
   }
+
+
+  void like(int index) async{
+    print("Calling like(${history[index]['song_id']})");
+    rest.likeSong(user_id, history[index]['song_id']);
+    initState();
+    print('Song with id of: ' + history[index]['song_id'].toString() + 'was liked');
+  }
+
+  void dislike(int index) async {
+    print("Calling dislike(${history[index]['song_id']})");
+    rest.dislikeSong(user_id, history[index]['song_id']);
+    setState(() {
+      initState();
+      print('Song with id of: ' + history[index]['song_id'].toString() +
+          'was disliked');
+    });
+  }
+
+  //asynchronous call to hit the test endpoint
+  // it's asynchronous because it might take a while
+  // and we don't want the app to crash in the time
+  // it takes to gather the data
+  void getHistoryData() async {
+    http.Response hResponse = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+user_id.toString(),
+        headers: {"Accept": "application/json"});
+//    http.Response lResponse = await http.get(
+//        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+user_id.toString(),
+//        headers: {"Accept": "application/json"});
+//    http.Response dResponse = await http.get(
+//        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/dislikedsongs?user_id="+user_id.toString(),
+//        headers: {"Accept": "application/json"});
+    print(hResponse.body.toString());
+    setState(() {
+      history = json.decode(hResponse.body);
+//      _likes = json.decode(lResponse.body);
+//      _dislikes = json.decode(dResponse.body);
+
+      print("Successfully grabbed history !");
+    });
+  }
+
+
+
+
 } // end RandomWordsState
 
 
