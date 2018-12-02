@@ -11,12 +11,6 @@ import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
 
 
-//void main() {
-//  runApp(new MaterialApp(
-//    home: new FriendsPage(),
-//  ));
-//}
-
 class FriendsPage extends StatefulWidget {
   @override
   FriendsPageState createState() => new FriendsPageState();
@@ -28,6 +22,8 @@ class FriendsPageState extends State<FriendsPage> {
   double regularPadding = 8.0;
   double halfPadding = 4.0;
   double doublePadding = 16.0;
+  int user_id = 23;
+  int user_id2 = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +33,11 @@ class FriendsPageState extends State<FriendsPage> {
             length:2,
             child:  new Scaffold(
                 appBar: new AppBar(
-                  title: new Text("Friends"),
+                  leading: new IconButton(//this is the backbutton
+                    icon: new Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(null),
+                  ),
+                    title: new Text("Friends"),
                   //creating tabs
                   bottom: new TabBar(
                     tabs: <Widget>[
@@ -66,6 +66,7 @@ class FriendsPageState extends State<FriendsPage> {
 
 } //end of FriendsPageState
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //this widget is what should be under the first tab
 class FirstWidget extends StatefulWidget {
   @override
@@ -78,11 +79,13 @@ class FollowingPageState extends State<FirstWidget> {
   double regularPadding = 8.0;
   double halfPadding = 4.0;
   double doublePadding = 16.0;
+  int user_id = 23;
+  int user_id2 = 3;
 
   @override
   void initState() {
     super.initState();
-    this.getData();
+    this.getFollowingData();
   }
 
   @override
@@ -99,16 +102,18 @@ class FollowingPageState extends State<FirstWidget> {
                         child: Padding(
                           padding: new EdgeInsets.all(regularPadding),
                           child: new Text(
-                              followingList[index]['User name'] == null ? 'null value' : followingList[index]['User name'],
+                              followingList[index]['username'] == null ? 'null value' : followingList[index]['username'],
                               textAlign: TextAlign.start),
                         )),
                     Padding(
                       padding: new EdgeInsets.symmetric(
                           horizontal: regularPadding, vertical: halfPadding),
                       child: RaisedButton(
-                        onPressed: unfollow,
-                        child: const Text('Unfollow'),
-                        color: Colors.lightBlue,
+                        onPressed: (){
+                          unfollow(user_id, followingList[index]['user_id']);
+                        },
+                        child: new Text('Unfollow'),
+                        color: Colors.grey,
                         textColor: Colors.white,
                       ),
                     )
@@ -121,23 +126,38 @@ class FollowingPageState extends State<FirstWidget> {
   }
 
   //async call to get data from endpoint
-  Future<String> getData() async {
+  Future<String> getFollowingData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id=3",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id="+user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {
       followingList = json.decode(response.body);
-      followingData = 'Successfully grabbed some data!';
+      followingData = 'Successfully grabbed some following data!';
 
       print(followingData);
     });
   }
 
-  void unfollow() {
+  void unfollow(int userID_1, int userID_2) {
+      if(userID_1 == null || userID_2 == null){
+        print("ERROR, one of the user id's provided was invalid.");
+      } else {
+        hitUnfollowsEndpoint(userID_1, userID_2);
+      }
+  }
+
+  //async call to hit unfollows endpoint
+  Future<String> hitUnfollowsEndpoint(int userID_1, int userID_2) async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/unfollows?user_id1=" +
+            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+        headers: {"Accept": "application/json"});
+
     setState(() {
-      //hit the endpoint
-      followingData += " Unfollowed";
+      var unfollowResponse = json.decode(response.body);
+      print(unfollowResponse.toString());
+      followingData += " unfollowed";
     });
   }
 }//end of first widget (following) state
@@ -150,6 +170,10 @@ class SecondWidget extends StatefulWidget {
 }
 //this is the state for the second widget tab (followers)
 class FollowersPageState extends State<SecondWidget> {
+  int user_id = 23;
+  int user_id2 = 3;
+  String followingData = "Testing Following. . . Did it work? ";
+  List followingList;
   String followerData = "Testing Followers. . . Did it work? ";
   List followerList;
   double regularPadding = 8.0;
@@ -159,7 +183,8 @@ class FollowersPageState extends State<SecondWidget> {
   @override
   void initState() {
     super.initState();
-    this.getData();
+    this.getFollowerData();
+    this.getFollowingData();
   }
 
   @override
@@ -176,16 +201,19 @@ class FollowersPageState extends State<SecondWidget> {
                     child: Padding(
                       padding: new EdgeInsets.all(regularPadding),
                       child: new Text(
-                          followerList[index]['User name'] == null ? 'null value' : followerList[index]['User name'],
+                          followerList[index]['username'] == null ? 'null value' : followerList[index]['username'],
                           textAlign: TextAlign.start),
                     )),
                 Padding(
                   padding: new EdgeInsets.symmetric(
                       horizontal: regularPadding, vertical: halfPadding),
                   child: RaisedButton(
-                    onPressed: follow,
-                    child: const Text('Follow'),
-                    color: Colors.lightBlue,
+                    onPressed: (){
+                      checkFollowing(followerList[index]['user_id']) ? unfollow(user_id,followerList[index]['user_id'])
+                      :follow(user_id,followerList[index]['user_id']);
+                    },
+                    child: new Text(checkFollowing(followerList[index]['user_id']) ? 'Unfollow' : 'Follow'),
+                    color: checkFollowing(followerList[index]['user_id']) ? Colors.grey : Colors.lightBlue,
                     textColor: Colors.white,
                   ),
                 )
@@ -198,23 +226,94 @@ class FollowersPageState extends State<SecondWidget> {
   }
 
   //async call to get data from endpoint
-  Future<String> getData() async {
+  Future<String> getFollowerData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id=3",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id="+user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {
       followerList = json.decode(response.body);
-      followerData = 'Successfully grabbed some data!';
+      followerData = 'Successfully grabbed some follower data!';
 
       print(followerData);
     });
   }
 
-  void follow() {
+
+  //async call to get data from endpoint
+  Future<String> getFollowingData() async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id="+user_id.toString(),
+        headers: {"Accept": "application/json"});
+
     setState(() {
-      //hit the endpoint
+      followingList = json.decode(response.body);
+      followingData = 'Successfully grabbed some following data!';
+
+      print(followingData);
+    });
+  }
+
+  void follow(int userID_1, int userID_2) {
+    if(userID_1 == null || userID_2 == null){
+      print("ERROR, one of the user id's provided was invalid.");
+    } else {
+      hitFollowsEndpoint(userID_1, userID_2);
+    }
+  }
+
+  //async call to hit follows endpoint
+  Future<String> hitFollowsEndpoint(int userID_1, int userID_2) async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/follows?user_id1=" +
+            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+        headers: {"Accept": "application/json"});
+
+    setState(() {
+      var followResponse = json.decode(response.body);
+      print(followResponse.toString());
       followerData += " followed";
     });
   }
+
+  void unfollow(int userID_1, int userID_2) {
+    if(userID_1 == null || userID_2 == null){
+      print("ERROR, one of the user id's provided was invalid.");
+    } else {
+      hitUnfollowsEndpoint(userID_1, userID_2);
+    }
+  }
+
+  //async call to hit unfollows endpoint
+  Future<String> hitUnfollowsEndpoint(int userID_1, int userID_2) async {
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/unfollows?user_id1=" +
+            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+        headers: {"Accept": "application/json"});
+
+    setState(() {
+      var unfollowResponse = json.decode(response.body);
+      print(unfollowResponse.toString());
+      followingData += " unfollowed";
+    });
+  }
+
+
+  //method to check if you are following the other user.
+  //Returns true if you're following them. False if you're not following them
+  bool checkFollowing(int userID){
+    bool isFollowing = false;
+    int numFollowing = (followingList == null ? 0 : followingList.length); //check to see if the list is empty
+
+      if(userID == null){//check to see if userid is empty
+        return false;
+      } else {
+        for(int index = 0; index < numFollowing; index ++){ //check to see if the userid is in the list of following
+          if (followingList[index]['user_id'] == userID) {
+            isFollowing = true;
+          }
+        }
+        return isFollowing;
+      }
+    }
 }

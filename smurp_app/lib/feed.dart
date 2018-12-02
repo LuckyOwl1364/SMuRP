@@ -22,6 +22,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedState extends State<FeedPage> {
+  int user_id = 23;
   String endPtData = "Endpoint Data Username";
   String feedData = "Testing Feed. . . Did it work? ";
   List feedList;
@@ -133,12 +134,15 @@ class FeedState extends State<FeedPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children : [
                             Text(
+                              //if there's no username, replace it with the string 'null value' otherwise display the username.
+                              //Also decide on whether the user 'listened to' or 'liked a song'
                                 feedList[index]['username'] == null ? 'null value ' + index.toString() + (feedList[index]['rating'] == 1 ? ' liked ' : ' recently listened to ')
                                           : feedList[index]['username'] + (feedList[index]['rating'] == 1 ? ' liked ' : ' recently listened to '),
                                 textAlign: TextAlign.start,
                                 style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(
+                              //display the song's title and artist
                                 feedList[index]['song_title'] + ' by ' + feedList[index]['artist'],
                                 textAlign: TextAlign.start),
 
@@ -149,17 +153,23 @@ class FeedState extends State<FeedPage> {
                    Padding(
                       padding: new EdgeInsets.symmetric(
                           horizontal: halfPadding, vertical: halfPadding),
-                      child: IconButton(
+                      child: IconButton(//this icon is the thumbs up button
                         icon: const Icon(Icons.thumb_up),
-                        onPressed: null,
+                        color: feedList[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
+                        onPressed: (){
+                          like(feedList[index]['song_id']);
+                        },
                       ),
                   ),
                   Padding(
                     padding: new EdgeInsets.symmetric(
                         horizontal: halfPadding, vertical: halfPadding),
-                    child: IconButton(
+                    child: IconButton(//this icon is the thumbs down button
                       icon: const Icon(Icons.thumb_down),
-                      onPressed: null,
+                      color: feedList[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,
+                      onPressed: (){
+                        dislike(feedList[index]['song_id']);
+                      },
                     ),
                   )
                 ],//end widget
@@ -170,13 +180,23 @@ class FeedState extends State<FeedPage> {
     );
   }
 
+  Future<String> like(int SongID) async {
+    initState();
+    print('Song with id of: ' + SongID.toString() + 'was liked');
+  }
+
+  Future<String> dislike(int SongID) async {
+    initState();
+    print('Song with id of: ' + SongID.toString() + 'was disliked');
+  }
+
   //asynchronous call to hit the test endpoint
   // it's asynchronous because it might take a while
   // and we don't want the app to crash in the time
   // it takes to gather the data
   Future<String> getFeedData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id=1",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {

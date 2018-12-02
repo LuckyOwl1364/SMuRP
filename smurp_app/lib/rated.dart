@@ -40,6 +40,10 @@ class RatedPageState extends State<RatedPage> {
         length:2,
         child:  new Scaffold(
             appBar: new AppBar(
+                leading: new IconButton(//this is the backbutton
+                  icon: new Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop(null),
+                ),
                 title: new Text("Rated Songs"),
                 //creating tabs
                 bottom: new TabBar(
