@@ -10,6 +10,8 @@ class Song{
     this.song_id = obj["song_id"];
     this.title = obj["song_title"];
     this.artist = obj["artists"];
+
+    if (artist == null) artist = "none";
   }
 
 
