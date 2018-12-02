@@ -12,6 +12,7 @@ import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/models/song.dart';
 import 'package:smurp_app/data/rest_ds.dart';
 
+final user_id = 23;
 
 void main() => runApp(RatedPage());
 
@@ -90,11 +91,11 @@ class RatedPageState extends State<RatedPage> {
 
   void collectSongs(bool grabLikes) async{
     if (grabLikes){
-      List<Song> nextSongs = await rest.getLikedSongs(23);
+      List<Song> nextSongs = await rest.getLikedSongs(user_id);
       _likes.addAll(nextSongs);
     }
     else{
-      List<Song> nextSongs = await rest.getDislikedSongs(23);
+      List<Song> nextSongs = await rest.getDislikedSongs(user_id);
       _dislikes.addAll(nextSongs);
     }
   }
@@ -116,17 +117,16 @@ class RatedPageState extends State<RatedPage> {
                   onPressed: () { setState(() {
                     if (disliked) {
                       _dislikes.remove(song); // if currently disliked, remove from dislikes
-                      // TODO: Tell Database to remove song
+                      rest.dislikeSong(user_id, song.song_id); // tell Database to remove song
                     }
 
                     if (liked){
                       _likes.remove(song); // if already disliked, remove from dislikes
-                      // TODO: Tell Database to remove song
                     }
                     else{
                       _likes.add(song);
-                      // TODO: Tell Database to add song
                     }
+                    rest.likeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
                   }); }
               ),
               new IconButton(
@@ -136,17 +136,17 @@ class RatedPageState extends State<RatedPage> {
                   onPressed: () { setState(() {
                     if (liked) {
                       _likes.remove(song); // if currently liked, remove from likes
-                      // TODO: Tell Database to remove song
+                      rest.likeSong(user_id, song.song_id); // tell Database to remove song
                     }
 
                     if (disliked){
                       _dislikes.remove(song); // if already disliked, remove from dislikes
-                      // TODO: Tell Database to remove song
                     }
                     else{
                       _dislikes.add(song); // else add to dislikes
-                      // TODO: Tell Database to add song
                     }
+                    rest.dislikeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+
                   }); }
               ),
             ],
