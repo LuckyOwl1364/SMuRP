@@ -189,7 +189,7 @@ class HistoryPageState extends State<HistoryWidget> {
   // it takes to gather the data
   void getHistoryData() async {
     http.Response hResponse = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getListened?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
 //    http.Response lResponse = await http.get(
 //        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+user_id.toString(),
