@@ -3,11 +3,10 @@ import 'package:smurp_app/models/song.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 
 import 'package:smurp_app/data/rest_ds.dart';
 
-
-final user_id = 23;
 
 void main() => runApp(HistoryPage());
 
@@ -133,7 +132,7 @@ class HistoryPageState extends State<HistoryWidget> {
                   onPressed: () { setState(() {
                     if (disliked) {
                       _dislikes.remove(song); // if currently disliked, remove from dislikes
-                      rest.dislikeSong(user_id, song.song_id); // tell Database to remove song
+                      rest.dislikeSong(globals.user_id, song.song_id); // tell Database to remove song
                     }
 
                     if (liked){
@@ -142,7 +141,7 @@ class HistoryPageState extends State<HistoryWidget> {
                     else{
                       _likes.add(song);
                     }
-                    rest.likeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+                    rest.likeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
                   }); }
               ),
               new IconButton(
@@ -152,7 +151,7 @@ class HistoryPageState extends State<HistoryWidget> {
                   onPressed: () { setState(() {
                     if (liked) {
                       _likes.remove(song); // if currently liked, remove from likes
-                      rest.likeSong(user_id, song.song_id); // tell Database to remove song
+                      rest.likeSong(globals.user_id, song.song_id); // tell Database to remove song
                     }
 
                     if (disliked){
@@ -161,7 +160,7 @@ class HistoryPageState extends State<HistoryWidget> {
                     else{
                       _dislikes.add(song); // else add to dislikes
                     }
-                    rest.dislikeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+                    rest.dislikeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
 
                   }); }
               ),
@@ -173,14 +172,14 @@ class HistoryPageState extends State<HistoryWidget> {
 
   void like(int index) async{
     print("Calling like(${history[index]['song_id']})");
-    rest.likeSong(user_id, history[index]['song_id']);
+    rest.likeSong(globals.user_id, history[index]['song_id']);
     initState();
     print('Song with id of: ' + history[index]['song_id'].toString() + 'was liked');
   }
 
   void dislike(int index) async {
     print("Calling dislike(${history[index]['song_id']})");
-    rest.dislikeSong(user_id, history[index]['song_id']);
+    rest.dislikeSong(globals.user_id, history[index]['song_id']);
     setState(() {
       initState();
       print('Song with id of: ' + history[index]['song_id'].toString() +
@@ -194,7 +193,7 @@ class HistoryPageState extends State<HistoryWidget> {
   // it takes to gather the data
   void getHistoryData() async {
     http.Response hResponse = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
 //    http.Response lResponse = await http.get(
 //        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+user_id.toString(),

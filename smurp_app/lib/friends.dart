@@ -9,6 +9,7 @@ import 'package:smurp_app/utils/endpointDemo.dart';
 import 'package:smurp_app/feed.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
+import 'globals.dart' as globals;
 
 
 class FriendsPage extends StatefulWidget {
@@ -22,8 +23,6 @@ class FriendsPageState extends State<FriendsPage> {
   double regularPadding = 8.0;
   double halfPadding = 4.0;
   double doublePadding = 16.0;
-  int user_id = 23;
-  int user_id2 = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +78,6 @@ class FollowingPageState extends State<FirstWidget> {
   double regularPadding = 8.0;
   double halfPadding = 4.0;
   double doublePadding = 16.0;
-  int user_id = 23;
-  int user_id2 = 3;
 
   @override
   void initState() {
@@ -110,7 +107,7 @@ class FollowingPageState extends State<FirstWidget> {
                           horizontal: regularPadding, vertical: halfPadding),
                       child: RaisedButton(
                         onPressed: (){
-                          unfollow(user_id, followingList[index]['user_id']);
+                          unfollow(globals.user_id, followingList[index]['user_id']);
                         },
                         child: new Text('Unfollow'),
                         color: Colors.grey,
@@ -128,7 +125,7 @@ class FollowingPageState extends State<FirstWidget> {
   //async call to get data from endpoint
   Future<String> getFollowingData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id="+user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {
@@ -170,8 +167,6 @@ class SecondWidget extends StatefulWidget {
 }
 //this is the state for the second widget tab (followers)
 class FollowersPageState extends State<SecondWidget> {
-  int user_id = 23;
-  int user_id2 = 3;
   String followingData = "Testing Following. . . Did it work? ";
   List followingList;
   String followerData = "Testing Followers. . . Did it work? ";
@@ -209,8 +204,8 @@ class FollowersPageState extends State<SecondWidget> {
                       horizontal: regularPadding, vertical: halfPadding),
                   child: RaisedButton(
                     onPressed: (){
-                      checkFollowing(followerList[index]['user_id']) ? unfollow(user_id,followerList[index]['user_id'])
-                      :follow(user_id,followerList[index]['user_id']);
+                      checkFollowing(followerList[index]['user_id']) ? unfollow(globals.user_id,followerList[index]['user_id'])
+                      :follow(globals.user_id,followerList[index]['user_id']);
                     },
                     child: new Text(checkFollowing(followerList[index]['user_id']) ? 'Unfollow' : 'Follow'),
                     color: checkFollowing(followerList[index]['user_id']) ? Colors.grey : Colors.lightBlue,
@@ -228,7 +223,7 @@ class FollowersPageState extends State<SecondWidget> {
   //async call to get data from endpoint
   Future<String> getFollowerData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id="+user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowers?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {
@@ -243,7 +238,7 @@ class FollowersPageState extends State<SecondWidget> {
   //async call to get data from endpoint
   Future<String> getFollowingData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id="+user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfollowing?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {

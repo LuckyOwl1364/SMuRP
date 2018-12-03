@@ -3,6 +3,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smurp_app/models/user.dart';
+import 'globals.dart' as globals;
+
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -35,7 +37,7 @@ class ProfileState extends State<ProfilePage> {
           new Padding(
             padding:  new EdgeInsets.only(top: doublePadding),
             child: new Text(
-                userList['username'] == null ? 'null username' : userList['username'],
+                userList['username'] == null ? 'username unavailable' : userList['username'],
                 textAlign: TextAlign.start,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0)
             ),//end of text
@@ -43,13 +45,14 @@ class ProfileState extends State<ProfilePage> {
           new Padding(
             padding: new EdgeInsets.all(halfPadding),
             child: new Text(
-                userList['email'],
+                userList['email'] == null ? 'email value unavailable' : userList['email'],
                 textAlign: TextAlign.start
             ),//end of text
           ),//end of padding
           new Padding(
             padding: new EdgeInsets.all(halfPadding),
             child: new Text(
+                (userList['join_date'] == null || userList['join_date'].length < 10) ? 'Join date unavailable ' :
                 'Joined on '+userList['join_date'].substring(0, 10),
                 textAlign: TextAlign.start
             ),//end of text
@@ -69,13 +72,14 @@ class ProfileState extends State<ProfilePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children : [
                                     Text(
-                                      profileList[index]['username'] == null ? 'null value ' + index.toString() + (profileList[index]['rating'] == 1 ? ' liked ' : ' recently listened to ')
+                                      profileList[index]['username'] == null ? 'empty username ' + (profileList[index]['rating'] == 1 ? ' liked ' : ' recently listened to ')
                                           : profileList[index]['username'] + (profileList[index]['rating'] == 1 ? ' liked ' : ' recently listened to '),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                        profileList[index]['song_title'] + ' by ' + profileList[index]['artist'],
+                                        profileList[index]['song_title'] == null ? 'song title null ' :
+                                        profileList[index]['song_title'] + ' by ' + (profileList[index]['artist'] == null ? 'artist unknown' : profileList[index]['artist'] ),
                                         textAlign: TextAlign.start),
 
                                   ]//end of column children
@@ -99,7 +103,7 @@ class ProfileState extends State<ProfilePage> {
   // it takes to gather the data
   Future<String> getProfileData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id=23&user_only=true",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&user_only=true",
         headers: {"Accept": "application/json"});
 
     setState(() {
@@ -116,7 +120,7 @@ class ProfileState extends State<ProfilePage> {
   // it takes to gather the data
   Future<String> getUserData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/get_user?user_id=3",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/get_user?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
 
     setState(() {

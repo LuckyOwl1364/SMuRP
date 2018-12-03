@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
 import 'package:smurp_app/data/rest_ds.dart';
+import 'globals.dart' as globals;
 
 void main() => runApp(new Login());
 

@@ -11,8 +11,8 @@ import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/models/song.dart';
 import 'package:smurp_app/data/rest_ds.dart';
+import 'globals.dart' as globals;
 
-final user_id = 23;
 
 void main() => runApp(RatedPage());
 
@@ -136,14 +136,14 @@ class RatedPageState extends State<RatedPage> {
 
   void like(List list, int index) async{
     print("Calling like(${list[index]['song_id']})");
-    rest.likeSong(user_id, list[index]['song_id']);
+    rest.likeSong(globals.user_id, list[index]['song_id']);
     initState();
     print('Song with id of: ' + list[index]['song_id'].toString() + 'was liked');
   }
 
   void dislike(List list, int index) async {
     print("Calling dislike(${list[index]['song_id']})");
-    rest.dislikeSong(user_id, list[index]['song_id']);
+    rest.dislikeSong(globals.user_id, list[index]['song_id']);
     setState(() {
       initState();
       print('Song with id of: ' + list[index]['song_id'].toString() +
@@ -156,10 +156,10 @@ class RatedPageState extends State<RatedPage> {
   // and we don't want the app to crash in the time
   // it takes to gather the data
   void getRatedData() async {    http.Response lResponse = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
     http.Response dResponse = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/dislikedsongs?user_id="+user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/dislikedsongs?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
     print(lResponse.body.toString());
     print(dResponse.body.toString());
@@ -174,11 +174,11 @@ class RatedPageState extends State<RatedPage> {
 
   void collectSongs(bool grabLikes) async{
     if (grabLikes){
-      List<Song> nextSongs = await rest.getLikedSongs(user_id);
+      List<Song> nextSongs = await rest.getLikedSongs(globals.user_id);
       likes.addAll(nextSongs);
     }
     else{
-      List<Song> nextSongs = await rest.getDislikedSongs(user_id);
+      List<Song> nextSongs = await rest.getDislikedSongs(globals.user_id);
       dislikes.addAll(nextSongs);
     }
   }
@@ -201,7 +201,7 @@ class RatedPageState extends State<RatedPage> {
                   onPressed: () { setState(() {
                     if (disliked) {
                       dislikes.remove(song); // if currently disliked, remove from dislikes
-                      rest.dislikeSong(user_id, song.song_id); // tell Database to remove song
+                      rest.dislikeSong(globals.user_id, song.song_id); // tell Database to remove song
                     }
 
                     if (liked){
@@ -210,7 +210,7 @@ class RatedPageState extends State<RatedPage> {
                     else{
                       likes.add(song);
                     }
-                    rest.likeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+                    rest.likeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
                   }); }
               ),
               new IconButton(
@@ -220,7 +220,7 @@ class RatedPageState extends State<RatedPage> {
                   onPressed: () { setState(() {
                     if (liked) {
                       likes.remove(song); // if currently liked, remove from likes
-                      rest.likeSong(user_id, song.song_id); // tell Database to remove song
+                      rest.likeSong(globals.user_id, song.song_id); // tell Database to remove song
                     }
 
                     if (disliked){
@@ -229,7 +229,7 @@ class RatedPageState extends State<RatedPage> {
                     else{
                       dislikes.add(song); // else add to dislikes
                     }
-                    rest.dislikeSong(user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+                    rest.dislikeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
 
                   }); }
               ),

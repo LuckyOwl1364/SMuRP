@@ -7,9 +7,9 @@ import 'package:smurp_app/data/rest_ds.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 
 
-final user_id = 23;
 
 void main() => runApp(RecommendedPage());
 
@@ -108,14 +108,14 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
 
   void like(int index) async{
     print("Calling like(${recs[index]['song_id']})");
-    rest.likeSong(user_id, recs[index]['song_id']);
+    rest.likeSong(globals.user_id, recs[index]['song_id']);
     initState();
     print('Song with id of: ' + recs[index]['song_id'].toString() + 'was liked');
   }
 
   void dislike(int index) async {
     print("Calling dislike(${recs[index]['song_id']})");
-    rest.dislikeSong(user_id, recs[index]['song_id']);
+    rest.dislikeSong(globals.user_id, recs[index]['song_id']);
     setState(() {
       initState();
       print('Song with id of: ' + recs[index]['song_id'].toString() +
@@ -129,7 +129,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
   // it takes to gather the data
   void getRecommendData() async {
     http.Response hResponse = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/recommend?user_id="+user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/recommend?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
 //    http.Response lResponse = await http.get(
 //        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+user_id.toString(),
