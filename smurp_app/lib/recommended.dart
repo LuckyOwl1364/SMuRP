@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
-import 'package:smurp_app/models/artist.dart';
 import 'package:smurp_app/models/song.dart';
 
 import 'package:smurp_app/data/rest_ds.dart';
-import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
@@ -21,15 +18,14 @@ class RecommendedPage extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: new SpecificWords(),
+      home: new RecommendWidget(),
     );
   }
 }
 
 
-class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPair for Song
+class RecommendPageState extends State<RecommendWidget> { // TODO: Change out WordPair for Song
   List recs;
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   final RestDatasource rest = new RestDatasource();
 
@@ -124,20 +120,12 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
   // and we don't want the app to crash in the time
   // it takes to gather the data
   void getRecommendData() async {
-    http.Response hResponse = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/recommend?user_id="+globals.user_id.toString(),
+    http.Response rResponse = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getListened?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
-//    http.Response lResponse = await http.get(
-//        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+user_id.toString(),
-//        headers: {"Accept": "application/json"});
-//    http.Response dResponse = await http.get(
-//        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/dislikedsongs?user_id="+user_id.toString(),
-//        headers: {"Accept": "application/json"});
-    print(hResponse.body.toString());
+    print(rResponse.body.toString());
     setState(() {
-      recs = json.decode(hResponse.body);
-//      _likes = json.decode(lResponse.body);
-//      _dislikes = json.decode(dResponse.body);
+      recs = json.decode(rResponse.body);
 
       print("Successfully grabbed recs !");
     });
@@ -238,9 +226,9 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
 } // end RandomWordsState
 
 
-class SpecificWords extends StatefulWidget {
+class RecommendWidget extends StatefulWidget {
   @override
-  RandomWordsState createState() => new RandomWordsState();
+  RecommendPageState createState() => new RecommendPageState();
 }
 
 
