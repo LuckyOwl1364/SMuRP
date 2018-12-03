@@ -20,9 +20,6 @@ class FriendsPage extends StatefulWidget {
 class FriendsPageState extends State<FriendsPage> {
   String endPtData = "Test Data ";
   List data;
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +72,6 @@ class FirstWidget extends StatefulWidget {
 class FollowingPageState extends State<FirstWidget> {
   String followingData = "Testing Following. . . Did it work? ";
   List followingList;
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
 
   @override
   void initState() {
@@ -97,14 +91,14 @@ class FollowingPageState extends State<FirstWidget> {
                   children: <Widget>[
                     Expanded(
                         child: Padding(
-                          padding: new EdgeInsets.all(regularPadding),
+                          padding: new EdgeInsets.all(globals.regularPadding),
                           child: new Text(
                               followingList[index]['username'] == null ? 'null value' : followingList[index]['username'],
                               textAlign: TextAlign.start),
                         )),
                     Padding(
                       padding: new EdgeInsets.symmetric(
-                          horizontal: regularPadding, vertical: halfPadding),
+                          horizontal: globals.regularPadding, vertical: globals.halfPadding),
                       child: RaisedButton(
                         onPressed: (){
                           unfollow(globals.user_id, followingList[index]['user_id']);
@@ -171,9 +165,6 @@ class FollowersPageState extends State<SecondWidget> {
   List followingList;
   String followerData = "Testing Followers. . . Did it work? ";
   List followerList;
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
 
   @override
   void initState() {
@@ -194,14 +185,14 @@ class FollowersPageState extends State<SecondWidget> {
               children: <Widget>[
                 Expanded(
                     child: Padding(
-                      padding: new EdgeInsets.all(regularPadding),
+                      padding: new EdgeInsets.all(globals.regularPadding),
                       child: new Text(
                           followerList[index]['username'] == null ? 'null value' : followerList[index]['username'],
                           textAlign: TextAlign.start),
                     )),
                 Padding(
                   padding: new EdgeInsets.symmetric(
-                      horizontal: regularPadding, vertical: halfPadding),
+                      horizontal: globals.regularPadding, vertical: globals.halfPadding),
                   child: RaisedButton(
                     onPressed: (){
                       checkFollowing(followerList[index]['user_id']) ? unfollow(globals.user_id,followerList[index]['user_id'])

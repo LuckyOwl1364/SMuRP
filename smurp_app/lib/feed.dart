@@ -27,9 +27,6 @@ class FeedState extends State<FeedPage> {
   String endPtData = "Endpoint Data Username";
   String feedData = "Testing Feed. . . Did it work? ";
   List feedList;
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
 
   @override
   void initState() {
@@ -52,7 +49,7 @@ class FeedState extends State<FeedPage> {
                   )),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(
-                    vertical: halfPadding, horizontal: doublePadding),
+                    vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.account_circle),
                 title: Text('Profile'),
                 onTap: () {
@@ -65,7 +62,7 @@ class FeedState extends State<FeedPage> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(
-                    vertical: halfPadding, horizontal: doublePadding),
+                    vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.stars),
                 title: Text('Recommended'),
                 onTap: () {
@@ -77,7 +74,7 @@ class FeedState extends State<FeedPage> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(
-                    vertical: halfPadding, horizontal: doublePadding),
+                    vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.thumbs_up_down),
                 title: Text('Rated Songs'),
                 onTap: () {
@@ -89,7 +86,7 @@ class FeedState extends State<FeedPage> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(
-                    vertical: halfPadding, horizontal: doublePadding),
+                    vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.history),
                 title: Text('History'),
                 onTap: () {
@@ -99,7 +96,7 @@ class FeedState extends State<FeedPage> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(
-                    vertical: halfPadding, horizontal: doublePadding),
+                    vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.account_circle),
                 title: Text('Friends'),
                 onTap: () {
@@ -111,7 +108,7 @@ class FeedState extends State<FeedPage> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(
-                    vertical: halfPadding, horizontal: doublePadding),
+                    vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.exit_to_app),
                 title: Text('Log Out'),
                 onTap: () {
@@ -130,7 +127,7 @@ class FeedState extends State<FeedPage> {
                 children : <Widget>[
                   Expanded(
                     child: Padding(
-                      padding: new EdgeInsets.all(doublePadding),
+                      padding: new EdgeInsets.all(globals.doublePadding),
                         child : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children : [
@@ -153,7 +150,7 @@ class FeedState extends State<FeedPage> {
                   ), //end of expanded
                    Padding(
                       padding: new EdgeInsets.symmetric(
-                          horizontal: halfPadding, vertical: halfPadding),
+                          horizontal: globals.halfPadding, vertical: globals.halfPadding),
                       child: IconButton(//this icon is the thumbs up button
                         icon: const Icon(Icons.thumb_up),
                         color: feedList[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
@@ -164,7 +161,7 @@ class FeedState extends State<FeedPage> {
                   ),
                   Padding(
                     padding: new EdgeInsets.symmetric(
-                        horizontal: halfPadding, vertical: halfPadding),
+                        horizontal: globals.halfPadding, vertical: globals.halfPadding),
                     child: IconButton(//this icon is the thumbs down button
                       icon: const Icon(Icons.thumb_down),
                       color: feedList[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,

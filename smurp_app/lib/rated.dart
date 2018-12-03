@@ -25,9 +25,6 @@ class RatedPage extends StatefulWidget {
 
 
 class RatedPageState extends State<RatedPage> {
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   List likes;
@@ -91,7 +88,7 @@ class RatedPageState extends State<RatedPage> {
             children : <Widget>[
               Expanded(
                 child: Padding(
-                    padding: new EdgeInsets.all(doublePadding),
+                    padding: new EdgeInsets.all(globals.doublePadding),
                     child : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children : [
@@ -106,7 +103,7 @@ class RatedPageState extends State<RatedPage> {
               ), //end of expanded
               Padding(
                 padding: new EdgeInsets.symmetric(
-                    horizontal: halfPadding, vertical: halfPadding),
+                    horizontal: globals.halfPadding, vertical: globals.halfPadding),
                 child: IconButton(//this icon is the thumbs up button
                   icon: const Icon(Icons.thumb_up),
                   color: list[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
@@ -117,7 +114,7 @@ class RatedPageState extends State<RatedPage> {
               ),
               Padding(
                 padding: new EdgeInsets.symmetric(
-                    horizontal: halfPadding, vertical: halfPadding),
+                    horizontal: globals.halfPadding, vertical: globals.halfPadding),
                 child: IconButton(//this icon is the thumbs down button
                   icon: const Icon(Icons.thumb_down),
                   color: list[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,

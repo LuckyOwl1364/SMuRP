@@ -31,10 +31,6 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
   List recs;
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
-
   final RestDatasource rest = new RestDatasource();
 
   @override
@@ -60,7 +56,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
               children : <Widget>[
                 Expanded(
                   child: Padding(
-                      padding: new EdgeInsets.all(doublePadding),
+                      padding: new EdgeInsets.all(globals.doublePadding),
                       child : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children : [
@@ -75,7 +71,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                 ), //end of expanded
                 Padding(
                   padding: new EdgeInsets.symmetric(
-                      horizontal: halfPadding, vertical: halfPadding),
+                      horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs up button
                     icon: const Icon(Icons.thumb_up),
                     color: recs[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
@@ -86,7 +82,7 @@ class RandomWordsState extends State<SpecificWords> { // TODO: Change out WordPa
                 ),
                 Padding(
                   padding: new EdgeInsets.symmetric(
-                      horizontal: halfPadding, vertical: halfPadding),
+                      horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs down button
                     icon: const Icon(Icons.thumb_down),
                     color: recs[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,

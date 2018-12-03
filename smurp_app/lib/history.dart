@@ -30,10 +30,6 @@ class HistoryPageState extends State<HistoryWidget> {
   List _dislikes = new List<Song>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
-
 
   final RestDatasource rest = new RestDatasource();
 
@@ -62,7 +58,7 @@ class HistoryPageState extends State<HistoryWidget> {
               children : <Widget>[
                 Expanded(
                   child: Padding(
-                      padding: new EdgeInsets.all(doublePadding),
+                      padding: new EdgeInsets.all(globals.doublePadding),
                       child : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children : [
@@ -77,7 +73,7 @@ class HistoryPageState extends State<HistoryWidget> {
                 ), //end of expanded
                 Padding(
                   padding: new EdgeInsets.symmetric(
-                      horizontal: halfPadding, vertical: halfPadding),
+                      horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs up button
                     icon: const Icon(Icons.thumb_up),
                     color: history[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
@@ -88,7 +84,7 @@ class HistoryPageState extends State<HistoryWidget> {
                 ),
                 Padding(
                   padding: new EdgeInsets.symmetric(
-                      horizontal: halfPadding, vertical: halfPadding),
+                      horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs down button
                     icon: const Icon(Icons.thumb_down),
                     color: history[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,

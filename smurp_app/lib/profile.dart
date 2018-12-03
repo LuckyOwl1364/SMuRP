@@ -17,9 +17,6 @@ class ProfileState extends State<ProfilePage> {
   String userData = "Endpoint Data Username";
   String profileData = "Testing Profile. . . Did it work? ";
   List profileList;
-  double regularPadding = 8.0;
-  double halfPadding = 4.0;
-  double doublePadding = 16.0;
 
   @override
   void initState() {
@@ -35,7 +32,7 @@ class ProfileState extends State<ProfilePage> {
       body: new Column(
         children: <Widget>[
           new Padding(
-            padding:  new EdgeInsets.only(top: doublePadding),
+            padding:  new EdgeInsets.only(top: globals.doublePadding),
             child: new Text(
                 userList['username'] == null ? 'username unavailable' : userList['username'],
                 textAlign: TextAlign.start,
@@ -43,14 +40,14 @@ class ProfileState extends State<ProfilePage> {
             ),//end of text
           ),//end of padding
           new Padding(
-            padding: new EdgeInsets.all(halfPadding),
+            padding: new EdgeInsets.all(globals.halfPadding),
             child: new Text(
                 userList['email'] == null ? 'email value unavailable' : userList['email'],
                 textAlign: TextAlign.start
             ),//end of text
           ),//end of padding
           new Padding(
-            padding: new EdgeInsets.all(halfPadding),
+            padding: new EdgeInsets.all(globals.halfPadding),
             child: new Text(
                 (userList['join_date'] == null || userList['join_date'].length < 10) ? 'Join date unavailable ' :
                 'Joined on '+userList['join_date'].substring(0, 10),
@@ -67,7 +64,7 @@ class ProfileState extends State<ProfilePage> {
                     children: <Widget>[
                       Expanded(
                           child: Padding(
-                              padding: new EdgeInsets.all(doublePadding),
+                              padding: new EdgeInsets.all(globals.doublePadding),
                               child : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children : [
