@@ -152,7 +152,8 @@ class RatedPageState extends State<RatedPage> {
   // it's asynchronous because it might take a while
   // and we don't want the app to crash in the time
   // it takes to gather the data
-  void getRatedData() async {    http.Response lResponse = await http.get(
+  void getRatedData() async {
+    http.Response lResponse = await http.get(
         "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/likedsongs?user_id="+globals.user_id.toString(),
         headers: {"Accept": "application/json"});
     http.Response dResponse = await http.get(
