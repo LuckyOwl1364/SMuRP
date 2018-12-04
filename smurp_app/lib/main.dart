@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
 import 'package:smurp_app/data/rest_ds.dart';
+import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
+
 
 void main() => runApp(new Login());
 
@@ -45,15 +50,17 @@ class _LoginScreenState extends State<LoginScreen>{
 
   //async call to get data from endpoint
   void getData() async{
-    RestDatasource restDS = new RestDatasource();
-    var user = await restDS.login(_email,_password);
-
-    setState((){
-      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
-          '$user\n';
-      print(endPtData);
-      //data.add(user);
-    });
+//    RestDatasource restDS = new RestDatasource();
+//    print('calling login endpoint');
+//    var user = await restDS.login(_email,_password);
+//    print('login endopint hit. Continuing code: ');
+//    setState((){
+//      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
+//          '$user\n';
+//      print(endPtData);
+//      //data.add(user);
+//    });
+    getLoginData();
   } // end getData()
 
 
@@ -148,7 +155,19 @@ class _LoginScreenState extends State<LoginScreen>{
       return null;
   }
 
+  //async call to get data from endpoint
+  Future<Null> getLoginData() async {
+    print("Is that an endpoint i see? ");
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/loginuser?username="+_email+"&password="+_password
+    );
 
+    setState(() {
+      var loginResponse = json.decode(response.body);
+      print(loginResponse.toString());
+      print('ayy we got a resopnse');
+    });
+  }
 
 }
 
