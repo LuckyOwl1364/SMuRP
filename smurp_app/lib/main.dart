@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
 import 'package:smurp_app/data/rest_ds.dart';
@@ -45,8 +45,8 @@ class _LoginScreenState extends State<LoginScreen>{
   String _email = "works";
   String _password = "";
 
-
-  String endPtData = "Test Data ";
+  var userData;
+  String endPtData = "{Failure : Default Value}";
   List data;
 
   //async call to get data from endpoint
@@ -120,18 +120,38 @@ class _LoginScreenState extends State<LoginScreen>{
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       this.getData();
-//      return showDialog(
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//              content: Text(endPtData)
-//          );
-//        }
-//      );
-      Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new FeedPage()));
+      String loginResponse = endPtData.substring(1, 10).toLowerCase();
+      print(userData == null ? 'Null userdata' : userData);
+      print('endpointdata: '+endPtData);
+      print('loginResponse: '+loginResponse);
+      print('Checking response ' + loginResponse.contains('failure').toString());
+
+      if(loginResponse.contains('failure')){//if the response returns a login failure
+        print('Wrong Data');
+          return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+                content: Text(endPtData)
+            );
+          }
+        );
+      } else {
+        print('Correct Data');
+        sleep(const Duration(seconds:1));
+        print(userData == null ? 'Null userdata' : userData);
+        //otherwise store the data and move onto the feed
+        globals.username = userData["username"] == null ? " " : userData["username"];
+        globals.lastfm_name = userData["lastfm_name"] == null ? " " : userData["lastfm_name"];
+        globals.joindate = userData["join_date"] == null ? " " : userData["join_date"];
+        globals.user_id = userData["user_id"] == null ? " " : userData["user_id"];
+
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new FeedPage()));
+      }
+
     } else {
 //    If all data are not valid then start auto validation.
       setState(() {
@@ -168,8 +188,9 @@ class _LoginScreenState extends State<LoginScreen>{
     );
 
     setState(() {
-      var loginResponse = json.decode(response.body);
-      endPtData = loginResponse.toString();
+      userData = json.decode(response.body);
+
+      endPtData = userData.toString();
       print(endPtData);
       print('ayy we got a respnse');
     });

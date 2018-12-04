@@ -44,7 +44,7 @@ class FeedState extends State<FeedPage> {
           child: ListView(
             children: <Widget>[
               UserAccountsDrawerHeader(
-                  accountName: Text(endPtData),
+                  accountName: Text(globals.username == null ? 'empty username' : globals.username),
                   accountEmail: Text('SMuRP'),
                   decoration: BoxDecoration(
                     color: Colors.lightBlue,
