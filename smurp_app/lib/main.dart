@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
 import 'package:smurp_app/data/rest_ds.dart';
+import 'package:smurp_app/feed.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
@@ -119,14 +120,18 @@ class _LoginScreenState extends State<LoginScreen>{
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       this.getData();
-      return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              content: Text(endPtData)
-          );
-        }
-      );
+//      return showDialog(
+//        context: context,
+//        builder: (context) {
+//          return AlertDialog(
+//              content: Text(endPtData)
+//          );
+//        }
+//      );
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => new FeedPage()));
     } else {
 //    If all data are not valid then start auto validation.
       setState(() {
@@ -164,8 +169,9 @@ class _LoginScreenState extends State<LoginScreen>{
 
     setState(() {
       var loginResponse = json.decode(response.body);
-      print(loginResponse.toString());
-      print('ayy we got a resopnse');
+      endPtData = loginResponse.toString();
+      print(endPtData);
+      print('ayy we got a respnse');
     });
   }
 
