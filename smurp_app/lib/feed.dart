@@ -8,6 +8,7 @@ import 'package:smurp_app/rated.dart';
 import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
+import 'package:smurp_app/data/rest_ds.dart';
 import 'globals.dart' as globals;
 
 
@@ -24,6 +25,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class FeedState extends State<FeedPage> {
+  final RestDatasource rest = new RestDatasource();
   String endPtData = "Endpoint Data Username";
   String feedData = "Testing Feed. . . Did it work? ";
   List feedList;
@@ -178,17 +180,23 @@ class FeedState extends State<FeedPage> {
     );
   }
 
-  Future<String> like(int SongID) async {
-    initState();
-    print('Song with id of: ' + SongID.toString() + 'was liked');
+  //pass in the songID
+  void like(int songID) async{
+    print("Calling like("+songID.toString()+")");
+    rest.likeSong(globals.user_id, songID);
+//    initState();
+    print('Song with id of: ' + songID.toString() + ' was liked');
   }
 
-  Future<String> dislike(int SongID) async {
-    initState();
-    print('Song with id of: ' + SongID.toString() + 'was disliked');
+  //pass in the songID
+  void dislike(int songID) async {
+    print("Calling dislike("+songID.toString()+")");
+    rest.dislikeSong(globals.user_id, songID);
+//    initState();
+    print('Song with id of: ' + songID.toString() + ' was disliked');
   }
 
-  //asynchronous call to hit the test endpoint
+  //asynchronous call to hit endpoint
   // it's asynchronous because it might take a while
   // and we don't want the app to crash in the time
   // it takes to gather the data
