@@ -316,6 +316,15 @@ def get_likes(user_id):
     for rate in rates:
         username = db.session.query(User).get(rate.user_id)
         song = db.session.query(Song).get(rate.song_id)
+        
+        #checks if artist is null
+        # if null artist, put Brendan
+        artistOfsong = song.song_by
+        if artistOfsong == []:
+            artist = 'Brendan'
+        elif artistOfsong is not []:
+            artist = song.song_by[0].artist_name
+
         likes_dict = {
             "username": username.username,
             "song_id": song.song_id,
