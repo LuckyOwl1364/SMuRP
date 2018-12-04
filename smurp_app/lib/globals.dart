@@ -1,6 +1,6 @@
 library my_prj.globals;
 
-bool isLoggedIn = false;
+bool isLoggedIn;
 String username;
 String lastfm_name;
 String joindate;

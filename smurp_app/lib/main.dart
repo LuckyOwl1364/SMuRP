@@ -145,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen>{
         globals.lastfm_name = userData["lastfm_name"] == null ? " " : userData["lastfm_name"];
         globals.joindate = userData["join_date"] == null ? " " : userData["join_date"];
         globals.user_id = userData["user_id"] == null ? " " : userData["user_id"];
+        globals.isLoggedIn = true;
 
         Navigator.push(
             context,

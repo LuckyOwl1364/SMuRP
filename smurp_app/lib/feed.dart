@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smurp_app/models/user.dart';
@@ -9,6 +10,7 @@ import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/data/rest_ds.dart';
+import 'package:smurp_app/main.dart';
 import 'globals.dart' as globals;
 
 
@@ -114,7 +116,9 @@ class FeedState extends State<FeedPage> {
                 leading: const Icon(Icons.exit_to_app),
                 title: Text('Log Out'),
                 onTap: () {
-                  Navigator.pop(context); // TODO: Make it actually exit the app & session  ~~~~~~~~~~~~~
+                  globals.isLoggedIn = false;
+                  logOut();
+                  //Navigator.pop(context); // TODO: Make it actually exit the app & session  ~~~~~~~~~~~~~
                 }, //code to navigate to appropriate screen
               )
             ],
@@ -212,5 +216,22 @@ class FeedState extends State<FeedPage> {
       print(feedData);
     });
   }
+
+  Future<Null> logOut() async {
+    print('Log out endoint ahead ');
+    http.Response response = await http.get(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/logout?username="+globals.user_id.toString(),
+        headers: {"Accept": "application/html"});
+
+    print('cool. we back');
+    //exit(0);
+    sleep(const Duration(seconds:1));
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/',(Route<dynamic> route) => false);
+//    Navigator.push(
+//        context,
+//        new MaterialPageRoute(
+//            builder: (context) => new LoginScreen()));
+   }
 
 }
