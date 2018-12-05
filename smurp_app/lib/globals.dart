@@ -4,6 +4,7 @@ bool isLoggedIn;
 String username;
 String lastfm_name;
 String joindate;
+String session_key;
 int user_id;
 
 final double regularPadding = 8.0;

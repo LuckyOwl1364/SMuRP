@@ -140,9 +140,10 @@ class FollowingPageState extends State<FirstWidget> {
 
   //async call to hit unfollows endpoint
   Future<String> hitUnfollowsEndpoint(int userID_1, int userID_2) async {
+    print('Attempting the follow endpoint');
     http.Response response = await http.get(
         "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/unfollows?user_id1=" +
-            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+            userID_1.toString() + "&user_id2=" + userID_2.toString()+'&session_key='+globals.session_key,
         headers: {"Accept": "application/json"});
 
     setState(() {
@@ -250,9 +251,10 @@ class FollowersPageState extends State<SecondWidget> {
 
   //async call to hit follows endpoint
   Future<String> hitFollowsEndpoint(int userID_1, int userID_2) async {
+    print('Attempting the follow endpoint');
     http.Response response = await http.get(
         "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/follows?user_id1=" +
-            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+            userID_1.toString() + "&user_id2=" + userID_2.toString()+'&session_key='+globals.session_key,
         headers: {"Accept": "application/json"});
 
     setState(() {
@@ -272,9 +274,11 @@ class FollowersPageState extends State<SecondWidget> {
 
   //async call to hit unfollows endpoint
   Future<String> hitUnfollowsEndpoint(int userID_1, int userID_2) async {
+    print('Attempting the unfollow endpoint with:' + globals.session_key+".Fingers crossed hope it works");
+
     http.Response response = await http.get(
         "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/unfollows?user_id1=" +
-            userID_1.toString() + "&user_id2=" + userID_2.toString(),
+            userID_1.toString() + "&user_id2=" + userID_2.toString() + '&session_key=' + globals.session_key,
         headers: {"Accept": "application/json"});
 
     setState(() {

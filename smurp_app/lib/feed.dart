@@ -205,8 +205,9 @@ class FeedState extends State<FeedPage> {
   // and we don't want the app to crash in the time
   // it takes to gather the data
   Future<String> getFeedData() async {
+    print("Going to call getfeed endpoint with: "+globals.user_id.toString()+" and "+globals.session_key);
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&session_key="+globals.session_key,
         headers: {"Accept": "application/json"});
 
     setState(() {

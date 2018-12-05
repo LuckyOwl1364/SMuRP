@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:smurp_app/globals.dart' as globals;
 
 import 'package:smurp_app/utils/network_util.dart';
 import 'package:smurp_app/models/user.dart';
@@ -84,7 +85,7 @@ class RestDatasource {
 
 
   void likeSong(int user_id, int song_id) {
-    _netUtil.get(LIKE_URL + "?user_id=$user_id&song_id=$song_id");
+    _netUtil.get(LIKE_URL + "?user_id=$user_id&song_id=$song_id"+"&session_key="+globals.session_key);
 //        .then((dynamic res) {
 //          print("~~~~ About to print what gets returned");
 //          print(res.toString());
@@ -100,7 +101,7 @@ class RestDatasource {
 
 
   void dislikeSong(int user_id, int song_id) {
-    _netUtil.get(DISLIKE_URL + "?user_id=$user_id&song_id=$song_id");
+    _netUtil.get(DISLIKE_URL + "?user_id=$user_id&song_id=$song_id"+"&session_key="+globals.session_key);
 //        .then((dynamic res) {
 //      print("~~~~ About to print what gets returned");
       //print(res);

@@ -118,14 +118,18 @@ class _LoginScreenState extends State<LoginScreen>{
 
   _validateInputs() {
     if (_formKey.currentState.validate()) {
+      sleep(const Duration(seconds:1));
       _formKey.currentState.save();
-      this.getData();
+      this.getLoginData();
+      print('hold on a sec...');
+      sleep(const Duration(seconds:3));
       String loginResponse = endPtData.substring(1, 10).toLowerCase();
       print(userData == null ? 'Null userdata' : userData);
       print('endpointdata: '+endPtData);
       print('loginResponse: '+loginResponse);
       print('Checking response ' + loginResponse.contains('failure').toString());
-
+      sleep(const Duration(seconds:3));
+      print('waiting just a liitle longer to see if that makes a difference');
       if(loginResponse.contains('failure')){//if the response returns a login failure
         print('Wrong Data');
           return showDialog(
@@ -141,12 +145,19 @@ class _LoginScreenState extends State<LoginScreen>{
         sleep(const Duration(seconds:1));
         print(userData == null ? 'Null userdata' : userData);
         //otherwise store the data and move onto the feed
-        globals.username = userData["username"] == null ? " " : userData["username"];
-        globals.lastfm_name = userData["lastfm_name"] == null ? " " : userData["lastfm_name"];
-        globals.joindate = userData["join_date"] == null ? " " : userData["join_date"];
+        globals.username = userData["username"] == null ? " " : userData["username"].trim();
+        globals.lastfm_name = userData["lastfm_name"] == null ? " " : userData["lastfm_name"].trim();
+        globals.joindate = userData["join_date"] == null ? " " : userData["join_date"].trim();
         globals.user_id = userData["user_id"] == null ? " " : userData["user_id"];
+        globals.session_key = userData["session_key"] == null ? " " : userData["session_key"].trim();
         globals.isLoggedIn = true;
-
+        print('storing data as: '+globals.username+' and '+
+            globals.lastfm_name +' and '+
+            globals.joindate +' and '+
+            globals.user_id.toString()+' and '+
+            globals.isLoggedIn.toString());
+        print('registered data. starting new screen in 3...2..1.');
+        sleep(const Duration(seconds:3));
         Navigator.push(
             context,
             new MaterialPageRoute(
