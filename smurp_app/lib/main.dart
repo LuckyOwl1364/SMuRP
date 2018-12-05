@@ -46,7 +46,8 @@ class _LoginScreenState extends State<LoginScreen>{
   String _password = "";
 
   var userData;
-  String endPtData = "{Failure : Default Value}";
+  //String endPtData = "{Failure : Default Value}";
+  String endPtData = '{"username": "UnquietNights", "user_id": 23, "join_date": "November 13, 2018", "session_key": "unquietnights", "lastfm_name": "UnquietNights"}';
   List data;
 
   //async call to get data from endpoint
@@ -155,7 +156,8 @@ class _LoginScreenState extends State<LoginScreen>{
             globals.lastfm_name +' and '+
             globals.joindate +' and '+
             globals.user_id.toString()+' and '+
-            globals.isLoggedIn.toString());
+            globals.isLoggedIn.toString()+' and '+
+            globals.session_key);
         print('registered data. starting new screen in 3...2..1.');
         sleep(const Duration(seconds:3));
         Navigator.push(
@@ -193,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen>{
   }
 
   //async call to get data from endpoint
-  Future<Null> getLoginData() async {
+  Future<Null> getLoginData2() async {
     print("Is that an endpoint i see? ");
     http.Response response = await http.get(
         "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/loginuser?username="+_email+"&password="+_password
@@ -204,9 +206,29 @@ class _LoginScreenState extends State<LoginScreen>{
 
       endPtData = userData.toString();
       print(endPtData);
-      print('ayy we got a respnse');
+      print('ayy we got a response');
     });
   }
+
+  //TODO:NEW STUFF~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Future<String> getLoginData() async {
+    print("Using the client to call login endpoint.");
+    globals.client.getUrl(Uri.parse(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/loginuser?username="+_email+"&password="+_password))
+        .then((request) => request.close())
+        .then((response) =>
+        response.transform(utf8.decoder).listen(print));
+
+    setState(() {
+      userData = json.decode(endPtData);
+
+      endPtData = userData.toString();
+      print(endPtData);
+      print('ayy we got a response');
+    });
+  }
+//TODO:NEW STUFF~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 }
 

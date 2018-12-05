@@ -204,20 +204,33 @@ class FeedState extends State<FeedPage> {
   // it's asynchronous because it might take a while
   // and we don't want the app to crash in the time
   // it takes to gather the data
+//  Future<String> getFeedData() async {
+//    print("Going to call getfeed endpoint with: "+globals.user_id.toString()+" and "+globals.session_key);
+//    http.Response response = await http.get(
+//        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&session_key="+globals.session_key,
+//        headers: {"Accept": "application/json"});
+//
+//    setState(() {
+//      feedList = json.decode(response.body);
+//      feedData = 'Successfully grabbed some data!';
+//
+//      print(feedData);
+//    });
+//  }
+
+  //TODO:NEW STUFF~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Future<String> getFeedData() async {
-    print("Going to call getfeed endpoint with: "+globals.user_id.toString()+" and "+globals.session_key);
-    http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&session_key="+globals.session_key,
-        headers: {"Accept": "application/json"});
-
-    setState(() {
-      feedList = json.decode(response.body);
-      feedData = 'Successfully grabbed some data!';
-
-      print(feedData);
-    });
+    print("Using the client to call getfeed endpoint with: " +
+        globals.user_id.toString() + " and " + globals.session_key);
+    globals.client.getUrl(Uri.parse(
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="
+            + globals.user_id.toString() + "&session_key=" +
+            globals.session_key))
+        .then((request) => request.close())
+        .then((response) =>
+          response.transform(utf8.decoder).listen(print));
   }
-
+  //TODO:NEW STUFF~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Future<Null> logOut() async {
     print('Log out endoint ahead ');
     http.Response response = await http.get(
@@ -229,10 +242,6 @@ class FeedState extends State<FeedPage> {
     sleep(const Duration(seconds:1));
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/',(Route<dynamic> route) => false);
-//    Navigator.push(
-//        context,
-//        new MaterialPageRoute(
-//            builder: (context) => new LoginScreen()));
    }
 
 }
