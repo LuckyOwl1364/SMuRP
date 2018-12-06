@@ -128,8 +128,6 @@ class _LoginScreenState extends State<LoginScreen>{
       print('endpointdata: '+endPtData);
       print('loginResponse: '+loginResponse);
       print('Checking response ' + loginResponse.contains('failure').toString());
-      sleep(const Duration(seconds:3));
-      print('waiting just a liitle longer to see if that makes a difference');
       if(loginResponse.contains('failure')){//if the response returns a login failure
         print('Wrong Data');
           return showDialog(

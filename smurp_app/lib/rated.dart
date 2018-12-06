@@ -14,7 +14,7 @@ import 'package:smurp_app/data/rest_ds.dart';
 import 'globals.dart' as globals;
 
 
-void main() => runApp(RatedPage());
+//void main() => runApp(RatedPage());
 
 class RatedPage extends StatefulWidget {
   @override

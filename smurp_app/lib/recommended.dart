@@ -58,7 +58,7 @@ class RecommendPageState extends State<RecommendWidget> { // TODO: Change out Wo
                           children : [
                             Text(
                               //display the song's title and artist
-                                recs[index]['song_title'] + ' by ' + recs[index]['artist'],
+                                recs[index]['song_title'] + ' by ' + recs[index]['artists'],
                                 textAlign: TextAlign.start),
 
                           ]//end of column children
@@ -70,7 +70,7 @@ class RecommendPageState extends State<RecommendWidget> { // TODO: Change out Wo
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs up button
                     icon: const Icon(Icons.thumb_up),
-                    color: 0 == 1 ? Colors.lightBlue : Colors.grey, // TODO: change endpoint to return song rating?
+                    color: Colors.grey, // TODO: change endpoint to return song rating?
                     onPressed: (){
                       like(index);
                     },
@@ -81,7 +81,7 @@ class RecommendPageState extends State<RecommendWidget> { // TODO: Change out Wo
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs down button
                     icon: const Icon(Icons.thumb_down),
-                    color: 0 == 1 ? Colors.lightBlue : Colors.grey, // TODO: change endpoint to return song rating?
+                    color: Colors.grey, // TODO: change endpoint to return song rating?
                     onPressed: (){
                       dislike(index);
                     },
@@ -121,7 +121,7 @@ class RecommendPageState extends State<RecommendWidget> { // TODO: Change out Wo
   // it takes to gather the data
   void getRecommendData() async {
     http.Response rResponse = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/recommend?user_id="+globals.user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/recommend?user_id="+globals.user_id.toString()+"&session_key="+globals.session_key,
         headers: {"Accept": "application/json"});
     print(rResponse.body.toString());
     setState(() {

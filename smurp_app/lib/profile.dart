@@ -100,7 +100,7 @@ class ProfileState extends State<ProfilePage> {
   // it takes to gather the data
   Future<String> getProfileData() async {
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&user_only=true",
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&user_only=true"+"&session_key="+globals.session_key,
         headers: {"Accept": "application/json"});
 
     setState(() {

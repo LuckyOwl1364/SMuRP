@@ -207,7 +207,7 @@ class FeedState extends State<FeedPage> {
   Future<String> getFeedData() async {
     print("Going to call getfeed endpoint with: "+globals.user_id.toString()+" and "+globals.session_key);
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&session_key="+globals.session_key,
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&user_only=false"+"&session_key="+globals.session_key,
         headers: {"Accept": "application/json"});
 
     setState(() {
@@ -221,7 +221,7 @@ class FeedState extends State<FeedPage> {
   Future<Null> logOut() async {
     print('Log out endoint ahead ');
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/logout?username="+globals.user_id.toString(),
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/logout?username="+globals.user_id.toString()+"&session_key="+globals.session_key,
         headers: {"Accept": "application/html"});
 
     print('cool. we back');
