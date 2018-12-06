@@ -1,6 +1,13 @@
-from flask import request
+from flask import request, session, escape
 import requests, array, json
 from db_api import *
+from proto import *
+
+# Set the secret key to some random bytes. Keep this really secret!
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.config.update(
+    SESSION_COOKIE_PATH = '/'
+)
 
 #imports app instance from database api
 from db_api import app 
