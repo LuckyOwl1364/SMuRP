@@ -48,9 +48,44 @@ def getfollowing():
 # user_id1 follows user_id2
 @app.route("/follows")
 def follows():
+    #current_user = session.items()
+    #print(current_user,' is current logged in user')
+    # check that current user is equal to user_id1
     user_id1 = request.args.get('user_id1')
     user_id2 = request.args.get('user_id2')
-    return add_follows(user_id1, user_id2)
+    session_key = request.args.get('session_key')
+    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_k
+ey)
+    #user = db.session.query(User).get(user_id1)
+    #user_id1_username = user.username
+    #print(user_id1_username)
+    #print('Session: ' + str(current_user))
+#    if session_key.lower() in session:
+
+    # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
+    user = db.session.query(User).filter_by(username=session_key).first()
+    print('The user_id when we query the database using the session key: ' + str(user.user_id
+))
+    print('SUCCESS: ' + str(user.user_id) + ' follows ' + user_id2)
+    return add_follows(user.user_id, user_id2)
+#    else:
+#        print('FAILURE')
+#        return "Error: Login failure. Please login to complete task."
+#   if current_user is []:
+#       #no one is logged in user
+#       print('in first check: ')
+#       print(current_user)
+#       return "Error: Login failure. Please login to complete task."
+#   else:
+#       #session.items() is not empty
+#       curr_user_split = str(current_user).split(',')
+#       print('in else current user split:')
+#       print(curr_user_split)
+#       curr_user_split_username = curr_user_split[1]
+#       if user_id1_username.lower() in curr_user_split[1]:
+#           return add_follows(user_id1, user_id2)
+#       else:
+#           return "Error: Login failure. Please login to complete task."
 
 #unfollows calls the method delete_follows from db_api
 #deletes a relationship in the database where
