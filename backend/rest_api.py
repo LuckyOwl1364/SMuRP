@@ -140,16 +140,55 @@ ey)
 # login method logs in a user by checking the database if the user exists
 # and if the password is correct
 # takes in the parameters username and password
-@app.route("/loginuser")
+@app.route('/loginuser')
 def loginuser():
     username = request.args.get('username')
     password = request.args.get('password')
+    print('Username: ' + username + ' Password: ' + password)
     output = login(username, password)
-    if output[0] is "True":
+    if output[0] is True:
         #create session so user is logged in
-        session['logged_in'] = True
+        #print('before request.form')
+        #session[username] = username
+        #res = str(session.items())
+        #print('Current logged in users ' + session)
+        print(output)
+        loaded_json = json.loads(output[2])
+        print('user_id ', loaded_json['user_id'])
+        #print({"Success": 'Logged in as %s' % escape(session[username])})
+        # updates songs from last_fm that a user has listened to (whatever songs they have "l
+oved" on last_fm
+        # takes from the file populate_db.py method adding_info()
+        # user is their lastfm username
+        parameter = {'method': 'user.getlovedtracks', 'user': loaded_json['lastfm_name'], 'ap
+i_key': '8ed3258b37f9fb17b765bb7589e06c6f','format': 'json' }
+        response = requests.get('http://ws.audioscrobbler.com/2.0/?', params=parameter)
+        data = response.json()
+        #print(data['lovedtracks']['track'])
+#        if len(data['lovedtracks']['track']) is not []:
+        for i in range(len(data['lovedtracks']['track'])):
+            song_name = data['lovedtracks']['track'][i]['name']
+            song_url_raw = data['lovedtracks']['track'][i]['url']
+            song_url = song_url_raw[:400] if len(song_url_raw) > 400 else song_url_raw
+            # add_song checks database if song already exists
+            song_id = add_song(song_name, song_url)
+            artist_name = data['lovedtracks']['track'][i]['artist']['name']
+            artist_url = data['lovedtracks']['track'][i]['artist']['url']
+            artist_id = add_artist(artist_name, artist_url)
+            add_song_by(song_id, artist_id)
+            # add_listened_to will either create a listened relationship or update how many t
+imes the user has listened to the song
+            add_listened_to(loaded_json['user_id'], song_id)
+        print(output[2])
+        real_output = json.loads(output[2])
+        # make a session key that is given to client side - session key is what was put in SE
+SSION earlier
+        real_output['session_key'] = username
+        return json.dumps(real_output)
     else:
-        flash('wrong password!')
+        #res = str(session.items())
+        print('FAIL')
+        return json.dumps({"Failure": 'wrong password!'})
 
 # logs a user out by ending the session for CURRENT user
 @app.route("/logout")
