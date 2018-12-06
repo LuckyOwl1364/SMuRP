@@ -7,9 +7,10 @@ import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
 
-
+//  If starting the program here, creates the following page
 void main() => runApp(RecommendedPage());
 
+//  Has the page created and displays it
 class RecommendedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,29 +24,33 @@ class RecommendedPage extends StatelessWidget {
   }
 }
 
-
-class RecommendPageState extends State<RecommendWidget> { // TODO: Change out WordPair for Song
+//  This is the page body
+class RecommendPageState extends State<RecommendWidget> {
   List recs;
 
   final RestDatasource rest = new RestDatasource();
 
+  //  When the page is being built, do this first
   @override
   void initState() {
     super.initState();
     this.getRecommendData();
   }
 
-
+  // Builds the page
   @override
   Widget build(BuildContext context) {
-//    collectSongs();
     return Scaffold (
       appBar: AppBar(
+        leading: new IconButton(  // this is the back button
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(null),
+        ),
         title: Text('Song Recommendations'),
       ),
-      body:new ListView.builder(
+      body: new ListView.builder(
         itemCount: recs == null ? 0 : recs.length,
-        itemBuilder: (BuildContext context, int index){
+        itemBuilder: (BuildContext context, int index){   //  Puts together all the song cards (with the like and dislike
           return new Card(
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -58,30 +63,29 @@ class RecommendPageState extends State<RecommendWidget> { // TODO: Change out Wo
                           children : [
                             Text(
                               //display the song's title and artist
-                                recs[index]['song_title'] + ' by ' + recs[index]['artists'],
+                                recs[index]['song_title'] + ' by ' + recs[index]['artists'],  // The song's title and artist
                                 textAlign: TextAlign.start),
-
-                          ]//end of column children
-                      )//end of column
-                  ),//end of padding
-                ), //end of expanded
-                Padding(
+                          ]// end children
+                      )
+                  ),
+                ),
+                Padding(  // Give some space, then add a thumbs-up button for liking a song
                   padding: new EdgeInsets.symmetric(
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
-                  child: IconButton(//this icon is the thumbs up button
+                  child: IconButton(
                     icon: const Icon(Icons.thumb_up),
-                    color: Colors.grey, // TODO: change endpoint to return song rating?
+                    color: Colors.grey,
                     onPressed: (){
                       like(index);
                     },
                   ),
                 ),
-                Padding(
+                Padding(  // Give some space, then add a thumbs-down button for disliking a song
                   padding: new EdgeInsets.symmetric(
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs down button
                     icon: const Icon(Icons.thumb_down),
-                    color: Colors.grey, // TODO: change endpoint to return song rating?
+                    color: Colors.grey,
                     onPressed: (){
                       dislike(index);
                     },
