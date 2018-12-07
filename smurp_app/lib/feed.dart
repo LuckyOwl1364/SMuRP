@@ -9,7 +9,6 @@ import 'package:smurp_app/rated.dart';
 import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
-import 'package:smurp_app/utils/rest_ds.dart';
 import 'package:smurp_app/data/rest_ds.dart';
 import 'package:smurp_app/main.dart';
 import 'globals.dart' as globals;

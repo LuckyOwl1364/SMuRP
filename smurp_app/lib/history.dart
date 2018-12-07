@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
-import 'package:smurp_app/utils/rest_ds.dart';
+import 'package:smurp_app/data/rest_ds.dart';
 
 
 void main() => runApp(HistoryPage());

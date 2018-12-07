@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:smurp_app/models/user.dart';
 
-import 'package:smurp_app/utils/rest_ds.dart';
+import 'package:smurp_app/data/rest_ds.dart';
 
 void main() {
   runApp(new MaterialApp(

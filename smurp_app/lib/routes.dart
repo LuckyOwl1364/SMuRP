@@ -25,6 +25,5 @@ final routes = {
   '/profile': (BuildContext context) => new ProfilePage(),
   '/recommended': (BuildContext context) => new RecommendedPage(),
   '/rated': (BuildContext context) => new RatedPage(),
-  '/history': (BuildContext context) => new HistoryPage(),
   '/friends': (BuildContext context) => new FriendsPage(),
 };

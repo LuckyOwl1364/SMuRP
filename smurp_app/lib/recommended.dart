@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/models/song.dart';
 
-import 'package:smurp_app/utils/rest_ds.dart';
+import 'package:smurp_app/data/rest_ds.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;

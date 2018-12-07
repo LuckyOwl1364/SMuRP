@@ -10,7 +10,7 @@ import 'package:smurp_app/feed.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/models/song.dart';
-import 'package:smurp_app/utils/rest_ds.dart';
+import 'package:smurp_app/data/rest_ds.dart';
 import 'globals.dart' as globals;
 
 
