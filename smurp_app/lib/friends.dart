@@ -3,6 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smurp_app/history.dart';
+import 'package:smurp_app/models/user.dart';
+import 'package:smurp_app/utils/endpointDemo.dart';
+import 'package:smurp_app/feed.dart';
+import 'package:smurp_app/profile.dart';
+import 'package:smurp_app/recommended.dart';
 import 'globals.dart' as globals;
 
 
@@ -23,10 +29,10 @@ class FriendsPageState extends State<FriendsPage> {
             length:2,
             child:  new Scaffold(
                 appBar: new AppBar(
-                    leading: new IconButton(  // this is the back button
-                      icon: new Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.of(context).pop(null),
-                    ),
+                  leading: new IconButton(//this is the backbutton
+                    icon: new Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.of(context).pop(null),
+                  ),
                     title: new Text("Friends"),
                   //creating tabs
                   bottom: new TabBar(

@@ -1,14 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smurp_app/history.dart';
+import 'package:smurp_app/models/user.dart';
+import 'package:smurp_app/utils/endpointDemo.dart';
+import 'package:smurp_app/feed.dart';
+import 'package:smurp_app/profile.dart';
+import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/models/song.dart';
-import 'package:smurp_app/data/rest_ds.dart';
+import 'package:smurp_app/utils/rest_ds.dart';
 import 'globals.dart' as globals;
 
 
-//  If starting the program here, creates the following page
-void main() => runApp(RatedPage());
+//void main() => runApp(RatedPage());
 
 class RatedPage extends StatefulWidget {
   @override
@@ -17,7 +23,7 @@ class RatedPage extends StatefulWidget {
 
 
 
-//  This is the page body
+
 class RatedPageState extends State<RatedPage> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -26,7 +32,7 @@ class RatedPageState extends State<RatedPage> {
 
   final RestDatasource rest = new RestDatasource();
 
-  //  When the page is being built, do this first
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +40,9 @@ class RatedPageState extends State<RatedPage> {
     print("called getRatedData()");
   }
 
-  // Builds the page
+
+
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -43,7 +51,7 @@ class RatedPageState extends State<RatedPage> {
         length:2,
         child:  new Scaffold(
             appBar: new AppBar(
-                leading: new IconButton(  // this is the back button
+                leading: new IconButton(//this is the backbutton
                   icon: new Icon(Icons.arrow_back),
                   onPressed: () => Navigator.of(context).pop(null),
                 ),
@@ -69,10 +77,11 @@ class RatedPageState extends State<RatedPage> {
 
 
   Widget _buildSuggestions(bool grabLikes) {
+//    this.collectSongs(grabLikes);
     List list = grabLikes ? likes : dislikes;
-    return new ListView.builder(
+    return ListView.builder(
       itemCount: list == null ? 0 : list.length,
-      itemBuilder: (BuildContext context, int index){   //  Puts together all the song cards (with the like and dislike
+      itemBuilder: (BuildContext context, int index){
         return new Card(
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -85,29 +94,30 @@ class RatedPageState extends State<RatedPage> {
                         children : [
                           Text(
                             //display the song's title and artist
-                              list[index]['song_title'] + ' by ' + list[index]['artists'],  // The song's title and artist
+                              list[index]['song_title'] + ' by ' + list[index]['artist'],
                               textAlign: TextAlign.start),
-                        ]// end children
-                    )
-                ),
-              ),
-              Padding(  // Give some space, then add a thumbs-up button for liking a song
+
+                        ]//end of column children
+                    )//end of column
+                ),//end of padding
+              ), //end of expanded
+              Padding(
                 padding: new EdgeInsets.symmetric(
                     horizontal: globals.halfPadding, vertical: globals.halfPadding),
-                child: IconButton(
+                child: IconButton(//this icon is the thumbs up button
                   icon: const Icon(Icons.thumb_up),
-                  color: Colors.grey,
+                  color: list[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
                   onPressed: (){
                     like(list, index);
                   },
                 ),
               ),
-              Padding(  // Give some space, then add a thumbs-down button for disliking a song
+              Padding(
                 padding: new EdgeInsets.symmetric(
                     horizontal: globals.halfPadding, vertical: globals.halfPadding),
                 child: IconButton(//this icon is the thumbs down button
                   icon: const Icon(Icons.thumb_down),
-                  color: Colors.grey,
+                  color: list[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,
                   onPressed: (){
                     dislike(list, index);
                   },
@@ -160,4 +170,69 @@ class RatedPageState extends State<RatedPage> {
   }
 
 
+  void collectSongs(bool grabLikes) async{
+    if (grabLikes){
+      List<Song> nextSongs = await rest.getLikedSongs(globals.user_id);
+      likes.addAll(nextSongs);
+    }
+    else{
+      List<Song> nextSongs = await rest.getDislikedSongs(globals.user_id);
+      dislikes.addAll(nextSongs);
+    }
+  }
+
+  Widget _buildRow(Song song, bool grabLikes) {
+    final bool liked = likes.contains(song);
+    final bool disliked = dislikes.contains(song);
+    print("Song: ${song.artist} - ${song.title}");
+    return ListTile(
+        title: Text(
+          (song.artist + " - " + song.title),
+          style: _biggerFont,
+        ),
+        trailing: new Row(
+            children: <Widget>[
+              new IconButton(
+                  icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
+                    color: liked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (disliked) {
+                      dislikes.remove(song); // if currently disliked, remove from dislikes
+                      rest.dislikeSong(globals.user_id, song.song_id); // tell Database to remove song
+                    }
+
+                    if (liked){
+                      likes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      likes.add(song);
+                    }
+                    rest.likeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+                  }); }
+              ),
+              new IconButton(
+                  icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
+                    color: disliked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (liked) {
+                      likes.remove(song); // if currently liked, remove from likes
+                      rest.likeSong(globals.user_id, song.song_id); // tell Database to remove song
+                    }
+
+                    if (disliked){
+                      dislikes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      dislikes.add(song); // else add to dislikes
+                    }
+                    rest.dislikeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+
+                  }); }
+              ),
+            ],
+            mainAxisSize: MainAxisSize.min)
+    );
+  }
 }

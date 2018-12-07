@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/models/song.dart';
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
-import 'package:smurp_app/data/rest_ds.dart';
+import 'package:smurp_app/utils/rest_ds.dart';
 
 
-//  If starting the program here, creates the following page
 void main() => runApp(HistoryPage());
 
 class HistoryPage extends StatelessWidget {
@@ -23,9 +23,12 @@ class HistoryPage extends StatelessWidget {
   }
 }
 
-//  This is the page body
+
 class HistoryPageState extends State<HistoryWidget> {
   List history;
+  List _likes = new List<Song>();
+  List _dislikes = new List<Song>();
+  final _biggerFont = const TextStyle(fontSize: 18.0);
 
 
   final RestDatasource rest = new RestDatasource();
@@ -41,17 +44,14 @@ class HistoryPageState extends State<HistoryWidget> {
 
   @override
   Widget build(BuildContext context) {
+//    this.collectSongs();
     return Scaffold (
       appBar: AppBar(
-        leading: new IconButton(  // this is the back button
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(null),
-        ),
         title: Text('Listening History'),
       ),
       body: new ListView.builder(
         itemCount: history == null ? 0 : history.length,
-        itemBuilder: (BuildContext context, int index){   //  Puts together all the song cards (with the like and dislike
+        itemBuilder: (BuildContext context, int index){
           return new Card(
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -64,29 +64,30 @@ class HistoryPageState extends State<HistoryWidget> {
                           children : [
                             Text(
                               //display the song's title and artist
-                                history[index]['song_title'] + ' by ' + history[index]['artists'],  // The song's title and artist
+                                history[index]['song_title'] + ' by ' + history[index]['artist'],
                                 textAlign: TextAlign.start),
-                          ]// end children
-                      )
-                  ),
-                ),
-                Padding(  // Give some space, then add a thumbs-up button for liking a song
+
+                          ]//end of column children
+                      )//end of column
+                  ),//end of padding
+                ), //end of expanded
+                Padding(
                   padding: new EdgeInsets.symmetric(
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
-                  child: IconButton(
+                  child: IconButton(//this icon is the thumbs up button
                     icon: const Icon(Icons.thumb_up),
-                    color: Colors.grey,
+                    color: history[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
                     onPressed: (){
                       like(index);
                     },
                   ),
                 ),
-                Padding(  // Give some space, then add a thumbs-down button for disliking a song
+                Padding(
                   padding: new EdgeInsets.symmetric(
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs down button
                     icon: const Icon(Icons.thumb_down),
-                    color: Colors.grey,
+                    color: history[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,
                     onPressed: (){
                       dislike(index);
                     },
@@ -97,6 +98,70 @@ class HistoryPageState extends State<HistoryWidget> {
           );
         },
       ),
+    );
+  }
+
+
+  void collectSongs() async{
+    print("before call : history.length = " + history.length.toString());
+    List<Song> nextSongs = await rest.getListenedSongs(23);
+    history.addAll(nextSongs);
+
+    print("after calls : history.length = " + history.length.toString());
+//    setState((){});
+  }
+
+  Widget _buildRow(Song song) {
+    final bool liked = _likes.contains(song);
+    final bool disliked = _dislikes.contains(song);
+    return ListTile(
+        title: Text(
+          (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
+          style: _biggerFont,
+        ),
+        trailing: new Row(
+            children: <Widget>[
+              new IconButton(
+                  icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
+                    color: liked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (disliked) {
+                      _dislikes.remove(song); // if currently disliked, remove from dislikes
+                      rest.dislikeSong(globals.user_id, song.song_id); // tell Database to remove song
+                    }
+
+                    if (liked){
+                      _likes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _likes.add(song);
+                    }
+                    rest.likeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+                  }); }
+              ),
+              new IconButton(
+                  icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
+                    color: disliked ? Colors.orange : null,
+                  ),
+                  onPressed: () { setState(() {
+                    if (liked) {
+                      _likes.remove(song); // if currently liked, remove from likes
+                      rest.likeSong(globals.user_id, song.song_id); // tell Database to remove song
+                    }
+
+                    if (disliked){
+                      _dislikes.remove(song); // if already disliked, remove from dislikes
+                    }
+                    else{
+                      _dislikes.add(song); // else add to dislikes
+                    }
+                    rest.dislikeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
+
+                  }); }
+              ),
+            ],
+            mainAxisSize: MainAxisSize.min)
     );
   }
 

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/models/song.dart';
 
-import 'package:smurp_app/data/rest_ds.dart';
+import 'package:smurp_app/utils/rest_ds.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
 
-//  If starting the program here, creates the following page
+
 void main() => runApp(RecommendedPage());
 
-//  Has the page created and displays it
 class RecommendedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,33 +23,29 @@ class RecommendedPage extends StatelessWidget {
   }
 }
 
-//  This is the page body
-class RecommendPageState extends State<RecommendWidget> {
+
+class RecommendPageState extends State<RecommendWidget> { // TODO: Change out WordPair for Song
   List recs;
 
   final RestDatasource rest = new RestDatasource();
 
-  //  When the page is being built, do this first
   @override
   void initState() {
     super.initState();
     this.getRecommendData();
   }
 
-  // Builds the page
+
   @override
   Widget build(BuildContext context) {
+//    collectSongs();
     return Scaffold (
       appBar: AppBar(
-        leading: new IconButton(  // this is the back button
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(null),
-        ),
         title: Text('Song Recommendations'),
       ),
-      body: new ListView.builder(
+      body:new ListView.builder(
         itemCount: recs == null ? 0 : recs.length,
-        itemBuilder: (BuildContext context, int index){   //  Puts together all the song cards (with the like and dislike
+        itemBuilder: (BuildContext context, int index){
           return new Card(
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -63,29 +58,30 @@ class RecommendPageState extends State<RecommendWidget> {
                           children : [
                             Text(
                               //display the song's title and artist
-                                recs[index]['song_title'] + ' by ' + recs[index]['artists'],  // The song's title and artist
+                                recs[index]['song_title'] + ' by ' + recs[index]['artists'],
                                 textAlign: TextAlign.start),
-                          ]// end children
-                      )
-                  ),
-                ),
-                Padding(  // Give some space, then add a thumbs-up button for liking a song
+
+                          ]//end of column children
+                      )//end of column
+                  ),//end of padding
+                ), //end of expanded
+                Padding(
                   padding: new EdgeInsets.symmetric(
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
-                  child: IconButton(
+                  child: IconButton(//this icon is the thumbs up button
                     icon: const Icon(Icons.thumb_up),
-                    color: Colors.grey,
+                    color: Colors.grey, // TODO: change endpoint to return song rating?
                     onPressed: (){
                       like(index);
                     },
                   ),
                 ),
-                Padding(  // Give some space, then add a thumbs-down button for disliking a song
+                Padding(
                   padding: new EdgeInsets.symmetric(
                       horizontal: globals.halfPadding, vertical: globals.halfPadding),
                   child: IconButton(//this icon is the thumbs down button
                     icon: const Icon(Icons.thumb_down),
-                    color: Colors.grey,
+                    color: Colors.grey, // TODO: change endpoint to return song rating?
                     onPressed: (){
                       dislike(index);
                     },
@@ -101,7 +97,8 @@ class RecommendPageState extends State<RecommendWidget> {
 
 
 
-
+  // Tells the database to add the song at the passed index to the user's list of likes
+  // If it already is in their likes, removes instead
   void like(int index) async{
     print("Calling like(${recs[index]['song_id']})");
     rest.likeSong(globals.user_id, recs[index]['song_id']);

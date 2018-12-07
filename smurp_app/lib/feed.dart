@@ -3,26 +3,33 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:smurp_app/models/user.dart';
 import 'package:smurp_app/history.dart';
 import 'package:smurp_app/rated.dart';
 import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
+<<<<<<< HEAD
+import 'package:smurp_app/utils/rest_ds.dart';
+=======
 import 'package:smurp_app/data/rest_ds.dart';
+import 'package:smurp_app/main.dart';
+>>>>>>> parent of 28eb4ef... Deleted unused files, began documenting all files
 import 'globals.dart' as globals;
 
 
-//  If starting the program here, creates the following page
-void main() => runApp(new FeedPage());
+void main() {
+  runApp(new MaterialApp(
+    home: new FeedPage(),
+  ));
+}
 
-// This has the page created
 class FeedPage extends StatefulWidget {
   @override
   FeedState createState()=> new FeedState();
 
 }
 
-//  This is the page body
 class FeedState extends State<FeedPage> {
   final RestDatasource rest = new RestDatasource();
   String endPtData = "Endpoint Data Username";
@@ -121,10 +128,10 @@ class FeedState extends State<FeedPage> {
             ],
           ),
         ),
-        body: new ListView.builder(   // Builds the feed cards containing this user's activity and the activity of the their followed users
+        body: new ListView.builder(
           itemCount: feedList == null ? 0 : feedList.length,
           itemBuilder: (BuildContext context, int index){
-            return new Card(  // A card that contains a user's name, what they did, and with what song. Also includes the ability to rate
+            return new Card(
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children : <Widget>[
@@ -151,25 +158,25 @@ class FeedState extends State<FeedPage> {
                         )//end of column
                     ),//end of padding
                   ), //end of expanded
-                  Padding(  // Give some space, then add a thumbs-up button for liking a song
-                    padding: new EdgeInsets.symmetric(
-                        horizontal: globals.halfPadding, vertical: globals.halfPadding),
-                    child: IconButton(
-                      icon: const Icon(Icons.thumb_up),
-                      color: Colors.grey,
-                      onPressed: (){
-                        like(index);
-                      },
-                    ),
+                   Padding(
+                      padding: new EdgeInsets.symmetric(
+                          horizontal: globals.halfPadding, vertical: globals.halfPadding),
+                      child: IconButton(//this icon is the thumbs up button
+                        icon: const Icon(Icons.thumb_up),
+                        color: feedList[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
+                        onPressed: (){
+                          like(feedList[index]['song_id']);
+                        },
+                      ),
                   ),
-                  Padding(  // Give some space, then add a thumbs-down button for disliking a song
+                  Padding(
                     padding: new EdgeInsets.symmetric(
                         horizontal: globals.halfPadding, vertical: globals.halfPadding),
                     child: IconButton(//this icon is the thumbs down button
                       icon: const Icon(Icons.thumb_down),
-                      color: Colors.grey,
+                      color: feedList[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,
                       onPressed: (){
-                        dislike(index);
+                        dislike(feedList[index]['song_id']);
                       },
                     ),
                   )
@@ -181,27 +188,30 @@ class FeedState extends State<FeedPage> {
     );
   }
 
-  // Takes a song's ID and likes it
+  //pass in the songID
   void like(int songID) async{
     print("Calling like("+songID.toString()+")");
     rest.likeSong(globals.user_id, songID);
+//    initState();
     print('Song with id of: ' + songID.toString() + ' was liked');
   }
 
-  // Takes a song's ID and likes it
+  //pass in the songID
   void dislike(int songID) async {
     print("Calling dislike("+songID.toString()+")");
     rest.dislikeSong(globals.user_id, songID);
+//    initState();
     print('Song with id of: ' + songID.toString() + ' was disliked');
   }
 
-  // Asynchronous call to hit endpoint
-  // It's asynchronous because it might take a while and we don't want
-  // the app to crash in the time it takes to gather the data
-  void getFeedData() async {
-    print("Going to call getfeed endpoint with: " + globals.user_id.toString() + " and " + globals.session_key);
+  //asynchronous call to hit endpoint
+  // it's asynchronous because it might take a while
+  // and we don't want the app to crash in the time
+  // it takes to gather the data
+  Future<String> getFeedData() async {
+    print("Going to call getfeed endpoint with: "+globals.user_id.toString()+" and "+globals.session_key);
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id=" + globals.user_id.toString() + "&user_only=false"+"&session_key=" + globals.session_key,
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/getfeed?user_id="+globals.user_id.toString()+"&user_only=false"+"&session_key="+globals.session_key,
         headers: {"Accept": "application/json"});
 
     setState(() {
@@ -212,10 +222,10 @@ class FeedState extends State<FeedPage> {
     });
   }
 
-  Future<Null> logOut() async { // TODO: Something looks up here but idk what it is --Caitlin ☼
+  Future<Null> logOut() async {
     print('Log out endoint ahead ');
     http.Response response = await http.get(
-        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/logout?username=" + globals.user_id.toString()+"&session_key=" + globals.session_key,
+        "http://ec2-52-91-42-119.compute-1.amazonaws.com:5000/logout?username="+globals.user_id.toString()+"&session_key="+globals.session_key,
         headers: {"Accept": "application/html"});
 
     print('cool. we back');
@@ -223,10 +233,10 @@ class FeedState extends State<FeedPage> {
     sleep(const Duration(seconds:1));
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/',(Route<dynamic> route) => false);
-      //    Navigator.push(
-      //        context,
-      //        new MaterialPageRoute(
-      //            builder: (context) => new LoginScreen()));
+//    Navigator.push(
+//        context,
+//        new MaterialPageRoute(
+//            builder: (context) => new LoginScreen()));
    }
 
 }
