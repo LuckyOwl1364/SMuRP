@@ -9,12 +9,9 @@ import 'package:smurp_app/rated.dart';
 import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
-<<<<<<< HEAD
 import 'package:smurp_app/utils/rest_ds.dart';
-=======
 import 'package:smurp_app/data/rest_ds.dart';
 import 'package:smurp_app/main.dart';
->>>>>>> parent of 28eb4ef... Deleted unused files, began documenting all files
 import 'globals.dart' as globals;
 
 
