@@ -6,16 +6,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3b7615d-fd8f-44af-909f-80be715ce46e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/feed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/history.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/history.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/rated.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rated.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/recommended.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recommended.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/routes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/testPlaying.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/testPlaying.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/rest_ds.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/rest_ds.dart" afterDir="false" />
-    </list>
+    <list default="true" id="a3b7615d-fd8f-44af-909f-80be715ce46e" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -33,8 +24,8 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="97" column="34" lean-forward="true" selection-start-line="97" selection-start-column="34" selection-end-line="97" selection-end-column="34" />
+            <state relative-caret-position="103">
+              <caret line="130" column="52" selection-start-line="130" selection-start-column="52" selection-end-line="130" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -76,7 +67,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="697" />
@@ -99,12 +90,6 @@
               <item name="smurp_app" type="1abcf292:AndroidViewProjectNode" />
               <item name="smurp_app" type="e9137016:NonAndroidModuleNode" />
               <item name="java" type="f7eae187:NonAndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="smurp_app" type="1abcf292:AndroidViewProjectNode" />
-              <item name="smurp_app" type="e9137016:NonAndroidModuleNode" />
-              <item name="java" type="f7eae187:NonAndroidSourceTypeNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="smurp_app" type="1abcf292:AndroidViewProjectNode" />
@@ -207,7 +192,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="0" show_stripe_button="false" />
@@ -219,7 +204,7 @@
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Flutter Performance" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="4" weight="0.3294893" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.63261944" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.40527183" />
       <window_info anchor="bottom" id="Version Control" order="5" />
       <window_info anchor="bottom" id="Terminal" order="6" />
       <window_info anchor="right" id="Flutter Outline" />
@@ -263,8 +248,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="97" column="34" lean-forward="true" selection-start-line="97" selection-start-column="34" selection-end-line="97" selection-end-column="34" />
+        <state relative-caret-position="103">
+          <caret line="130" column="52" selection-start-line="130" selection-start-column="52" selection-end-line="130" selection-end-column="52" />
         </state>
       </provider>
     </entry>
