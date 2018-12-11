@@ -276,3 +276,25 @@ def dislikesong():
     print(str(user.user_id) + ' disliked song_id ' + song_id)
     output = {'output': dislike(user.user_id, song_id), 'session_key':session_key}
     return json.dumps(output)
+
+
+# recommendSong will recommend a user a song using make_recommendations()
+# parameter: user_id 
+@app.route("/recommend")
+def recommendsong():
+    user_id = request.args.get('user_id')
+    session_key = request.args.get('session_key')
+    session_bytes = session_key.encode()
+    session_string = f.decrypt(session_bytes).decode()
+    session_key = session_string.split("__")[0]
+    print('User ID: ' + user_id + ' Session Key: ' + session_key)
+    # make method that adds this recommendation to recommendation table
+    # returns what proto will endpoint
+#   if session_key.lower() in session:
+    # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
+    user = db.session.query(User).filter_by(username=session_key).first()
+    print('The user_id when we query the database using the session key: ' + str(user.user_id))
+    output = {'output': make_recommendations(user.user_id), 'session_key':session_key}
+    return json.dumps(output)
+#    else:
+#        return "Error: Login failure. Please login to complete task."
