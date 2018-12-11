@@ -9,6 +9,7 @@ import 'package:smurp_app/utils/endpointDemo.dart';
 import 'package:smurp_app/feed.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
+import 'package:smurp_app/friend_profile.dart';
 import 'globals.dart' as globals;
 
 
@@ -85,32 +86,41 @@ class FollowingPageState extends State<FirstWidget> {
        body: new ListView.builder(
           itemCount: followingList == null ? 0 : followingList.length,
           itemBuilder: (BuildContext context, int index){
-            return new Card(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Expanded(
-                        child: Padding(
-                          padding: new EdgeInsets.all(globals.regularPadding),
-                          child: new Text(
-                              followingList[index]['username'] == null ? 'null value' : followingList[index]['username'],
-                              textAlign: TextAlign.start),
-                        )),
-                    Padding(
-                      padding: new EdgeInsets.symmetric(
-                          horizontal: globals.regularPadding, vertical: globals.halfPadding),
-                      child: RaisedButton(
-                        onPressed: (){
-                          unfollow(globals.user_id, followingList[index]['user_id']);
-                        },
-                        child: new Text('Unfollow'),
-                        color: Colors.grey,
-                        textColor: Colors.white,
-                      ),
-                    )
-                  ],//end widget
-              ),//end row
-            );//end card
+            return InkWell(
+              onTap: (){
+                globals.friend_id = followingList[index]['user_id']; //assign a friend's user id
+                Navigator.push( //code to open up a new friend's profile screen
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new FriendProfilePage()));
+              },
+              child: new Card(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Expanded(
+                          child: Padding(
+                            padding: new EdgeInsets.all(globals.regularPadding),
+                            child: new Text(
+                                followingList[index]['username'] == null ? 'null value' : followingList[index]['username'],
+                                textAlign: TextAlign.start),
+                          )),
+                      Padding(
+                        padding: new EdgeInsets.symmetric(
+                            horizontal: globals.regularPadding, vertical: globals.halfPadding),
+                        child: RaisedButton(
+                          onPressed: (){
+                            unfollow(globals.user_id, followingList[index]['user_id']);
+                          },
+                          child: new Text('Unfollow'),
+                          color: Colors.grey,
+                          textColor: Colors.white,
+                        ),
+                      )
+                    ],//end widget
+                ),//end row
+              ),//end card
+            );//end inkwell
           },//end itembuilder
         ),//end listview builder
     );
@@ -180,33 +190,42 @@ class FollowersPageState extends State<SecondWidget> {
       body: new ListView.builder(
         itemCount: followerList == null ? 0 : followerList.length,
         itemBuilder: (BuildContext context, int index){
-          return new Card(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                    child: Padding(
-                      padding: new EdgeInsets.all(globals.regularPadding),
-                      child: new Text(
-                          followerList[index]['username'] == null ? 'null value' : followerList[index]['username'],
-                          textAlign: TextAlign.start),
-                    )),
-                Padding(
-                  padding: new EdgeInsets.symmetric(
-                      horizontal: globals.regularPadding, vertical: globals.halfPadding),
-                  child: RaisedButton(
-                    onPressed: (){
-                      checkFollowing(followerList[index]['user_id']) ? unfollow(globals.user_id,followerList[index]['user_id'])
-                      :follow(globals.user_id,followerList[index]['user_id']);
-                    },
-                    child: new Text(checkFollowing(followerList[index]['user_id']) ? 'Unfollow' : 'Follow'),
-                    color: checkFollowing(followerList[index]['user_id']) ? Colors.grey : Colors.lightBlue,
-                    textColor: Colors.white,
-                  ),
-                )
-              ],//end widget
-            ),//end row
-          );//end card
+          return InkWell(//this inkwell gives the user the ability to tap on cards
+            onTap: (){
+              globals.friend_id = followerList[index]['user_id']; //assign a friend's user id
+              Navigator.push( //code to open up a new friend's profile screen
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new FriendProfilePage()));
+            },
+            child: new Card(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                      child: Padding(
+                        padding: new EdgeInsets.all(globals.regularPadding),
+                        child: new Text(
+                            followerList[index]['username'] == null ? 'null value' : followerList[index]['username'],
+                            textAlign: TextAlign.start),
+                      )),
+                  Padding(
+                    padding: new EdgeInsets.symmetric(
+                        horizontal: globals.regularPadding, vertical: globals.halfPadding),
+                    child: RaisedButton(
+                      onPressed: (){
+                        checkFollowing(followerList[index]['user_id']) ? unfollow(globals.user_id,followerList[index]['user_id'])
+                            :follow(globals.user_id,followerList[index]['user_id']);
+                      },
+                      child: new Text(checkFollowing(followerList[index]['user_id']) ? 'Unfollow' : 'Follow'),
+                      color: checkFollowing(followerList[index]['user_id']) ? Colors.grey : Colors.lightBlue,
+                      textColor: Colors.white,
+                    ),
+                  )
+                ],//end widget
+              ),//end row
+            ),//end card
+          );//end InkWell
         },//end itembuilder
       ),//end listview builder
     );
