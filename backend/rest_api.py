@@ -1,13 +1,20 @@
 from flask import request, session, escape
-import requests, array, json
+import requests, array, json, datetime
 from db_api import *
 from proto import *
+from cryptography.fernet import Fernet
 
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config.update(
     SESSION_COOKIE_PATH = '/'
 )
+
+#getting private key
+file = open('key.pem','r')
+read_data = file.read()
+key = read_data
+f = Fernet(key)
 
 @app.route("/database")
 def user_info():
@@ -98,6 +105,9 @@ def unfollows():
     user_id1 = request.args.get('user_id1')
     user_id2 = request.args.get('user_id2')
     session_key = request.args.get('session_key')
+    session_bytes = session_key.encode()
+    session_string = f.decrypt(session_bytes).decode()
+    session_key = session_string.split("__")[0]
     print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_k
 ey)
     #user = db.session.query(User).get(user_id1)
@@ -183,7 +193,12 @@ imes the user has listened to the song
         real_output = json.loads(output[2])
         # make a session key that is given to client side - session key is what was put in SE
 SSION earlier
-        real_output['session_key'] = username
+        #encrypts session key and append with current date and time to make it unique
+        now = str(datetime.datetime.now())
+        session_string = username + "__" + now
+        b_session = session_string.encode()
+        encrypted_data = f.encrypt(b_session)
+        real_output['session_key'] = encrypted_data
         return json.dumps(real_output)
     else:
         #res = str(session.items())
