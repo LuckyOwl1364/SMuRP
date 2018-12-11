@@ -37,7 +37,8 @@ def getListened():
 def addListenedTo():
     user_id = request.args.get('user_id')
     song_id = request.args.get('song_id')
-    return add_listened_to(user_id, song_id)
+    last_listened_to = datetime.datetime.strptime('10 Dec 2018, 19:38', '%d %b %Y, %H:%M')
+    return add_listened_to(user_id, song_id, last_listened_to)
 
 @app.route("/getfollowers")
 def getFollowers():
@@ -61,6 +62,9 @@ def follows():
     user_id1 = request.args.get('user_id1')
     user_id2 = request.args.get('user_id2')
     session_key = request.args.get('session_key')
+    session_bytes = session_key.encode()
+    session_string = f.decrypt(session_bytes).decode()
+    session_key = session_string.split("__")[0]
     print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_key)
     #user = db.session.query(User).get(user_id1)
     #user_id1_username = user.username
@@ -72,25 +76,8 @@ def follows():
     user = db.session.query(User).filter_by(username=session_key).first()
     print('The user_id when we query the database using the session key: ' + str(user.user_id))
     print('SUCCESS: ' + str(user.user_id) + ' follows ' + user_id2)
-    return add_follows(user.user_id, user_id2)
-#    else:
-#        print('FAILURE')
-#        return "Error: Login failure. Please login to complete task."
-#   if current_user is []:
-#       #no one is logged in user
-#       print('in first check: ')
-#       print(current_user)
-#       return "Error: Login failure. Please login to complete task."
-#   else:
-#       #session.items() is not empty
-#       curr_user_split = str(current_user).split(',')
-#       print('in else current user split:')
-#       print(curr_user_split)
-#       curr_user_split_username = curr_user_split[1]
-#       if user_id1_username.lower() in curr_user_split[1]:
-#           return add_follows(user_id1, user_id2)
-#       else:
-#           return "Error: Login failure. Please login to complete task."
+    output = {'output': add_follows(user.user_id, user_id2), 'session_key': session_key}
+    return json.dumps(output)
 
 #unfollows calls the method delete_follows from db_api
 #deletes a relationship in the database where
