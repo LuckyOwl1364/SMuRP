@@ -166,8 +166,7 @@ def loginuser():
         loaded_json = json.loads(output[2])
         print('user_id ', loaded_json['user_id'])
         #print({"Success": 'Logged in as %s' % escape(session[username])})
-        # updates songs from last_fm that a user has listened to (whatever songs they have "l
-oved" on last_fm
+        # updates songs from last_fm that a user has listened to (whatever songs they have "loved" on last_fm
         # takes from the file populate_db.py method adding_info()
         # user is their lastfm username
         parameter = {'method': 'user.getlovedtracks', 'user': loaded_json['lastfm_name'], 'ap
@@ -186,13 +185,11 @@ i_key': '8ed3258b37f9fb17b765bb7589e06c6f','format': 'json' }
             artist_url = data['lovedtracks']['track'][i]['artist']['url']
             artist_id = add_artist(artist_name, artist_url)
             add_song_by(song_id, artist_id)
-            # add_listened_to will either create a listened relationship or update how many t
-imes the user has listened to the song
+            # add_listened_to will either create a listened relationship or update how many times the user has listened to the song
             add_listened_to(loaded_json['user_id'], song_id)
         print(output[2])
         real_output = json.loads(output[2])
-        # make a session key that is given to client side - session key is what was put in SE
-SSION earlier
+        # make a session key that is given to client side - session key is what was put in SESSION earlier
         #encrypts session key and append with current date and time to make it unique
         now = str(datetime.datetime.now())
         session_string = username + "__" + now
@@ -238,14 +235,44 @@ def getDislikedSongs():
 
 # Likes or unlikes a song, returning either Success or an error message.
 @app.route("/like")
-def like():
+def likesong():
+    #current_user = session.items()
+    #print(current_user,' is current logged in user')
+    # check that current user is equal to user_id1
     user_id = request.args.get('user_id')
     song_id = request.args.get('song_id')
-    return like(user_id, song_id)
+    session_key = request.args.get('session_key')
+    session_bytes = session_key.encode()
+    session_string = f.decrypt(session_bytes).decode()
+    session_key = session_string.split("__")[0]
+    print('User_id: ' + user_id + ' Song_ID: ' + song_id + ' Session_key: ' + session_key)
+    #user = db.session.query(User).get(user_id)
+    #user_id_username = user.username
+    #print(user_id_username)
+    #if session_key.lower() in session:
+    #print('Logged in as %s' % escape(session[session_key.lower()]))
+    print('SUCCESS')
+    # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
+    user = db.session.query(User).filter_by(username=session_key).first()
+    print('The user_id when we query the database using the session key: ' + str(user.user_id))    
+    output = {'output': like(user.user_id, song_id), 'session_key': session_key}
+    return json.dumps(output)
 
 # Dislikes or undislikes a song, returning either Success or an error message.
 @app.route("/dislike")
-def dislike():
+def dislikesong():
     user_id = request.args.get('user_id')
     song_id = request.args.get('song_id')
-    return like(user_id, song_id)
+    session_key = request.args.get('session_key')
+    session_bytes = session_key.encode()
+    session_string = f.decrypt(session_bytes).decode()
+    session_key = session_string.split("__")[0]
+    print('User ID: ' + user_id + ' Song ID: ' + song_id + ' Session Key: ' + session_key)
+    # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
+    user = db.session.query(User).filter_by(username=session_key).first()
+    print('The user_id when we query the database using the session key: ' + str(user.user_id
+))   
+#    if session_key.lower() in session:
+    print(str(user.user_id) + ' disliked song_id ' + song_id)
+    output = {'output': dislike(user.user_id, song_id), 'session_key':session_key}
+    return json.dumps(output)
