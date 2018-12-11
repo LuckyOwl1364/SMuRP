@@ -61,8 +61,7 @@ def follows():
     user_id1 = request.args.get('user_id1')
     user_id2 = request.args.get('user_id2')
     session_key = request.args.get('session_key')
-    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_k
-ey)
+    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_key)
     #user = db.session.query(User).get(user_id1)
     #user_id1_username = user.username
     #print(user_id1_username)
@@ -71,8 +70,7 @@ ey)
 
     # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
     user = db.session.query(User).filter_by(username=session_key).first()
-    print('The user_id when we query the database using the session key: ' + str(user.user_id
-))
+    print('The user_id when we query the database using the session key: ' + str(user.user_id))
     print('SUCCESS: ' + str(user.user_id) + ' follows ' + user_id2)
     return add_follows(user.user_id, user_id2)
 #    else:
@@ -108,8 +106,7 @@ def unfollows():
     session_bytes = session_key.encode()
     session_string = f.decrypt(session_bytes).decode()
     session_key = session_string.split("__")[0]
-    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_k
-ey)
+    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_key)
     #user = db.session.query(User).get(user_id1)
     #user_id1_username = user.username
     #print(user_id1_username)
@@ -120,8 +117,7 @@ ey)
 
     # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
     user = db.session.query(User).filter_by(username=session_key).first()
-    print('The user_id when we query the database using the session key: ' + str(user.user_id
-))
+    print('The user_id when we query the database using the session key: ' + str(user.user_id))
 
     print('SUCCESS: ' + str(user.user_id) + ' unfollowed ' + user_id2)
     output = {'output': delete_follows(user.user_id, user_id2), 'session_key': session_key}
@@ -169,8 +165,7 @@ def loginuser():
         # updates songs from last_fm that a user has listened to (whatever songs they have "loved" on last_fm
         # takes from the file populate_db.py method adding_info()
         # user is their lastfm username
-        parameter = {'method': 'user.getlovedtracks', 'user': loaded_json['lastfm_name'], 'ap
-i_key': '8ed3258b37f9fb17b765bb7589e06c6f','format': 'json' }
+        parameter = {'method': 'user.getlovedtracks', 'user': loaded_json['lastfm_name'], 'api_key': '8ed3258b37f9fb17b765bb7589e06c6f','format': 'json' }
         response = requests.get('http://ws.audioscrobbler.com/2.0/?', params=parameter)
         data = response.json()
         #print(data['lovedtracks']['track'])
@@ -304,8 +299,7 @@ def dislikesong():
     print('User ID: ' + user_id + ' Song ID: ' + song_id + ' Session Key: ' + session_key)
     # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
     user = db.session.query(User).filter_by(username=session_key).first()
-    print('The user_id when we query the database using the session key: ' + str(user.user_id
-))   
+    print('The user_id when we query the database using the session key: ' + str(user.user_id))   
 #    if session_key.lower() in session:
     print(str(user.user_id) + ' disliked song_id ' + song_id)
     output = {'output': dislike(user.user_id, song_id), 'session_key':session_key}
