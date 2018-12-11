@@ -208,7 +208,21 @@ SSION earlier
 # logs a user out by ending the session for CURRENT user
 @app.route("/logout")
 def logout():
-    session['logged_in'] = False
+    #current_user = session.items()
+    #print(current_user,' is current logged in user')
+    username = request.args.get('username')
+    session_key = request.args.get('session_key')
+    session_bytes = session_key.encode()
+    session_string = f.decrypt(session_bytes).decode()
+    session_key = session_string.split("__")[0]
+    print('Username: ' + username + ' Session key: '  + session_key)
+
+    #print(current_user)
+    #if session_key.lower() in session:
+    #    session.pop(username, None)
+    output = username + ' logged out.'
+    print(output)
+    return output
 
 # returns a list of liked songs for the specified user
 @app.route("/likedsongs")
