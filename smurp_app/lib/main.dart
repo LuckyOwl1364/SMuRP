@@ -178,14 +178,14 @@ class _LoginScreenState extends State<LoginScreen>{
 
   String validatePassword(String value) {
     if (value.length < 3)
-      return 'Password must be more than 2 charater';
+      return 'Enter valid password';
     else
       return null;
   }
 
   String validateUsername(String value) {
     if (value.length < 2)
-      return 'Enter Valid Username';
+      return 'Enter valid username';
     else
       return null;
   }
