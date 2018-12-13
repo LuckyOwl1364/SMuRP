@@ -197,39 +197,21 @@ def logout():
     print(output)
     return output
 
-#getfeed method gets the recently listened to songs and like/dislike songs either of one 
+#getfeed method gets the recently listened to songs and like/dislike songs either of one
 #singular user or the users a user is following
 @app.route("/getfeed")
 def getfeed():
     user_id = request.args.get('user_id')
     user_only = request.args.get('user_only')
     session_key = request.args.get('session_key')
-    #session_bytes = session_key.encode()
-    #session_string = f.decrypt(session_bytes).decode()
-    #session_key = session_string.split("__")[0]
-    #print('User_ID: ' + user_id + ' User_Only: ' + user_only + ' Session_Key: ' + session_key)
+
     # Check what the client has assigned to user only and assign the appropriate boolean value
     if('true' in user_only):
         user_only = True
     else:
         user_only = False
 
-    # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
-    #user = db.session.query(User).filter_by(username=session_key).first()
-    #print('The user_id when we query the database using the session key: ' + str(user.user_id))
-    #print(get_feed(user.user_id,user_only))
-    #temp_output = get_feed(user_id, user_only)
-    #print('TEMP_OUTPUT ' + temp_output)
-    #print('TEMP_OUTPUT[0] ' + str(temp_output[0]))
-    #output = json.loads(temp_output)
-    #print('OUTPUT ' + str(output))
-    #print('Session: ' + str(session.items()))
-    #output[0]['session_key'] = session_key
-    #return json.dumps(output)
-    #else:
-    #    print('FAILURE')
-    #    return str({'output':'FAILURE'})
-    return get_feed(user_id, user_only)   
+    return get_feed(user_id, user_only) 
                      
 # returns a list of liked songs for the specified user
 @app.route("/likedsongs")
