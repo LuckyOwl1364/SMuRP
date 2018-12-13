@@ -244,7 +244,9 @@ def likesong():
     output = {'output': like(user.user_id, song_id), 'session_key': session_key}
     return json.dumps(output)
 
-# Dislikes or undislikes a song, returning either Success or an error message.
+# dislikesong calls the method dislike() from the db_api file
+# dislikesong will dislike or undislikes a song, returning either Success or an error message.
+# parameters: user_id, song_id
 @app.route("/dislike")
 def dislikesong():
     user_id = request.args.get('user_id')
@@ -256,8 +258,8 @@ def dislikesong():
     print('User ID: ' + user_id + ' Song ID: ' + song_id + ' Session Key: ' + session_key)
     # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
     user = db.session.query(User).filter_by(username=session_key).first()
-    print('The user_id when we query the database using the session key: ' + str(user.user_id))   
-#    if session_key.lower() in session:
+    print('The user_id when we query the database using the session key: ' + str(user.user_id
+))
     print(str(user.user_id) + ' disliked song_id ' + song_id)
     output = {'output': dislike(user.user_id, song_id), 'session_key':session_key}
     return json.dumps(output)
