@@ -655,3 +655,39 @@ def get_rec_info():
         songs.append([s.song_id, s.song_title])
 
     return [ratings, users, songs]
+
+def db_recommendusers(user_id):
+    loadedjson = json.loads(get_listened_songs(user_id))
+    numSongsUser1 = len(loadedjson)
+    matchedUsers = []
+
+#   while(len(matchedUsers) <= 8):
+    # query all the users
+    allusers = db.session.query(User).all()
+    for user in allusers:
+        numOfSameSongs = 0
+        # checks if user_id is already following user_id2, if so move onto next user
+        tmpuserid = '"user_id": ' + str(user.user_id)
+        if tmpuserid not in get_following(user_id):
+            # user not already following user2
+            print(str(user_id) + ' not following ' + str(user.user_id))
+            # goes into list of songs for user_id
+            for i in range(len(loadedjson)):
+                thesong = '"song_id": ' + str(loadedjson[i]['song_id'])
+                if thesong in get_listened_songs(user.user_id):
+                    # user.user_id and user_id have both listened to current song
+                    # add one to song counter
+                    numOfSameSongs = numOfSameSongs + 1
+            print(numOfSameSongs)
+            print(user.user_id)
+            # checks if the number of same songs meets the threshold of 25%
+        if numOfSameSongs > 0.25*numSongsUser1:
+            matcheduser_dict = {
+                "user_id": user.user_id,
+                "username": user.username
+            }
+            matchedUsers.append(matcheduser_dict)
+        if len(matchedUsers) >= 8:
+            break
+    #print(matchedUsers)
+    return json.dumps(matchedUsers)
