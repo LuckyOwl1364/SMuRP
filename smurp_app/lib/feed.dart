@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:smurp_app/models/user.dart';
 import 'package:smurp_app/history.dart';
 import 'package:smurp_app/rated.dart';
 import 'package:smurp_app/friends.dart';
@@ -13,30 +12,30 @@ import 'package:smurp_app/data/rest_ds.dart';
 import 'globals.dart' as globals;
 
 
-void main() {
-  runApp(new MaterialApp(
-    home: new FeedPage(),
-  ));
-}
 
+
+// Page body boot-up class
 class FeedPage extends StatefulWidget {
   @override
   FeedState createState()=> new FeedState();
 
 }
 
+// Page body. This contains every part of the page that isn't the header
 class FeedState extends State<FeedPage> {
   final RestDatasource rest = new RestDatasource();
   String endPtData = "Endpoint Data Username";
   String feedData = "Testing Feed. . . Did it work? ";
   List feedList;
 
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
     this.getFeedData();
   }
 
+  // Builds the body of the screen, including the feed and the sidebar
   @override
   Widget build(BuildContext context){
     return new Scaffold(
@@ -63,7 +62,7 @@ class FeedState extends State<FeedPage> {
                           builder: (context) => new ProfilePage()));
                 }, //code to navigate to appropriate screen
               ),
-              ListTile(
+              ListTile(   // sends user to Recommended Songs page
                 contentPadding: EdgeInsets.symmetric(
                     vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.stars),
@@ -75,7 +74,7 @@ class FeedState extends State<FeedPage> {
                           builder: (context) => new RecommendedPage()));
                 }, //code to navigate to appropriate screen
               ),
-              ListTile(
+              ListTile(   // sends user to Rated Songs page
                 contentPadding: EdgeInsets.symmetric(
                     vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.thumbs_up_down),
@@ -87,7 +86,7 @@ class FeedState extends State<FeedPage> {
                           builder: (context) => new RatedPage()));
                 }, //code to navigate to appropriate screen
               ),
-              ListTile(
+              ListTile(   // sends user to History page
                 contentPadding: EdgeInsets.symmetric(
                     vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.history),
@@ -97,7 +96,7 @@ class FeedState extends State<FeedPage> {
                       new MaterialPageRoute(builder: (context) => new HistoryPage()));
                 }, //code to navigate to appropriate screen
               ),
-              ListTile(
+              ListTile(   // sends user to Friends page
                 contentPadding: EdgeInsets.symmetric(
                     vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.account_circle),
@@ -109,7 +108,7 @@ class FeedState extends State<FeedPage> {
                           builder: (context) => new FriendsPage()));
                 }, //code to navigate to appropriate screen
               ),
-              ListTile(
+              ListTile(   // Logs user out (sends user to Login page)
                 contentPadding: EdgeInsets.symmetric(
                     vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.exit_to_app),
@@ -117,7 +116,6 @@ class FeedState extends State<FeedPage> {
                 onTap: () {
                   globals.isLoggedIn = false;
                   logOut();
-                  //Navigator.pop(context); // TODO: Make it actually exit the app & session  ~~~~~~~~~~~~~
                 }, //code to navigate to appropriate screen
               )
             ],
@@ -156,7 +154,7 @@ class FeedState extends State<FeedPage> {
                    Padding(
                       padding: new EdgeInsets.symmetric(
                           horizontal: globals.halfPadding, vertical: globals.halfPadding),
-                      child: IconButton(//this icon is the thumbs up button
+                      child: IconButton(    //this icon is the thumbs up button
                         icon: const Icon(Icons.thumb_up),
                         color: feedList[index]['rating'] == 1 ? Colors.lightBlue : Colors.grey,
                         onPressed: (){
@@ -167,7 +165,7 @@ class FeedState extends State<FeedPage> {
                   Padding(
                     padding: new EdgeInsets.symmetric(
                         horizontal: globals.halfPadding, vertical: globals.halfPadding),
-                    child: IconButton(//this icon is the thumbs down button
+                    child: IconButton(      //this icon is the thumbs down button
                       icon: const Icon(Icons.thumb_down),
                       color: feedList[index]['rating'] == 0 ? Colors.lightBlue : Colors.grey,
                       onPressed: (){
@@ -183,7 +181,7 @@ class FeedState extends State<FeedPage> {
     );
   }
 
-  //pass in the songID
+  // likes the given song ID
   void like(int songID) async{
     print("Calling like("+songID.toString()+")");
     rest.likeSong(globals.user_id, songID);
@@ -191,7 +189,7 @@ class FeedState extends State<FeedPage> {
     print('Song with id of: ' + songID.toString() + ' was liked');
   }
 
-  //pass in the songID
+  // dislikes the given song ID
   void dislike(int songID) async {
     print("Calling dislike("+songID.toString()+")");
     rest.dislikeSong(globals.user_id, songID);
@@ -199,7 +197,7 @@ class FeedState extends State<FeedPage> {
     print('Song with id of: ' + songID.toString() + ' was disliked');
   }
 
-  //asynchronous call to hit endpoint
+  // asynchronous call to hit endpoint
   // it's asynchronous because it might take a while
   // and we don't want the app to crash in the time
   // it takes to gather the data
@@ -218,6 +216,7 @@ class FeedState extends State<FeedPage> {
     });
   }
 
+  // Logs the user out of the system
   Future<Null> logOut() async {
     print('Log out endoint ahead ');
     http.Response response = await http.get(
@@ -229,10 +228,6 @@ class FeedState extends State<FeedPage> {
     sleep(const Duration(seconds:1));
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/',(Route<dynamic> route) => false);
-//    Navigator.push(
-//        context,
-//        new MaterialPageRoute(
-//            builder: (context) => new LoginScreen()));
    }
 
 }
