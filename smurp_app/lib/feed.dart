@@ -185,7 +185,6 @@ class FeedState extends State<FeedPage> {
   void like(int songID) async{
     print("Calling like("+songID.toString()+")");
     rest.likeSong(globals.user_id, songID);
-//    initState();
     print('Song with id of: ' + songID.toString() + ' was liked');
   }
 
@@ -193,7 +192,6 @@ class FeedState extends State<FeedPage> {
   void dislike(int songID) async {
     print("Calling dislike("+songID.toString()+")");
     rest.dislikeSong(globals.user_id, songID);
-//    initState();
     print('Song with id of: ' + songID.toString() + ' was disliked');
   }
 
