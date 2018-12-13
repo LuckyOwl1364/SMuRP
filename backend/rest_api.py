@@ -182,11 +182,10 @@ ne
         print('FAIL: wrong password')
         return json.dumps({"Failure": 'wrong password!'})
 
-# logs a user out by ending the session for CURRENT user
+# logout logs a user out by ending the session for CURRENT user
+# parameters: username
 @app.route("/logout")
 def logout():
-    #current_user = session.items()
-    #print(current_user,' is current logged in user')
     username = request.args.get('username')
     session_key = request.args.get('session_key')
     session_bytes = session_key.encode()
@@ -194,9 +193,6 @@ def logout():
     session_key = session_string.split("__")[0]
     print('Username: ' + username + ' Session key: '  + session_key)
 
-    #print(current_user)
-    #if session_key.lower() in session:
-    #    session.pop(username, None)
     output = username + ' logged out.'
     print(output)
     return output
