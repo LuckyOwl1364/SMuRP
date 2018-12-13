@@ -3,9 +3,6 @@
 import 'package:flutter/material.dart';
 import 'history.dart';
 import 'main.dart';
-import 'package:flutter/material.dart';
-
-import 'package:smurp_app/models/user.dart';
 import 'package:smurp_app/history.dart';
 import 'package:smurp_app/rated.dart';
 import 'package:smurp_app/friends.dart';
@@ -17,7 +14,7 @@ import 'package:smurp_app/main.dart';
 
 
 
-
+// Container holding the routes to go to any page
 final routes = {
   '/login':         (BuildContext context) => new LoginScreen(),
   '/history':         (BuildContext context) => new HistoryWidget(),
