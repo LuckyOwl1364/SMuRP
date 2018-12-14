@@ -89,6 +89,7 @@ ey)
 #unfollows calls the method delete_follows from db_api
 #deletes a relationship in the database where
 #user_id1 unfollows user_id2
+# parameter: user_id1, user_id2, session_key
 @app.route("/unfollows")
 def unfollows():
     #current_user = session.items()
@@ -100,42 +101,17 @@ def unfollows():
     session_bytes = session_key.encode()
     session_string = f.decrypt(session_bytes).decode()
     session_key = session_string.split("__")[0]
-    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_key)
-    #user = db.session.query(User).get(user_id1)
-    #user_id1_username = user.username
-    #print(user_id1_username)
-    #print(current_user)
-    #print(session_key + ' is session key')
-    #print('Session: ' + str(session.items()))
-    #if session_key.lower() in session:
+    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_k
+ey)
 
     # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
     user = db.session.query(User).filter_by(username=session_key).first()
-    print('The user_id when we query the database using the session key: ' + str(user.user_id))
+    print('The user_id when we query the database using the session key: ' + str(user.user_id
+))
 
     print('SUCCESS: ' + str(user.user_id) + ' unfollowed ' + user_id2)
     output = {'output': delete_follows(user.user_id, user_id2), 'session_key': session_key}
     return json.dumps(output)
-    #return delete_follows(user_id1, user_id2)
-    #else:
-    #    print('FAILURE')
-    #    return "Error: Login failure. Please login to complete task. User is []"
-
-#   if current_user is []:
-#       #no one is logged in user
-#       print('in first check: ')
-#       print(current_user)
-#       return "Error: Login failure. Please login to complete task. User is []"
-#   else:
-#       #session.items() is not empty
-#       curr_user_split = str(current_user).split(',')
-#       print('in else current user split:')
-#       print(curr_user_split)
-#       curr_user_split_username = curr_user_split[1]
-#       if user_id1_username.lower() in curr_user_split[1]:
-#           return delete_follows(user_id1, user_id2)
-#       else:
-#           return "Error: Login failure. Please login to complete task."
 
 # login method logs in a user by checking the database if the user exists
 # and if the password is correct
