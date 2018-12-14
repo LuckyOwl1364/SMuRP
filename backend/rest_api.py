@@ -65,6 +65,7 @@ def getfollowing():
 # follows takes in two parameters: user_id1 and user_id2
 # and then creates a relationship in the database where
 # user_id1 follows user_id2
+# parameter: user_id1, user_id2, session_key
 @app.route("/follows")
 def follows():
     # check that current user is equal to user_id1
