@@ -656,12 +656,21 @@ def get_rec_info():
 
     return [ratings, users, songs]
 
+# Retrieves on-the-fly recommendations for a user
+#     Utilizes machine learning algorithm to recommend a number of songs
+#     based on songs user_id has liked
+# parameter: user_id
+def db_recommend(user_id):
+    return proto.make_recommendations(user_id)
+
+# recommends 8 users that have a similar listening history as user_id
+#     specifically, users that have listened to at least 25% of user_id listened history
+# parameter: user_id
 def db_recommendusers(user_id):
     loadedjson = json.loads(get_listened_songs(user_id))
     numSongsUser1 = len(loadedjson)
     matchedUsers = []
 
-#   while(len(matchedUsers) <= 8):
     # query all the users
     allusers = db.session.query(User).all()
     for user in allusers:
@@ -689,5 +698,4 @@ def db_recommendusers(user_id):
             matchedUsers.append(matcheduser_dict)
         if len(matchedUsers) >= 8:
             break
-    #print(matchedUsers)
     return json.dumps(matchedUsers)
