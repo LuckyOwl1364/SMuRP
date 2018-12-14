@@ -182,6 +182,7 @@ def logout():
 
 #getfeed method gets the recently listened to songs and like/dislike songs either of one
 #singular user or the users a user is following
+# parameter: user_id, user_only, session_key
 @app.route("/getfeed")
 def getfeed():
     user_id = request.args.get('user_id')
@@ -197,12 +198,14 @@ def getfeed():
     return get_feed(user_id, user_only) 
                      
 # returns a list of liked songs for the specified user
+# parameters: user_id
 @app.route("/likedsongs")
 def getLikedSongs():
     user_id = request.args.get('user_id')
     return get_likes(user_id)
 
-# returns a list of disliked songs for the specified user    
+# returns a list of disliked songs for the specified user 
+# parameters: user_id   
 @app.route("/dislikedsongs") 
 def getDislikedSongs():
     user_id = request.args.get('user_id')
@@ -249,7 +252,7 @@ def dislikesong():
 
 
 # recommendSong will recommend a user a song using make_recommendations()
-# parameter: user_id
+# parameter: user_id, session_key
 @app.route("/recommend")
 def recommendsong():
     user_id = request.args.get('user_id')
@@ -257,6 +260,7 @@ def recommendsong():
     return make_recommendations(user_id)
 
 #endpoint for recommending potential user to follow for a user
+# parameter: user_id, session_key
 @app.route("/recommendusers")
 def recommenduser():
     user_id = request.args.get('user_id')
