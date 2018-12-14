@@ -16,6 +16,7 @@ read_data = file.read()
 key = read_data
 f = Fernet(key)
 
+# endpoint to test connectivity to the server and to the database
 @app.route("/database")
 def user_info():
     return get_user_by_id(1)
