@@ -67,8 +67,6 @@ def getfollowing():
 # user_id1 follows user_id2
 @app.route("/follows")
 def follows():
-    #current_user = session.items()
-    #print(current_user,' is current logged in user')
     # check that current user is equal to user_id1
     user_id1 = request.args.get('user_id1')
     user_id2 = request.args.get('user_id2')
@@ -76,16 +74,13 @@ def follows():
     session_bytes = session_key.encode()
     session_string = f.decrypt(session_bytes).decode()
     session_key = session_string.split("__")[0]
-    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_key)
-    #user = db.session.query(User).get(user_id1)
-    #user_id1_username = user.username
-    #print(user_id1_username)
-    #print('Session: ' + str(current_user))
-#    if session_key.lower() in session:
+    print('User ID 1: ' + user_id1 + ' User ID 2: ' + user_id2 + ' Session Key: ' + session_k
+ey)
 
     # Session key shows WHO WE ARE TALKING TO, so use session key to find user in database
     user = db.session.query(User).filter_by(username=session_key).first()
-    print('The user_id when we query the database using the session key: ' + str(user.user_id))
+    print('The user_id when we query the database using the session key: ' + str(user.user_id
+))
     print('SUCCESS: ' + str(user.user_id) + ' follows ' + user_id2)
     output = {'output': add_follows(user.user_id, user_id2), 'session_key': session_key}
     return json.dumps(output)
