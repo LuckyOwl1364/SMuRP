@@ -35,6 +35,7 @@ def getListened():
 # addListenedTo takes in the parameters user_id and song_id
 #    and then creates a listened to relationship in the database
 #    where user listened to song
+# parameter: user_id, song_id
 @app.route("/addListenedTo")
 def addListenedTo():
     user_id = request.args.get('user_id')
@@ -42,11 +43,19 @@ def addListenedTo():
     last_listened_to = datetime.datetime.strptime('10 Dec 2018, 19:38', '%d %b %Y, %H:%M')
     return add_listened_to(user_id, song_id, last_listened_to)
 
+# getFollowers calls the method get_followers from the db_api file
+# getFollowers takes in the user_id we are requesting and will return a list
+# of all users that this specfic user is being followed by
+# parameter: user_id
 @app.route("/getfollowers")
 def getFollowers():
     user_id = request.args.get('user_id')
     return get_followers(user_id)
 
+# getfollowing calls the method get_following from the db_api file
+# takes in the user_id we are requesting and returns a list of all users
+# this specific user_id is following
+# parameter: user_id
 @app.route("/getfollowing")
 def getfollowing():
     user_id = request.args.get('user_id')
