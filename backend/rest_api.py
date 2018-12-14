@@ -24,6 +24,7 @@ def user_info():
 # getListenedTo calls the method get_listened_songs from the dp_api file
 # getListenedTo takes in the parameters user_id to get the user_id
 #    and then calls and returns a JSON of all the songs a specific user has listened to
+# parameter: user_id
 @app.route("/getListened")
 def getListened():
     user_id = request.args.get('user_id')
