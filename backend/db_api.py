@@ -663,8 +663,11 @@ def get_rec_info():
 def db_recommend(user_id):
     return proto.make_recommendations(user_id)
 
-# recommends 8 users that have a similar listening history as user_id
-#     specifically, users that have listened to at least 25% of user_id listened history
+# recommends 5 users that have a similar listening history as user_id
+#     specifically, users that have listened to at least 5 songs in user_id's listened histor
+y
+#    in the future, change this threshold to be that users have listened to at least 25% of
+#        user_id's listening history
 # parameter: user_id
 def db_recommendusers(user_id):
     loadedjson = json.loads(get_listened_songs(user_id))
@@ -680,22 +683,43 @@ def db_recommendusers(user_id):
         if tmpuserid not in get_following(user_id):
             # user not already following user2
             print(str(user_id) + ' not following ' + str(user.user_id))
-            # goes into list of songs for user_id
-            for i in range(len(loadedjson)):
-                thesong = '"song_id": ' + str(loadedjson[i]['song_id'])
-                if thesong in get_listened_songs(user.user_id):
+            # OLD CHANGES goes into list of songs for user_id
+            #for i in range(len(loadedjson)):
+            #    thesong = '"song_id": ' + str(loadedjson[i]['song_id'])
+            #    if thesong in get_listened_songs(user.user_id):
+            #        # user.user_id and user_id have both listened to current song
+            #        # add one to song counter
+            #        numOfSameSongs = numOfSameSongs + 1
+
+            # load the listened songs of user.user_id
+            usersloadedjson = json.loads(get_listened_songs(user.user_id))
+            # iterate through of the songs of user.user_id
+            for i in range(len(usersloadedjson)):
+                thesong = '"song_id": ' + str(usersloadedjson[i]['song_id'])
+                print('Searching for: ' + str(thesong))
+                if thesong in get_listened_songs(user_id):
                     # user.user_id and user_id have both listened to current song
                     # add one to song counter
                     numOfSameSongs = numOfSameSongs + 1
-            print(numOfSameSongs)
-            print(user.user_id)
-            # checks if the number of same songs meets the threshold of 25%
-        if numOfSameSongs > 0.25*numSongsUser1:
+                    # checks if the number of same songs found for this particular user
+                    #    the threshhold - if it does, move onto the next user
+                    if numOfSameSongs >= 5:
+                        break
+            print('User ' + str(user_id) + 'user ' + str(user.user_id) + ' have ' + str(numOf
+SameSongs) + ' of same songs.')
+            #print(user.user_id)
+
+        # checks if the number of same songs meets the threshold of 25%
+        #     (this criteria would be used in future development of the app)
+        # changed criteria to be if they have at least 5 similar songs
+        if numOfSameSongs >= 5:
             matcheduser_dict = {
                 "user_id": user.user_id,
                 "username": user.username
             }
             matchedUsers.append(matcheduser_dict)
-        if len(matchedUsers) >= 8:
+        # prints matched users
+        print('Matches users: ' + str(matchedUsers))
+        if len(matchedUsers) >= 5:
             break
     return json.dumps(matchedUsers)
