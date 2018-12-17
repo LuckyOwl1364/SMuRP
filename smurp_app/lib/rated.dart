@@ -7,24 +7,21 @@ import 'package:smurp_app/data/rest_ds.dart';
 import 'globals.dart' as globals;
 
 
-
+// When file called to run, do the following
 class RatedPage extends StatefulWidget {
   @override
   RatedPageState createState() => new RatedPageState();
 }
 
-
-
-
+// Page body. This contains every part of the page that isn't the header
 class RatedPageState extends State<RatedPage> {
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   List likes;
   List dislikes;
 
-  final RestDatasource rest = new RestDatasource();
+  final RestDatasource rest = new RestDatasource();   // object for talking to the database
 
-
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
@@ -32,9 +29,7 @@ class RatedPageState extends State<RatedPage> {
     print("called getRatedData()");
   }
 
-
-
-
+  // Builds the body of the screen, including the feed and the sidebar
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -68,8 +63,10 @@ class RatedPageState extends State<RatedPage> {
   } //build
 
 
+  // Build the screen tab body for each tab
+  // grabLikes -> get the likes list
+  // !grabLikes -> get the dislikes list
   Widget _buildSuggestions(bool grabLikes) {
-//    this.collectSongs(grabLikes);
     List list = grabLikes ? likes : dislikes;
     return ListView.builder(
       itemCount: list == null ? 0 : list.length,
@@ -122,7 +119,9 @@ class RatedPageState extends State<RatedPage> {
     );
   }
 
-
+  // Adds a song to the 'likes' list
+  // If already liked, removes instead
+  // If currently dislikes, removes from that list then adds to likes
   void like(List list, int index) async{
     print("Calling like(${list[index]['song_id']})");
     rest.likeSong(globals.user_id, list[index]['song_id']);
@@ -130,6 +129,9 @@ class RatedPageState extends State<RatedPage> {
     print('Song with id of: ' + list[index]['song_id'].toString() + 'was liked');
   }
 
+  // Adds a song to the 'dislikes' list
+  // If already disliked, removes instead
+  // If currently in likes, removes from that list then adds to dislikes
   void dislike(List list, int index) async {
     print("Calling dislike(${list[index]['song_id']})");
     rest.dislikeSong(globals.user_id, list[index]['song_id']);
@@ -161,7 +163,7 @@ class RatedPageState extends State<RatedPage> {
     });
   }
 
-
+  // get the songs from the database, depending on whether to get the likes or dislikes list
   void collectSongs(bool grabLikes) async{
     if (grabLikes){
       List<Song> nextSongs = await rest.getLikedSongs(globals.user_id);
@@ -173,58 +175,4 @@ class RatedPageState extends State<RatedPage> {
     }
   }
 
-  Widget _buildRow(Song song, bool grabLikes) {
-    final bool liked = likes.contains(song);
-    final bool disliked = dislikes.contains(song);
-    print("Song: ${song.artist} - ${song.title}");
-    return ListTile(
-        title: Text(
-          (song.artist + " - " + song.title),
-          style: _biggerFont,
-        ),
-        trailing: new Row(
-            children: <Widget>[
-              new IconButton(
-                  icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
-                    color: liked ? Colors.orange : null,
-                  ),
-                  onPressed: () { setState(() {
-                    if (disliked) {
-                      dislikes.remove(song); // if currently disliked, remove from dislikes
-                      rest.dislikeSong(globals.user_id, song.song_id); // tell Database to remove song
-                    }
-
-                    if (liked){
-                      likes.remove(song); // if already disliked, remove from dislikes
-                    }
-                    else{
-                      likes.add(song);
-                    }
-                    rest.likeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
-                  }); }
-              ),
-              new IconButton(
-                  icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
-                    color: disliked ? Colors.orange : null,
-                  ),
-                  onPressed: () { setState(() {
-                    if (liked) {
-                      likes.remove(song); // if currently liked, remove from likes
-                      rest.likeSong(globals.user_id, song.song_id); // tell Database to remove song
-                    }
-
-                    if (disliked){
-                      dislikes.remove(song); // if already disliked, remove from dislikes
-                    }
-                    else{
-                      dislikes.add(song); // else add to dislikes
-                    }
-                    rest.dislikeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
-
-                  }); }
-              ),
-            ],
-            mainAxisSize: MainAxisSize.min)
-    );
-  }
 }

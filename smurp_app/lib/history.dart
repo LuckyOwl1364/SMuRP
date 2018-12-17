@@ -104,7 +104,6 @@ class HistoryPageState extends State<HistoryWidget> {
     print('Song with id of: ' + history[index]['song_id'].toString() + 'was liked');
   }
 
-
   // Adds a song to the 'dislikes' list
   // If already disliked, removes instead
   // If currently in likes, removes from that list then adds to dislikes
@@ -141,7 +140,6 @@ class HistoryPageState extends State<HistoryWidget> {
       print("Successfully grabbed history !");
     });
   }
-
 
 } // end HistoryPageState
 

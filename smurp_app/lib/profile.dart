@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:smurp_app/models/user.dart';
 import 'globals.dart' as globals;
 
-
+// When file called to run, do the following
 class ProfilePage extends StatefulWidget {
   @override
   ProfileState createState()=> new ProfileState();
 
 }
 
+//This contains every part of the page that isn't the header
 class ProfileState extends State<ProfilePage> {
   var userList;
   String userData = "Endpoint Data Username";
   String profileData = "Testing Profile. . . Did it work? ";
   List profileList;
 
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
@@ -25,6 +26,7 @@ class ProfileState extends State<ProfilePage> {
     this.getProfileData();
   }
 
+  // Builds the body of the screen, including the feed and the sidebar
   @override
   Widget build(BuildContext context){
     return new Scaffold(
@@ -94,7 +96,7 @@ class ProfileState extends State<ProfilePage> {
     );
   }
 
-  //asynchronous call to hit the test endpoint
+  // asynchronous call to hit the test endpoint
   // it's asynchronous because it might take a while
   // and we don't want the app to crash in the time
   // it takes to gather the data
