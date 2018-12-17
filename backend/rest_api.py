@@ -4,13 +4,7 @@ from db_api import *
 from proto import *
 from cryptography.fernet import Fernet
 
-# Set the secret key to some random bytes. Keep this really secret!
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-app.config.update(
-    SESSION_COOKIE_PATH = '/'
-)
-
-#getting private key
+#reads in generated private key and uses cryptography's Fernet object for encryption of session keys
 file = open('key.pem','r')
 read_data = file.read()
 key = read_data
