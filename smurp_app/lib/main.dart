@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:smurp_app/routes.dart';
-import 'package:smurp_app/data/rest_ds.dart';
 import 'package:smurp_app/feed.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
@@ -12,7 +11,7 @@ import 'globals.dart' as globals;
 void main() => runApp(new Login());
 
 
-
+// Page header class
 class Login extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -27,16 +26,15 @@ class Login extends StatelessWidget{
 
 }
 
-
+// Page body boot-up class
 class LoginScreen extends StatefulWidget{
 
   @override
   State createState() => new _LoginScreenState();
 
-
 }
 
-
+// Page body. This contains every part of the page that isn't the header
 class _LoginScreenState extends State<LoginScreen>{
 //  _formKey and _autoValidate
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -49,23 +47,8 @@ class _LoginScreenState extends State<LoginScreen>{
   String endPtData = "{Failure : Default Value}";
   List data;
 
-  //async call to get data from endpoint
-  void getData() async{
-//    RestDatasource restDS = new RestDatasource();
-//    print('calling login endpoint');
-//    var user = await restDS.login(_email,_password);
-//    print('login endopint hit. Continuing code: ');
-//    setState((){
-//      endPtData = 'DATA RECIEVED FROM ENDPOINT\n'
-//          '$user\n';
-//      print(endPtData);
-//      //data.add(user);
-//    });
-    getLoginData();
-  } // end getData()
 
-
-
+  // Builds the body of the screen, including the feed and the sidebar
   @override
   Widget build(BuildContext context) {
     return Scaffold (
@@ -81,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen>{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new FlutterLogo(size: 60.0),
-                    new TextFormField(
+                    new TextFormField(      // text field for username
                       decoration: new InputDecoration(
                           labelText: "Enter Username"
                       ),
@@ -91,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen>{
                         _email = val;
                       },
                     ),
-                    new TextFormField(
+                    new TextFormField(      // text field for password
                       decoration: new InputDecoration(
                           labelText: "Enter Password"
                       ),
@@ -105,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen>{
                     new Padding(
                         padding: const EdgeInsets.all(20.0)
                     ),
-                    new RaisedButton(
+                    new RaisedButton(      // log in button
                         onPressed: _validateInputs,
                         child: new Text("Log in")
                     ),
@@ -116,6 +99,10 @@ class _LoginScreenState extends State<LoginScreen>{
     );
   }
 
+
+  // Make sure inputs are valid, and if so, pass to database.
+  // If database says login info is bad, tell user that
+  // If database says it's good, log user in
   _validateInputs() {
     if (_formKey.currentState.validate()) {
       sleep(const Duration(seconds:1));
@@ -128,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen>{
       print('endpointdata: '+endPtData);
       print('loginResponse: '+loginResponse);
       print('Checking response ' + loginResponse.contains('failure').toString());
-      if(loginResponse.contains('failure')){//if the response returns a login failure
+      if(loginResponse.contains('failure')){      // if the response returns a login failure
         print('Wrong Data');
         return showDialog(
             context: context,
@@ -138,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen>{
               );
             }
         );
-      } else {
+      } else {    // else, login user
         print('Correct Data');
         sleep(const Duration(seconds:1));
         print(userData == null ? 'Null userdata' : userData);
@@ -175,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen>{
 
 
 
-
+  // Makes sure input password is valid
   String validatePassword(String value) {
     if (value.length < 3)
       return 'Enter valid password';
@@ -183,6 +170,7 @@ class _LoginScreenState extends State<LoginScreen>{
       return null;
   }
 
+  // Makes sure input username is valid
   String validateUsername(String value) {
     if (value.length < 2)
       return 'Enter valid username';
