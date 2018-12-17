@@ -3,26 +3,28 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:smurp_app/feed.dart';
 import 'package:smurp_app/friend_profile.dart';
 import 'globals.dart' as globals;
 
-
+// When the file is called to start, run the following
 class RecommendedUsersPage extends StatefulWidget {
   @override
   RecommendedUsersPageState createState() => new RecommendedUsersPageState();
 }
 
+// Page body. This contains every part of the page that isn't the header
 class RecommendedUsersPageState extends State<RecommendedUsersPage> {
   String recommendedUsersData = "Test Data ";
   List UserList;
 
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
     this.getRecommendedUsers();
   }
 
+  // Builds the body of the screen, including the cards for songs
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -70,6 +72,8 @@ class RecommendedUsersPageState extends State<RecommendedUsersPage> {
     );
   }
 
+  // adds the user to your followed list
+  // if already followed said user, unfollows instead
   void follow(int userID_1, int userID_2) {
     if(userID_1 == null || userID_2 == null){
       print("ERROR, one of the user id's provided was invalid.");

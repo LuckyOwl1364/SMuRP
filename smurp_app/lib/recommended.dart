@@ -133,7 +133,6 @@ class RecommendPageState extends State<RecommendWidget> { // TODO: Change out Wo
     });
   }
 
-
 }
 
 // When the file is called to start, run the following
