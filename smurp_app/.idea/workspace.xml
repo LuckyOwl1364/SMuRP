@@ -7,9 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3b7615d-fd8f-44af-909f-80be715ce46e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/history.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/history.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/profile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/rated.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rated.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/recommended.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/recommended.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -71,35 +69,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rated.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/rated.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="16" column="47" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-                <element signature="e#569#658#0" />
-                <element signature="e#712#1709#0" />
-                <element signature="e#1763#3835#0" />
-                <element signature="e#4211#4245#0" />
-                <element signature="e#3872#4095#0" />
-                <element signature="e#4614#4651#0" />
-                <element signature="e#4134#4407#0" />
-                <element signature="e#4411#4455#0" />
-                <element signature="e#4616#5290#0" />
-                <element signature="e#5329#5593#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="recommended.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="recommended.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/recommended.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="25" selection-start-line="25" selection-end-line="25" selection-end-column="72" />
+            <state relative-caret-position="1020">
+              <caret line="138" column="54" selection-start-line="138" selection-start-column="54" selection-end-line="138" selection-end-column="54" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
+                <element signature="e#1002#3096#0" />
+                <element signature="e#3264#3487#0" />
+                <element signature="e#3657#3930#0" />
+                <element signature="e#4143#4547#0" />
               </folding>
             </state>
           </provider>
@@ -115,8 +95,8 @@
       <find>enter val</find>
       <find>build</find>
       <find>getData</find>
-      <find>init</find>
       <find>_buildSuggestions</find>
+      <find>init</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -125,7 +105,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/lib/recommended.dart" />
         <option value="$PROJECT_DIR$/lib/routes.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
         <option value="$PROJECT_DIR$/lib/feed.dart" />
@@ -135,6 +114,7 @@
         <option value="$PROJECT_DIR$/lib/history.dart" />
         <option value="$PROJECT_DIR$/lib/profile.dart" />
         <option value="$PROJECT_DIR$/lib/rated.dart" />
+        <option value="$PROJECT_DIR$/lib/recommended.dart" />
       </list>
     </option>
   </component>
@@ -304,7 +284,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="10" />
+      <option name="time" value="11" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -338,6 +318,10 @@
           <caret line="38" column="65" selection-start-line="38" selection-start-column="65" selection-end-line="38" selection-end-column="65" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#1002#3096#0" />
+            <element signature="e#3264#3487#0" />
+            <element signature="e#3657#3930#0" />
+            <element signature="e#4143#4547#0" />
           </folding>
         </state>
       </provider>
@@ -369,6 +353,10 @@
           <caret line="38" column="65" selection-start-line="38" selection-start-column="65" selection-end-line="38" selection-end-column="65" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#1002#3096#0" />
+            <element signature="e#3264#3487#0" />
+            <element signature="e#3657#3930#0" />
+            <element signature="e#4143#4547#0" />
           </folding>
         </state>
       </provider>
@@ -400,6 +388,10 @@
           <caret line="124" column="144" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="144" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#1002#3096#0" />
+            <element signature="e#3264#3487#0" />
+            <element signature="e#3657#3930#0" />
+            <element signature="e#4143#4547#0" />
           </folding>
         </state>
       </provider>
@@ -504,16 +496,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/recommended.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="25" selection-start-line="25" selection-end-line="25" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
@@ -595,6 +577,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/rated.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="47" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#569#658#0" />
+            <element signature="e#712#1709#0" />
+            <element signature="e#1763#3835#0" />
+            <element signature="e#4211#4245#0" />
+            <element signature="e#3872#4095#0" />
+            <element signature="e#4614#4651#0" />
+            <element signature="e#4134#4407#0" />
+            <element signature="e#4411#4455#0" />
+            <element signature="e#4616#5290#0" />
+            <element signature="e#5329#5593#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/history.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="307">
@@ -611,22 +613,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/rated.dart">
+    <entry file="file://$PROJECT_DIR$/lib/recommended.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="16" column="47" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+        <state relative-caret-position="1020">
+          <caret line="138" column="54" selection-start-line="138" selection-start-column="54" selection-end-line="138" selection-end-column="54" />
           <folding>
-            <element signature="e#0#22#0" expanded="true" />
-            <element signature="e#569#658#0" />
-            <element signature="e#712#1709#0" />
-            <element signature="e#1763#3835#0" />
-            <element signature="e#4211#4245#0" />
-            <element signature="e#3872#4095#0" />
-            <element signature="e#4614#4651#0" />
-            <element signature="e#4134#4407#0" />
-            <element signature="e#4411#4455#0" />
-            <element signature="e#4616#5290#0" />
-            <element signature="e#5329#5593#0" />
+            <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#1002#3096#0" />
+            <element signature="e#3264#3487#0" />
+            <element signature="e#3657#3930#0" />
+            <element signature="e#4143#4547#0" />
           </folding>
         </state>
       </provider>
