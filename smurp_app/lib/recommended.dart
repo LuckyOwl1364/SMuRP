@@ -24,7 +24,7 @@ class RecommendedPage extends StatelessWidget {
 }
 
 // Page body. This contains every part of the page that isn't the header
-class RecommendPageState extends State<RecommendWidget> { // TODO: Change out WordPair for Song
+class RecommendPageState extends State<RecommendWidget> {
   List recs;
 
   final RestDatasource rest = new RestDatasource();
