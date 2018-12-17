@@ -36,11 +36,12 @@ def getListened():
 #    and then creates a listened to relationship in the database
 #    where user listened to song
 # parameter: user_id, song_id
+#this endpoint is used for testing purposes, not intented for client side use 
 @app.route("/addListenedTo")
 def addListenedTo():
     user_id = request.args.get('user_id')
     song_id = request.args.get('song_id')
-    last_listened_to = datetime.datetime.strptime('10 Dec 2018, 19:38', '%d %b %Y, %H:%M')
+    last_listened_to = datetime.datetime.now()
     return add_listened_to(user_id, song_id, last_listened_to)
 
 # getFollowers calls the method get_followers from the db_api file
