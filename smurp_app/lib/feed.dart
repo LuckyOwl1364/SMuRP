@@ -9,6 +9,7 @@ import 'package:smurp_app/friends.dart';
 import 'package:smurp_app/profile.dart';
 import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/data/rest_ds.dart';
+import 'package:smurp_app/recommended_users.dart';
 import 'globals.dart' as globals;
 
 
@@ -66,12 +67,24 @@ class FeedState extends State<FeedPage> {
                 contentPadding: EdgeInsets.symmetric(
                     vertical: globals.halfPadding, horizontal: globals.doublePadding),
                 leading: const Icon(Icons.stars),
-                title: Text('Recommended'),
+                title: Text('Recommended Music'),
                 onTap: () {
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
                           builder: (context) => new RecommendedPage()));
+                }, //code to navigate to appropriate screen
+              ),
+              ListTile(   // sends user to Recommended Songs page
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: globals.halfPadding, horizontal: globals.doublePadding),
+                leading: const Icon(Icons.star),
+                title: Text('Recommended Friends'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new RecommendedUsersPage()));
                 }, //code to navigate to appropriate screen
               ),
               ListTile(   // sends user to Rated Songs page
