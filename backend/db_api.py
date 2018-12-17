@@ -5,6 +5,9 @@ import sqlalchemy.exc
 import datetime
 import json
 import random
+from Crypto.Random import random
+from Crypto.PublicKey import DSA
+from Crypto.Hash import SHA
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = \
@@ -27,6 +30,7 @@ song_on = db.Table('song_on',
                    db.Column('song_id', db.Integer, db.ForeignKey('song.song_id')))
 
 
+# Defines the Album table in the database
 class Album(db.Model):
     __tablename__ = 'album'
     album_id = db.Column('album_id', db.Integer, primary_key=True)
@@ -42,6 +46,7 @@ class Album(db.Model):
         self.album_art = album_art
 
 
+# Defines the Song table in the database
 class Song(db.Model):
     __tablename__ = 'song'
     song_id = db.Column('song_id', db.Integer, primary_key=True)
@@ -58,6 +63,7 @@ class Song(db.Model):
         self.spotify_id = spotify_id
 
 
+# Defines the User table in the database
 class User(db.Model):
     __tablename__ = 'user'
     user_id = db.Column('user_id', db.Integer, primary_key=True)
@@ -66,6 +72,8 @@ class User(db.Model):
     join_date = db.Column('join_date', db.DateTime)
     password = db.Column('password', db.Unicode)
     email = db.Column('email', db.Unicode)
+
+    # follows = db.relationship('User', secondary=follows, backref=db.backref('followed', lazy='dynamic'))
 
     def __init__(self, lastfm_name, username=None, password=None, email=None):
         self.lastfm_name = lastfm_name
@@ -76,6 +84,7 @@ class User(db.Model):
             self.join_date = datetime.datetime.now()
 
 
+# Defines the Artist table in the database
 class Artist(db.Model):
     __tablename__ = 'artist'
     artist_id = db.Column('artist_id', db.Integer, primary_key=True)
@@ -87,6 +96,7 @@ class Artist(db.Model):
         self.lastfm_url = lastfm_url
 
 
+# Defines the ListenedTo table in the database
 class ListenedTo(db.Model):
     __tablename__ = 'listened_to'
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
@@ -97,13 +107,14 @@ class ListenedTo(db.Model):
     user = db.relationship('User', backref=db.backref('listened', lazy='dynamic'))
     song = db.relationship('Song', backref=db.backref('listened', lazy='dynamic'))
 
-    def __init__(self, user_id, song_id, last_listen=datetime.datetime.now()):
+    def __init__(self, user_id, song_id, last_listen):
         self.user_id = user_id
         self.song_id = song_id
         self.num_listens = 1
         self.last_listen = last_listen
 
 
+# Defines the Follows table in the database
 class Follows(db.Model):
     __tablename__ = 'follows'
     follower_id = db.Column('follower_id', db.Integer, db.ForeignKey(User.user_id), primary_key=True)
@@ -117,6 +128,7 @@ class Follows(db.Model):
         self.followed_id = followed_id
 
 
+# Defines the Rated table in the database
 class Rated(db.Model):
     __tablename__ = 'rated'
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
@@ -134,6 +146,7 @@ class Rated(db.Model):
         self.rating_time = datetime.datetime.now()
 
 
+# Defines the Recommendation table in the database
 class Recommendation(db.Model):
     __tablename__ = 'recommendation'
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
@@ -150,6 +163,7 @@ class Recommendation(db.Model):
         self.rec_date = datetime.datetime.now()
 
 
+# Gets album info by id
 def get_album_by_id(album_id):
     album = db.session.query(Album).get(album_id)
     album_dict = {
@@ -161,6 +175,7 @@ def get_album_by_id(album_id):
     return json.dumps(album_dict)
 
 
+# Gets artist info by id
 def get_artist_by_id(artist_id):
     artist = db.session.query(Artist).get(artist_id)
     artist_dict = {
@@ -171,6 +186,7 @@ def get_artist_by_id(artist_id):
     return json.dumps(artist_dict)
 
 
+# Gets song info by id
 def get_song_by_id(song_id):
     song = db.session.query(Song).get(song_id)
     song_dict = {
@@ -182,6 +198,7 @@ def get_song_by_id(song_id):
     return json.dumps(song_dict)
 
 
+# Gets song & artist info by song id
 def get_song_by_id_full(song_id):
     song = db.session.query(Song).get(song_id)
     artists = []
@@ -206,6 +223,7 @@ def get_song_by_id_full(song_id):
     return json.dumps(song_dict)
 
 
+# Gets user info by id
 def get_user_by_id(user_id):
     user = db.session.query(User).get(user_id)
     user_dict = {
@@ -218,6 +236,7 @@ def get_user_by_id(user_id):
     return json.dumps(user_dict)
 
 
+# Gets all songs a user has listened to.
 def get_listened_songs(user_id):
     user = db.session.query(User).get(user_id)
     songs = []
@@ -242,100 +261,13 @@ def get_listened_songs(user_id):
             "song_title": song.song_title,
             "spotify_id": song.spotify_id,
             "lastfm_url": song.lastfm_url,
-            "artists": artists
+            "artist": artists
         }
         songs.append(song_dict)
     return json.dumps(songs)
 
 
-def get_feed(user_id, user_only):
-    user = db.session.query(User).get(user_id)
-    feed_users = [user_id]
-    if not user_only:
-        for friend in user.follows:
-            feed_users.append(friend.followed.user_id)
-    listens = db.session.query(ListenedTo).filter(ListenedTo.user_id.in_(feed_users)).order_by(ListenedTo.last_listen.desc()).limit(30).all()
-    rates = db.session.query(Rated).filter(Rated.user_id.in_(feed_users)).order_by(Rated.rating_time.desc()).limit(30).all()
-    listens_and_rates = []
-    for listen in listens:
-        try:
-            user = db.session.query(User).get(listen.user_id)
-            song = db.session.query(Song).get(listen.song_id)
-            listens_and_rates.append({
-                "username": user.username,
-                "lastfm_name": user.lastfm_name,
-                "song_id": song.song_id,
-                "song_title": song.song_title,
-                "artist": song.song_by[0].artist_name,
-                "datetime": listen.last_listen,
-                "is_rating": False,
-                "rating": 0
-            })
-        except IndexError:
-            print("could not add listen")
-    for rate in rates:
-        try:
-            username = db.session.query(User).get(rate.user_id)
-            song = db.session.query(Song).get(rate.song_id)
-            listens_and_rates.append({
-                "username": user.username,
-                "song_id": song.song_id,
-                "song_title": song.song_title,
-                "artist": song.song_by[0].artist_name,
-                "datetime": listen.last_listen,
-                "is_rating": True,
-                "rating": rate.rated
-            })
-        except IndexError:
-            print("could not add listen")
-    sorted_feed = sorted(listens_and_rates, key=lambda k: k["datetime"])
-    return json.dumps(sorted_feed[0:30])
-
-def get_dislikes(user_id):
-    user = db.session.query(User).get(user_id)
-    rates = db.session.query(Rated).filter_by(user_id=user_id).filter_by(rated=0).order_by(Rated.rating_time.desc())
-    dislikes = []
-    for rate in rates:
-        username = db.session.query(User).get(rate.user_id)
-        song = db.session.query(Song).get(rate.song_id)
-        dislikes_dict = {
-            "username": username.username,
-            "song_id": song.song_id,
-            "song_title": song.song_title,
-            "artist": song.song_by[0].artist_name,
-            "rating": rate.rated
-        }
-        dislikes.append(dislikes_dict)
-    return json.dumps(dislikes)
-
-
-def get_likes(user_id):
-    user = db.session.query(User).get(user_id)
-    rates = db.session.query(Rated).filter_by(user_id=user_id).filter_by(rated=1).order_by(Rated.rating_time.desc())
-    likes = []
-    for rate in rates:
-        username = db.session.query(User).get(rate.user_id)
-        song = db.session.query(Song).get(rate.song_id)
-        
-        #checks if artist is null
-        # if null artist, put Brendan
-        artistOfsong = song.song_by
-        if artistOfsong == []:
-            artist = 'Brendan'
-        elif artistOfsong is not []:
-            artist = song.song_by[0].artist_name
-
-        likes_dict = {
-            "username": username.username,
-            "song_id": song.song_id,
-            "song_title": song.song_title,
-            "artist": song.song_by[0].artist_name,
-            "rating": rate.rated
-        }
-        likes.append(likes_dict)
-    return json.dumps(likes)
-
-
+# Adds a last fm user who has not made an account to the
 def add_lastfm_user(lastfm_name):
     existing_lastfm_user = db.session.query(User).filter_by(lastfm_name=lastfm_name).first()
     if existing_lastfm_user:
@@ -351,6 +283,7 @@ def add_lastfm_user(lastfm_name):
             return "ERROR: Could not add user: " + lastfm_name
 
 
+# Creates a new app user
 def add_user(username, lastfm_name, password, email):
     existing_user = db.session.query(User).filter_by(username=username).first()
     existing_email = db.session.query(User).filter_by(email=email).first()
@@ -363,7 +296,7 @@ def add_user(username, lastfm_name, password, email):
         return error
     existing_lastfm_user = db.session.query(User).filter_by(lastfm_name=lastfm_name).first()
     if existing_lastfm_user:
-        if(existing_lastfm_user.username):
+        if (existing_lastfm_user.username):
             return "Error: User Exists. "
         else:
             existing_lastfm_user.username = username
@@ -383,6 +316,7 @@ def add_user(username, lastfm_name, password, email):
             return "ERROR: Could not create user."
 
 
+# Generates a logged in session for a user
 def login(username, password):
     user = db.session.query(User).filter_by(username=username).first()
     if not user:
@@ -401,6 +335,7 @@ def login(username, password):
         return [True, "Success", user_json]
 
 
+# Adds song info to database
 def add_song(song_title, lastfm_url, spotify_id=None):
     existing_song = db.session.query(Song).filter_by(lastfm_url=lastfm_url).first()
     if existing_song:
@@ -416,6 +351,7 @@ def add_song(song_title, lastfm_url, spotify_id=None):
             return "ERROR: Could not add song: " + song_title
 
 
+# Adds artist info to database
 def add_artist(artist_name, lastfm_url):
     existing_artist = db.session.query(Artist).filter_by(lastfm_url=lastfm_url).first()
     if existing_artist:
@@ -431,6 +367,7 @@ def add_artist(artist_name, lastfm_url):
             return "ERROR: Could not add artist: " + artist_name
 
 
+# Adds album info to database
 def add_album(album_name, lastfm_url, album_art=None):
     existing_album = db.session.query(Album).filter_by(lastfm_url=lastfm_url).first()
     if existing_album:
@@ -446,6 +383,7 @@ def add_album(album_name, lastfm_url, album_art=None):
             return "ERROR: Could not add album: " + album_name
 
 
+# Creates a relationship between a song and artist
 def add_song_by(song_id, artist_id):
     song = db.session.query(Song).get(song_id)
     artist = db.session.query(Artist).get(artist_id)
@@ -458,6 +396,7 @@ def add_song_by(song_id, artist_id):
         return "ERROR: Could not create relationship."
 
 
+# Creates a relationship between a song and album
 def add_song_on(song_id, album_id):
     song = db.session.query(Song).get(song_id)
     album = db.session.query(Album).get(album_id)
@@ -470,6 +409,7 @@ def add_song_on(song_id, album_id):
         return "ERROR: Could not create relationship."
 
 
+# Creates a relationship between an album and artist
 def add_album_featuring(album_id, artist_id):
     album = db.session.query(Album).get(album_id)
     artist = db.session.query(Artist).get(artist_id)
@@ -483,15 +423,16 @@ def add_album_featuring(album_id, artist_id):
         return "ERROR: Could not create relationship."
 
 
-def add_listened_to(user_id, song_id, last_listen=datetime.datetime.now()):
+# Notes that a user has listened to a specific song
+def add_listened_to(user_id, song_id, listen_date):
     listen = db.session.query(ListenedTo).filter_by(
-        user_id = user_id,
-        song_id = song_id
+        user_id=user_id,
+        song_id=song_id
     ).first()
 
     if listen:
         listen.num_listens += 1
-        listen.last_listen = last_listen
+        listen.last_listen = listen_date
         try:
             db.session.commit()
             return "Successfully updated"
@@ -499,75 +440,32 @@ def add_listened_to(user_id, song_id, last_listen=datetime.datetime.now()):
             db.session.rollback()
             return "ERROR: Could not update listen"
     else:
-        listen = ListenedTo(user_id, song_id)
+        listen = ListenedTo(user_id, song_id, listen_date)
         db.session.add(listen)
         try:
             db.session.commit()
             return "Successfully added"
         except sqlalchemy.exc.IntegrityError:
             db.session.rollback()
+
             return "ERROR: Could not add listen"
 
-# add_follows method creates relationship between two users where user_id1 follows user_id2.
-def add_follows(user_id1, user_id2):
-    existing_user1 = db.session.query(User).filter_by(user_id=user_id1).first()
-    existing_user2 = db.session.query(User).filter_by(user_id=user_id2).first()
 
-    # checks if the users exist
-    if existing_user1 is not None and existing_user2 is not None:
-        # both users exist
-        # query if the relationship already exists
-        relationship_between_u1_u2 = db.session.query(Follows).filter_by(follower_id=user_id1).filter_by(followed_id=user_id2).first()
-
-        if relationship_between_u1_u2 is None:
-            # query outputted null and therefore no follow relationship exists
-            follow_var = Follows(user_id1, user_id2)
-            db.session.add(follow_var)
-            #db.session.commit()
-            try:
-                db.session.commit()
-                return "Success"
-            except sqlalchemy.exc.IntegrityError:
-                db.session.rollback()
-                return "ERROR: Could not create relationship."
-        else:
-            # query outputted not empty and therefore the relationship exists
-            return "ERROR: Relationship already exists."
-    else:
-        # one or both users do not exist
-       return "ERROR: Users do not exist."
-    
-
-#User 1 trying to unfollow User 2
-def delete_follows(user_id1, user_id2):
-    existing_relationship = db.session.query(Follows).filter_by(follower_id=user_id1).filter_by(followed_id=user_id2).first()
-
-    if existing_relationship:
-        db.session.delete(existing_relationship)
-        try:
-            db.session.commit()
-            return "unfollow successful"
-        except sqlalchemy.exc.IntegrityError:
-            db.session.rollback()
-            return "ERROR: Could not create relationship."
-    else:
-        return "Error: This relationship does not exist"
-    
-#gets followers of a user               
+# gets followers of a user
 def get_followers(user_id):
     user = db.session.query(User).get(user_id)
     followersList = []
     for followers in user.followed_by:
         follower = db.session.query(User).get(followers.follower_id)
         follower_dict = {
-        "user_id": follower.user_id,
-        "username": follower.username
+            "user_id": follower.user_id,
+            "username": follower.username
         }
         followersList.append(follower_dict)
     return json.dumps(followersList)
 
 
-#gets the following list from a user
+# gets the following list from a user
 def get_following(user_id):
     user = db.session.query(User).get(user_id)
     followingList = []
@@ -580,7 +478,57 @@ def get_following(user_id):
         followingList.append(following_dict)
     return json.dumps(followingList)
 
-#function that creates a like rating for a specific user and specific song
+
+# add_follows method creates relationship between two users where user_id1 follows user_id2.
+def add_follows(user_id1, user_id2):
+    existing_user1 = db.session.query(User).filter_by(user_id=user_id1).first()
+    existing_user2 = db.session.query(User).filter_by(user_id=user_id2).first()
+
+    # checks if the users exist
+    if existing_user1 is not None and existing_user2 is not None:
+        # both users exist
+        # query if the relationship already exists
+        relationship_between_u1_u2 = db.session.query(Follows).filter_by(follower_id=user_id1).filter_by(
+            followed_id=user_id2).first()
+
+        if relationship_between_u1_u2 is None:
+            # query outputted null and therefore no follow relationship exists
+            follow_var = Follows(user_id1, user_id2)
+            db.session.add(follow_var)
+            db.session.commit()
+            try:
+                db.session.commit()
+                return "Success"
+            except sqlalchemy.exc.IntegrityError:
+                db.session.rollback()
+                return "ERROR: Could not create relationship."
+        else:
+            # query outputted not empty and therefore the relationship exists
+            return "ERROR: Relationship already exists."
+    else:
+        # one or both users do not exist
+        return "ERROR: Users do not exist."
+
+
+# User 1 trying to unfollow User 2
+def delete_follows(user_id1, user_id2):
+    existing_relationship = db.session.query(Follows).filter_by(follower_id=user_id1).filter_by(
+        followed_id=user_id2).first()
+
+    if existing_relationship:
+        db.session.delete(existing_relationship)
+        db.session.commit()
+        try:
+            db.session.commit()
+            return "unfollow successful"
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return "ERROR: Could not create relationship."
+    else:
+        return "Error: This relationship does not exist"
+
+
+# function that creates a like rating for a specific user and specific song
 def like(user_id, song_id):
     user = db.session.query(User).get(user_id)
     song = db.session.query(Song).get(song_id)
@@ -591,18 +539,20 @@ def like(user_id, song_id):
         else:
             if relationship is not None:
                 db.session.delete(relationship)
+                db.session.commit()
             rate = Rated(user_id, song_id, 1)
             db.session.add(rate)
         try:
             db.session.commit()
-            return "Success"
+            return """Success"""
         except sqlalchemy.exc.IntegrityError:
             db.session.rollback()
             return "ERROR: Could not create relationship."
     else:
-            return "Error: could not create relationship because conditions were not met."
+        return "Error: could not create relationship because conditions were not met."
 
-#function that creates a dislike rating for a specific user and specific song
+
+# function that creates a dislike rating for a specific user and specific song
 def dislike(user_id, song_id):
     user = db.session.query(User).get(user_id)
     song = db.session.query(Song).get(song_id)
@@ -613,29 +563,144 @@ def dislike(user_id, song_id):
         else:
             if relationship is not None:
                 db.session.delete(relationship)
+                db.session.commit()
             rate = Rated(user_id, song_id, 0)
             db.session.add(rate)
         try:
             db.session.commit()
-            return "Success"
+            return """Success"""
         except sqlalchemy.exc.IntegrityError:
             db.session.rollback()
             return "ERROR: Could not create/delete relationship."
     else:
-            return "Error: could not create relationship because conditions were not met."
+        return "Error: could not create relationship because conditions were not met."
 
-#basic script to create base of ratings for users and songs. Loops through all songs a user has listened to and randomly assigns a rating
+
+# basic script to create base of ratings for users and songs. Loops through all songs a user has listened to and randomly assigns a rating
 def create_ratings():
     listened_to_table = db.session.query(ListenedTo).all()
     for row in listened_to_table:
         user_id = row.user_id
         song_id = row.song_id
-        rating = random.randint(0,1)
-        if(rating == 0):
-            dislike(user_id,song_id)
+        rating = random.randint(0, 1)
+        if (rating == 0):
+            dislike(user_id, song_id)
         else:
-            like(user_id,song_id)
+            like(user_id, song_id)
 
+
+# Gets all the songs a user has disliked
+def get_dislikes(user_id):
+    user = db.session.query(User).get(user_id)
+    rates = db.session.query(Rated).filter_by(user_id=user_id).filter_by(rated=0).order_by(Rated.rating_time.desc())
+    dislikes = []
+    for rate in rates:
+        username = db.session.query(User).get(rate.user_id)
+        song = db.session.query(Song).get(rate.song_id)
+
+        # checks if artist is null
+        # if null artist, put Brendan
+        artistOfsong = song.song_by
+        if artistOfsong == []:
+            artist = 'Brendan'
+        elif artistOfsong is not []:
+            artist = song.song_by[0].artist_name
+
+        dislikes_dict = {
+            "username": username.username,
+            "song_id": song.song_id,
+            "song_title": song.song_title,
+            "artist": artist,
+            "rating": rate.rated
+        }
+        dislikes.append(dislikes_dict)
+    return json.dumps(dislikes)
+
+
+# Gets all the songs a user has liked
+def get_likes(user_id):
+    user = db.session.query(User).get(user_id)
+    rates = db.session.query(Rated).filter_by(user_id=user_id).filter_by(rated=1).order_by(Rated.rating_time.desc())
+    likes = []
+    for rate in rates:
+        username = db.session.query(User).get(rate.user_id)
+        song = db.session.query(Song).get(rate.song_id)
+
+        # checks if artist is null
+        # if null artist, put Brendan
+        artistOfsong = song.song_by
+        if artistOfsong == []:
+            artist = 'Brendan'
+        elif artistOfsong is not []:
+            artist = song.song_by[0].artist_name
+
+        likes_dict = {
+            "username": username.username,
+            "song_id": song.song_id,
+            "song_title": song.song_title,
+            "artist": artist,
+            "rating": rate.rated
+        }
+        likes.append(likes_dict)
+    return json.dumps(likes)
+
+
+# returns the 30 most recent listens and likes made by a user and the users they follow.
+# If user_only is true, returns only listens and likes from the given user
+def get_feed(user_id, user_only):
+    user = db.session.query(User).get(user_id)
+    feed_users = [user_id]
+    if not user_only:
+        for friend in user.follows:
+            feed_users.append(friend.followed.user_id)
+    listens = db.session.query(ListenedTo).filter(ListenedTo.user_id.in_(feed_users)).order_by(
+        ListenedTo.last_listen.desc()).limit(30).all()
+    rates = db.session.query(Rated).filter(Rated.user_id.in_(feed_users)).order_by(Rated.rating_time.desc()).limit(
+        30).all()
+    listens_and_rates = []
+    for listen in listens:
+        try:
+            user = db.session.query(User).get(listen.user_id)
+            song = db.session.query(Song).get(listen.song_id)
+            listens_and_rates.append({
+                "username": user.username,
+                "lastfm_name": user.lastfm_name,
+                "song_id": song.song_id,
+                "song_title": song.song_title,
+                "artist": song.song_by[0].artist_name,
+                "datetime": str(listen.last_listen),
+                "is_rating": False,
+                "rating": -1
+            })
+        except IndexError:
+            print("could not add listen")
+    for rate in rates:
+        try:
+            username = db.session.query(User).get(rate.user_id)
+            song = db.session.query(Song).get(rate.song_id)
+            listens_and_rates.append({
+                "username": user.username,
+                "song_id": song.song_id,
+                "song_title": song.song_title,
+                "artist": song.song_by[0].artist_name,
+                "datetime": str(listen.last_listen),
+                "is_rating": True,
+                "rating": rate.rated
+            })
+        except IndexError:
+            print("could not add listen")
+    sorted_feed = sorted(listens_and_rates, key=lambda k: k["datetime"])
+    return json.dumps(sorted_feed[0:30])
+
+
+# Returns the name of the artist who performed a given song
+def get_artist(song_id):
+    song = db.session.query(Song).get(song_id)
+    artist = song.song_by[0]
+    return artist.artist_name
+
+
+# Returns a list of 3 lists containing rating info, user ids, and song info
 def get_rec_info():
     ratings = []
     users = []
@@ -643,7 +708,7 @@ def get_rec_info():
 
     ratings_query = db.session.query(Rated).all()
     users_query = db.session.query(User).all()
-    song_query = db.session(Song).all()
+    song_query = db.session.query(Song).all()
 
     for r in ratings_query:
         ratings.append([r.user_id, r.song_id, r.rated, r.rating_time])
@@ -656,6 +721,7 @@ def get_rec_info():
 
     return [ratings, users, songs]
 
+
 # Retrieves on-the-fly recommendations for a user
 #     Utilizes machine learning algorithm to recommend a number of songs
 #     based on songs user_id has liked
@@ -663,9 +729,9 @@ def get_rec_info():
 def db_recommend(user_id):
     return proto.make_recommendations(user_id)
 
+
 # recommends 5 users that have a similar listening history as user_id
-#     specifically, users that have listened to at least 5 songs in user_id's listened histor
-y
+#     specifically, users that have listened to at least 5 songs in user_id's listened history
 #    in the future, change this threshold to be that users have listened to at least 25% of
 #        user_id's listening history
 # parameter: user_id
@@ -683,14 +749,6 @@ def db_recommendusers(user_id):
         if tmpuserid not in get_following(user_id):
             # user not already following user2
             print(str(user_id) + ' not following ' + str(user.user_id))
-            # OLD CHANGES goes into list of songs for user_id
-            #for i in range(len(loadedjson)):
-            #    thesong = '"song_id": ' + str(loadedjson[i]['song_id'])
-            #    if thesong in get_listened_songs(user.user_id):
-            #        # user.user_id and user_id have both listened to current song
-            #        # add one to song counter
-            #        numOfSameSongs = numOfSameSongs + 1
-
             # load the listened songs of user.user_id
             usersloadedjson = json.loads(get_listened_songs(user.user_id))
             # iterate through of the songs of user.user_id
@@ -705,9 +763,9 @@ def db_recommendusers(user_id):
                     #    the threshhold - if it does, move onto the next user
                     if numOfSameSongs >= 5:
                         break
-            print('User ' + str(user_id) + 'user ' + str(user.user_id) + ' have ' + str(numOf
-SameSongs) + ' of same songs.')
-            #print(user.user_id)
+            print('User ' + str(user_id) + 'user ' + str(user.user_id) + ' have ' + str(
+                numOfSameSongs) + ' of same songs.')
+            # print(user.user_id)
 
         # checks if the number of same songs meets the threshold of 25%
         #     (this criteria would be used in future development of the app)
@@ -723,3 +781,4 @@ SameSongs) + ' of same songs.')
         if len(matchedUsers) >= 5:
             break
     return json.dumps(matchedUsers)
+
