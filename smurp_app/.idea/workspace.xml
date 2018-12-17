@@ -7,11 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3b7615d-fd8f-44af-909f-80be715ce46e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/feed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/friend_profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/friend_profile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/rated.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rated.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/friends.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/friends.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -42,19 +38,47 @@
       <file leaf-file-name="feed.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/feed.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="38" column="2" selection-start-line="38" selection-start-column="2" selection-end-line="38" selection-end-column="70" />
+            <state relative-caret-position="-1">
+              <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="friend_profile.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="friend_profile.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/friend_profile.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-969">
-              <caret line="57" column="56" selection-start-line="57" selection-start-column="56" selection-end-line="57" selection-end-column="56" />
+            <state relative-caret-position="289">
+              <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="34" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
+                <element signature="e#717#796#0" />
+                <element signature="e#881#4356#0" />
+                <element signature="e#4577#5007#0" />
+                <element signature="e#5225#5662#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="friends.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/friends.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="177" column="61" selection-start-line="177" selection-start-column="61" selection-end-line="177" selection-end-column="61" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+                <element signature="e#2504#4434#0" />
+                <element signature="e#4513#4905#0" />
+                <element signature="e#4951#5145#0" />
+                <element signature="e#5254#5760#0" />
+                <element signature="e#6530#8650#0" />
+                <element signature="e#8728#9116#0" />
+                <element signature="e#9196#9588#0" />
+                <element signature="e#9632#9814#0" />
+                <element signature="e#9919#10416#0" />
+                <element signature="e#10462#10646#0" />
+                <element signature="e#10755#11329#0" />
+                <element signature="e#11500#12011#0" />
               </folding>
             </state>
           </provider>
@@ -97,6 +121,7 @@
         <option value="$PROJECT_DIR$/lib/feed.dart" />
         <option value="$PROJECT_DIR$/lib/rated.dart" />
         <option value="$PROJECT_DIR$/lib/friend_profile.dart" />
+        <option value="$PROJECT_DIR$/lib/friends.dart" />
       </list>
     </option>
   </component>
@@ -468,17 +493,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/feed.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="38" column="2" selection-start-line="38" selection-start-column="2" selection-end-line="38" selection-end-column="70" />
+        <state relative-caret-position="-1">
+          <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/friend_profile.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-969">
-          <caret line="57" column="56" selection-start-line="57" selection-start-column="56" selection-end-line="57" selection-end-column="56" />
+        <state relative-caret-position="289">
+          <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="34" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#717#796#0" />
+            <element signature="e#881#4356#0" />
+            <element signature="e#4577#5007#0" />
+            <element signature="e#5225#5662#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/friends.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="177" column="61" selection-start-line="177" selection-start-column="61" selection-end-line="177" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#2504#4434#0" />
+            <element signature="e#4513#4905#0" />
+            <element signature="e#4951#5145#0" />
+            <element signature="e#5254#5760#0" />
+            <element signature="e#6530#8650#0" />
+            <element signature="e#8728#9116#0" />
+            <element signature="e#9196#9588#0" />
+            <element signature="e#9632#9814#0" />
+            <element signature="e#9919#10416#0" />
+            <element signature="e#10462#10646#0" />
+            <element signature="e#10755#11329#0" />
+            <element signature="e#11500#12011#0" />
           </folding>
         </state>
       </provider>

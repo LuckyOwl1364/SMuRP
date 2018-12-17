@@ -3,25 +3,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:smurp_app/history.dart';
-import 'package:smurp_app/models/user.dart';
-import 'package:smurp_app/utils/endpointDemo.dart';
-import 'package:smurp_app/feed.dart';
-import 'package:smurp_app/profile.dart';
-import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/friend_profile.dart';
 import 'globals.dart' as globals;
 
-
+// When this file is called to run, do the following
 class FriendsPage extends StatefulWidget {
   @override
   FriendsPageState createState() => new FriendsPageState();
 }
 
+// Page body. This contains every part of the page that isn't the header
 class FriendsPageState extends State<FriendsPage> {
   String endPtData = "Test Data ";
   List data;
 
+  // Builds the body of the screen
   @override
   Widget build(BuildContext context) {
       return new MaterialApp(
@@ -43,7 +39,7 @@ class FriendsPageState extends State<FriendsPage> {
                     ]//end of widget
                   )//end of tab bar
                 ),
-                body: new TabBarView(
+                body: new TabBarView( // show a tab bar that lists either following or followers
                   children: <Widget>[
                     new FirstWidget(),
                     new SecondWidget(),
@@ -74,12 +70,14 @@ class FollowingPageState extends State<FirstWidget> {
   String followingData = "Testing Following. . . Did it work? ";
   List followingList;
 
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
     this.getFollowingData();
   }
 
+  // Builds the body of the screen tab
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -94,7 +92,7 @@ class FollowingPageState extends State<FirstWidget> {
                     new MaterialPageRoute(
                         builder: (context) => new FriendProfilePage()));
               },
-              child: new Card(
+              child: new Card(  // Make a card with a user's name and a follow button for them
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
@@ -177,6 +175,7 @@ class FollowersPageState extends State<SecondWidget> {
   String followerData = "Testing Followers. . . Did it work? ";
   List followerList;
 
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
@@ -184,6 +183,7 @@ class FollowersPageState extends State<SecondWidget> {
     this.getFollowingData();
   }
 
+  // Builds the body of the screen tab
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -198,7 +198,7 @@ class FollowersPageState extends State<SecondWidget> {
                   new MaterialPageRoute(
                       builder: (context) => new FriendProfilePage()));
             },
-            child: new Card(
+            child: new Card(  // Make a card with a user's name and a follow button for them
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
@@ -260,6 +260,7 @@ class FollowersPageState extends State<SecondWidget> {
     });
   }
 
+  // adds a user to your following list
   void follow(int userID_1, int userID_2) {
     if(userID_1 == null || userID_2 == null){
       print("ERROR, one of the user id's provided was invalid.");
@@ -283,6 +284,7 @@ class FollowersPageState extends State<SecondWidget> {
     });
   }
 
+  // removes a user from your following list
   void unfollow(int userID_1, int userID_2) {
     if(userID_1 == null || userID_2 == null){
       print("ERROR, one of the user id's provided was invalid.");
