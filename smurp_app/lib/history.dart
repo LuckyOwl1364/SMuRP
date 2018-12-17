@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smurp_app/models/song.dart';
-import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
@@ -8,8 +7,7 @@ import 'globals.dart' as globals;
 import 'package:smurp_app/data/rest_ds.dart';
 
 
-void main() => runApp(HistoryPage());
-
+// Page body boot-up class. Includes the header; makes a call for the body
 class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,17 +21,13 @@ class HistoryPage extends StatelessWidget {
   }
 }
 
-
+// Page body. This contains every part of the page that isn't the header
 class HistoryPageState extends State<HistoryWidget> {
   List history;
-  List _likes = new List<Song>();
-  List _dislikes = new List<Song>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
+  final RestDatasource rest = new RestDatasource();   // object for talking to the database
 
-  final RestDatasource rest = new RestDatasource();
-
-
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
@@ -41,10 +35,9 @@ class HistoryPageState extends State<HistoryWidget> {
     print("called getHistoryData()");
   }
 
-
+  // Builds the body of the screen, including the feed and the sidebar
   @override
   Widget build(BuildContext context) {
-//    this.collectSongs();
     return Scaffold (
       appBar: AppBar(
         title: Text('Listening History'),
@@ -101,71 +94,9 @@ class HistoryPageState extends State<HistoryWidget> {
     );
   }
 
-
-  void collectSongs() async{
-    print("before call : history.length = " + history.length.toString());
-    List<Song> nextSongs = await rest.getListenedSongs(23);
-    history.addAll(nextSongs);
-
-    print("after calls : history.length = " + history.length.toString());
-//    setState((){});
-  }
-
-  Widget _buildRow(Song song) {
-    final bool liked = _likes.contains(song);
-    final bool disliked = _dislikes.contains(song);
-    return ListTile(
-        title: Text(
-          (song.artist + " - " + song.title),//song.title.asPascalCase,ddd
-          style: _biggerFont,
-        ),
-        trailing: new Row(
-            children: <Widget>[
-              new IconButton(
-                  icon: new Icon( (liked) ? Icons.thumb_up : Icons.add_circle_outline,
-                    color: liked ? Colors.orange : null,
-                  ),
-                  onPressed: () { setState(() {
-                    if (disliked) {
-                      _dislikes.remove(song); // if currently disliked, remove from dislikes
-                      rest.dislikeSong(globals.user_id, song.song_id); // tell Database to remove song
-                    }
-
-                    if (liked){
-                      _likes.remove(song); // if already disliked, remove from dislikes
-                    }
-                    else{
-                      _likes.add(song);
-                    }
-                    rest.likeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
-                  }); }
-              ),
-              new IconButton(
-                  icon: new Icon( (disliked) ? Icons.thumb_down : Icons.remove_circle_outline,
-                    color: disliked ? Colors.orange : null,
-                  ),
-                  onPressed: () { setState(() {
-                    if (liked) {
-                      _likes.remove(song); // if currently liked, remove from likes
-                      rest.likeSong(globals.user_id, song.song_id); // tell Database to remove song
-                    }
-
-                    if (disliked){
-                      _dislikes.remove(song); // if already disliked, remove from dislikes
-                    }
-                    else{
-                      _dislikes.add(song); // else add to dislikes
-                    }
-                    rest.dislikeSong(globals.user_id, song.song_id);  // tell Database to add/remove song, whichever is appropriate
-
-                  }); }
-              ),
-            ],
-            mainAxisSize: MainAxisSize.min)
-    );
-  }
-
-
+  // Adds a song to the 'likes' list
+  // If already liked, removes instead
+  // If currently dislikes, removes from that list then adds to likes
   void like(int index) async{
     print("Calling like(${history[index]['song_id']})");
     rest.likeSong(globals.user_id, history[index]['song_id']);
@@ -173,6 +104,10 @@ class HistoryPageState extends State<HistoryWidget> {
     print('Song with id of: ' + history[index]['song_id'].toString() + 'was liked');
   }
 
+
+  // Adds a song to the 'dislikes' list
+  // If already disliked, removes instead
+  // If currently in likes, removes from that list then adds to dislikes
   void dislike(int index) async {
     print("Calling dislike(${history[index]['song_id']})");
     rest.dislikeSong(globals.user_id, history[index]['song_id']);
@@ -183,7 +118,7 @@ class HistoryPageState extends State<HistoryWidget> {
     });
   }
 
-  //asynchronous call to hit the test endpoint
+  // asynchronous call to hit the test endpoint
   // it's asynchronous because it might take a while
   // and we don't want the app to crash in the time
   // it takes to gather the data
@@ -208,11 +143,9 @@ class HistoryPageState extends State<HistoryWidget> {
   }
 
 
+} // end HistoryPageState
 
-
-} // end RandomWordsState
-
-
+// When file called to run, do the following
 class HistoryWidget extends StatefulWidget {
   @override
   HistoryPageState createState() => new HistoryPageState();
