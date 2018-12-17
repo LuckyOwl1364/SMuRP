@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:smurp_app/models/user.dart';
 import 'globals.dart' as globals;
 
-
+// When this file is called to run, do the following
 class FriendProfilePage extends StatefulWidget {
   @override
   FriendProfileState createState()=> new FriendProfileState();
 
 }
-
+// Page body. This contains every part of the page that isn't the header
 class FriendProfileState extends State<FriendProfilePage> {
   var userList;
   String userData = "Endpoint Data Username";
   String profileData = "Testing Friend Profile. . . Did it work? ";
   List profileList;
 
+  // When class is instantiated, do this before anything else
   @override
   void initState() {
     super.initState();
@@ -25,6 +25,7 @@ class FriendProfileState extends State<FriendProfilePage> {
     this.getProfileData();
   }
 
+  // Builds the body of the screen
   @override
   Widget build(BuildContext context){
     return new Scaffold(
@@ -54,7 +55,7 @@ class FriendProfileState extends State<FriendProfilePage> {
                   textAlign: TextAlign.start
               ),//end of text
             ),//end of padding
-            new Expanded(
+            new Expanded(   // Holder for activity cards
                 child: new ListView.builder(
                   itemCount: profileList == null ? 0 : profileList.length,
                   itemBuilder: (BuildContext context, int index){

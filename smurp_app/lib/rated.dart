@@ -1,20 +1,12 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:smurp_app/history.dart';
-import 'package:smurp_app/models/user.dart';
-import 'package:smurp_app/utils/endpointDemo.dart';
-import 'package:smurp_app/feed.dart';
-import 'package:smurp_app/profile.dart';
-import 'package:smurp_app/recommended.dart';
 import 'package:smurp_app/models/song.dart';
 import 'package:smurp_app/data/rest_ds.dart';
 import 'globals.dart' as globals;
 
 
-//void main() => runApp(RatedPage());
 
 class RatedPage extends StatefulWidget {
   @override

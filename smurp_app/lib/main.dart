@@ -7,7 +7,7 @@ import 'package:smurp_app/feed.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
-
+// When this file is called to start the program, run the following
 void main() => runApp(new Login());
 
 

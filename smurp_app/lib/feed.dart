@@ -134,7 +134,7 @@ class FeedState extends State<FeedPage> {
             ],
           ),
         ),
-        body: new ListView.builder(
+        body: new ListView.builder(   // This is the presenter of all the activity cards
           itemCount: feedList == null ? 0 : feedList.length,
           itemBuilder: (BuildContext context, int index){
             return new Card(
