@@ -1,4 +1,11 @@
 List of All Known Bugs/Issues:
 
-1. Backend: Run time for endpoint /recommendusers is VERY long. This is issue because having a long run time for a mobile application is not suitable. The search algorithm to find 5 users takes a long time and can possibly be enhanced.
-2. Frontend: When you log in you have to click the button twice.
+Backend:
+1. Run time for endpoint /recommendusers is VERY long. This is issue because having a long run time for a mobile application is not suitable. The search algorithm to find 5 users takes a long time and can possibly be enhanced.
+2. If the user is actively using a linked account (e.g listening to songs on Spotify) the server cannot collect their recent listening data and they will be unable to log in.
+
+
+Frontend:
+1. When you log in you have to click the button twice.
+2. Loading up a user's profile almost crashes the app but does not (the screen flashes red which is a signal of a critical error happening and then it loads the page regardless, completely fine).
+3. The thumbs-up/thumbs-down buttons do not update in real-time but have to be updated by navigating away and coming back. Their functionality is otherwise fine.
