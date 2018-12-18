@@ -1,0 +1,4 @@
+List of All Known Bugs/Issues:
+
+1. Backend: Run time for endpoint /recommendusers is VERY long. This is issue because having a long run time for a mobile application is not suitable. The search algorithm to find 5 users takes a long time and can possibly be enhanced.
+2. Frontend: When you log in you have to click the button twice.
